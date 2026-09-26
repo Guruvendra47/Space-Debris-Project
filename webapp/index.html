@@ -86,7 +86,30 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 #focus-banner .fb-clear:hover{background:rgba(239,68,68,.4);color:#fff}
 
 /* Collapsible timeline */
-@media(max-width:1200px){.kr{grid-template-columns:repeat(3,1fr)}.cr,.pr{grid-template-columns:1fr}}@media(max-width:768px){.kr{grid-template-columns:repeat(2,1fr)}.pn{width:260px}.nav{padding:0 12px}.sc{padding:14px}.hr{gap:6px}.mi{display:none}.gl{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1200px){.kr{grid-template-columns:repeat(3,1fr)}.cr,.pr{grid-template-columns:1fr}}
+@media(max-width:900px){.kr{grid-template-columns:repeat(2,1fr)}.cr,.pr{grid-template-columns:1fr}.pn{width:280px}.nav{padding:0 12px}.sc{padding:14px}.hr{gap:6px}.mi{display:none}.gl{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.metrics-banner{flex-wrap:wrap}.metrics-banner .mb-sep{display:none}}
+@media(max-width:768px){
+  .kr{grid-template-columns:1fr}.k .vl{font-size:22px}
+  #gw{flex-direction:column;height:auto}#gc{height:60vh}
+  .pn{width:100%;max-height:40vh;border-left:none;border-top:1px solid rgba(59,130,246,.15)}
+  .nav{padding:0 8px;gap:2px}.nt{padding:10px 10px;font-size:12px}.nt .ct{display:none}
+  .sc{padding:10px}.sh{flex-direction:column;align-items:flex-start}.sh h2{font-size:17px}
+  .tb{padding:10px 12px}.sr{min-width:120px;font-size:12px}.sl{font-size:11px;padding:6px 10px}
+  .cr{padding:8px 10px}.cd{padding:14px}.cd canvas{max-height:200px}
+  .pr{grid-template-columns:1fr;padding:0 10px 10px}
+  .pi .pc{font-size:20px}.pi .mt{font-size:10px;gap:6px}
+  .header{padding:0 12px;height:54px}.brand h1{font-size:13px}.brand p{font-size:9px}.brand-icon{width:32px;height:32px;font-size:12px}
+  .hr{gap:4px}.sync{padding:4px 8px;font-size:10px}.sync span{display:none}.sync #sync-label{display:inline}
+  .ab{padding:5px 10px;font-size:11px}.eb,.exp-trig{padding:6px 12px;font-size:11px}
+  .glass-bar{padding:8px 10px;gap:8px}.glass-bar button{width:32px;height:32px;font-size:12px}.glass-bar .yr{font-size:10px;min-width:40px}
+  .tbd{overflow-x:auto;-webkit-overflow-scrolling:touch}.tbd table{min-width:600px}
+  .mb{padding:14px}.md{max-width:95vw}.mh{padding:14px}.mh h2{font-size:15px}
+  .academy-jump{top:54px;padding:8px 10px}.aj-btn{padding:5px 10px;font-size:11px}
+  .ft2{padding:8px 12px;flex-wrap:wrap;gap:6px}
+  #mobile-warn{display:flex}
+}
+#mobile-warn{display:none;align-items:center;gap:6px;padding:6px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;margin:0 10px 8px;font-size:11px;color:#1e40af;font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
@@ -97,27 +120,28 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="sync" id="sync-badge" style="cursor:pointer;padding:6px 14px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-radius:8px;font-size:12px;color:#1e40af;font-weight:700;box-shadow:0 2px 8px rgba(59,130,246,.15);display:flex;align-items:center;gap:6px" onclick="showSyncInfo()" title="Click for catalog update details"><div style="width:10px;height:10px;border-radius:50%;background:#10b981;animation:p 2s infinite;box-shadow:0 0 6px #10b981"></div><span id="sync-label">SAT Sync</span><span id="sync-time" style="font-family:'JetBrains Mono',monospace;font-weight:600">Loading...</span><span id="sync-relative" style="font-size:10px;color:#3b82f6;font-weight:600;padding:2px 6px;background:#dbeafe;border-radius:4px"></span></div><div id="data-health" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer" onclick="showSyncInfo()" title="Click for catalog update details"><div style="width:8px;height:8px;border-radius:50%;background:#10b981;animation:p 2s infinite" id="health-dot"></div><span id="health-text" style="color:#10b981">FRESH</span></div><div id="data-mode" style="padding:5px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:11px;color:var(--amber);font-weight:600;display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber)"></div>ARCHIVAL</div>
 <div class="mi" title="SGP4: Simplified General Perturbations for near-earth orbits. SDP4: Deep-space variant for periods > 225 min. Standard algorithm for TLE propagation.">Propagator: <strong>SGP4/SDP4</strong> <span style="cursor:help;color:var(--accent)">ⓘ</span></div>
 <div class="mi" title="JGM-3: Joint Gravity Model 3 — Earth gravity field model used for orbital perturbation calculations. Degree 70 spherical harmonic expansion.">Ephemeris: <strong>JGM-3</strong> <span style="cursor:help;color:var(--accent)">ⓘ</span></div>
-<div class="tw"><span class="tl" id="mode-label">Expert</span><div class="tg" id="mode-toggle" onclick="toggleMode()"><div class="tk"></div></div></div>
-<button class="ab" onclick="startGuidedTour()" style="background:#ecfdf5;border-color:#a7f3d0;color:#10b981">Tour</button><button class="ab" onclick="document.getElementById('modal').classList.add('show')">About</button>
+<div class="tw"><span class="tl" id="mode-label">Expert</span><div class="tg" id="mode-toggle" onclick="toggleMode()" role="switch" aria-label="Toggle Expert/Citizen mode" aria-checked="false" tabindex="0"><div class="tk"></div></div></div>
+<button class="ab" onclick="startGuidedTour()" style="background:#ecfdf5;border-color:#a7f3d0;color:#10b981" aria-label="Start guided tour">Tour</button><button class="ab" onclick="document.getElementById('modal').classList.add('show')" aria-label="About this platform">About</button>
 <div class="sb"><div class="sd"></div>ACTIVE</div>
 </div></div>
-<div class="nav">
-<button class="nt active" onclick="showTab(this,'t-globe')">Globe <span class="ct" id="c-globe">5K</span></button>
-<button class="nt" onclick="showTab(this,'t-dash')">Dashboard</button>
-<button class="nt" onclick="showTab(this,'t-debris')">Debris Tracker</button>
-<button class="nt" onclick="showTab(this,'t-pred')">Re-entry Predictions</button>
-<button class="nt" onclick="showTab(this,'t-collide')">Collision Risk</button>
-<button class="nt" onclick="showTab(this,'t-cat')">Catalog</button>
-<button class="nt" onclick="showTab(this,'t-academy')" style="color:#10b981">Academy</button>
+<div class="nav" role="navigation" aria-label="Main navigation">
+<button class="nt active" onclick="showTab(this,'t-globe')" aria-label="3D Globe View">Globe <span class="ct" id="c-globe">5K</span></button>
+<button class="nt" onclick="showTab(this,'t-dash')" aria-label="Dashboard statistics">Dashboard</button>
+<button class="nt" onclick="showTab(this,'t-debris')" aria-label="Debris Tracker table">Debris Tracker</button>
+<button class="nt" onclick="showTab(this,'t-pred')" aria-label="Re-entry Predictions">Re-entry Predictions</button>
+<button class="nt" onclick="showTab(this,'t-collide')" aria-label="Collision Risk Forecast">Collision Risk</button>
+<button class="nt" onclick="showTab(this,'t-cat')" aria-label="Satellite Catalog">Catalog</button>
+<button class="nt" onclick="showTab(this,'t-academy')" style="color:#10b981" aria-label="Educational Academy">Academy</button>
 </div>
-<div class="api-fallback" id="api-fallback-banner"><div class="dot"></div><span class="fb-text">External data feed unavailable — running on cached embedded data.</span></div>
+<div class="api-fallback" id="api-fallback-banner" role="alert"><div class="dot"></div><span class="fb-text">External data feed unavailable — running on cached embedded data.</span></div>
+<div id="mobile-warn" role="alert">📱 Best viewed on desktop — some features may be limited on mobile.</div>
 <div id="t-globe" class="tab active">
 <div id="conjunction-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:30;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fecaca;padding:12px 24px;font-size:14px;font-weight:600;display:none;align-items:center;gap:12px">
 <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;animation:p 1s infinite;flex-shrink:0"></div>
 <span id="conj-banner-text">Loading conjunction warnings...</span>
 <a href="#" onclick="showTab(document.getElementById('nav-collide'),'t-collide');return false" style="color:#fca5a5;text-decoration:underline;margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
 </div>
-<div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;"><div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" style="font-size:16px">⌂</button></div>
+<div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;"><div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" aria-label="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" aria-label="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" aria-label="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" aria-label="Reset view" style="font-size:16px">⌂</button></div>
 <div style="position:absolute;bottom:72px;left:20px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px)">
 <div style="font-size:10px;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Density</div>
 <input type="range" id="lod-slider" min="0" max="3" value="2" step="1" style="accent-color:#3b82f6;width:80px" onchange="setLOD(this.value)">
@@ -585,7 +609,7 @@ var tc={"Payload":'#3b82f6',"Rocket Body":'#f59e0b',"Debris":'#ef4444',"UNK":'#9
 var ar={leo:[0,2000],meo:[0,35785],geo:[35785,36000],heo:[36000,999999]};
 var expert=true,loaded=false;
 
-function toggleMode(){expert=!expert;document.body.classList.toggle('citizen',!expert);document.getElementById('mode-label').textContent=expert?'Expert':'Citizen';document.getElementById('mode-toggle').classList.toggle('on',!expert);applyModeText();if(typeof renderDebris==='function')renderDebris();if(typeof renderPreds==='function')renderPreds();if(typeof renderPairs==='function')renderPairs();}
+function toggleMode(){expert=!expert;document.body.classList.toggle('citizen',!expert);document.getElementById('mode-label').textContent=expert?'Expert':'Citizen';var mt=document.getElementById('mode-toggle');mt.classList.toggle('on',!expert);if(mt)mt.setAttribute('aria-checked',String(!expert));applyModeText();if(typeof renderDebris==='function')renderDebris();if(typeof renderPreds==='function')renderPreds();if(typeof renderPairs==='function')renderPairs();}
 function applyModeText(){var els=document.querySelectorAll('[data-citizen]');els.forEach(function(el){el.textContent=expert?(el.getAttribute('data-expert')||el.textContent):(el.getAttribute('data-citizen')||el.textContent);});}
 var debrisVisible=100,catVisible=100;
 function loadMoreDebris(){debrisVisible+=100;renderDebris();}
@@ -678,7 +702,7 @@ function toggleCollap(el){el.classList.toggle('open');var body=el.nextElementSib
 // === GLOBE 3D RENDERING (rewritten from scratch) ===
 var allOrbitalObjects=[];
 var scene=null,camera=null,renderer=null,earth=null,starField=null;
-var globePointData=[],currentPointCloud=null;
+var globePointData=[],currentPointCloud=null,markerDefaultSize=3;
 var EARTH_R=100,globeRotating=true;
 var camTheta=0.4,camPhi=0.35,camDist=250;
 var camVelTheta=0,camVelPhi=0;
@@ -1081,7 +1105,7 @@ function drawConjunctionVectors(){
 function toggleHeatmap(){
   heatmapMode=!heatmapMode;
   if(currentPointCloud){
-    currentPointCloud.material.uniforms.size.value=heatmapMode?8:3;
+    currentPointCloud.material.uniforms.size.value=heatmapMode?8:markerDefaultSize;
     currentPointCloud.material.uniforms.opacity.value=heatmapMode?0.4:0.85;
     currentPointCloud.material.blending=heatmapMode?THREE.AdditiveBlending:THREE.NormalBlending;
     currentPointCloud.material.depthWrite=!heatmapMode;
@@ -1210,7 +1234,7 @@ function renderGlobe(){
   var markerVS='attribute vec3 color;attribute float aType;varying vec3 vColor;varying float vType;uniform float size;void main(){vColor=color;vType=aType;gl_PointSize=size;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
   var markerFS='varying vec3 vColor;varying float vType;uniform float opacity;void main(){vec2 uv=gl_PointCoord-0.5;float d=length(uv);int t=int(vType+0.5);float a=0.0;if(t==0){float body=max(abs(uv.x)-0.15,abs(uv.y)-0.08);float panels=max(abs(uv.x)-0.42,abs(uv.y)-0.03);a=(min(body,panels)<0.0)?1.0:0.0;}else if(t==1){float rocket=max(abs(uv.x)-0.08,abs(uv.y)-0.35);a=(rocket<0.0)?1.0:0.0;}else if(t==2){float ang=atan(uv.y,uv.x);float r=0.25+0.12*sin(ang*5.0);a=(d<r)?1.0:0.0;}else{float dia=abs(uv.x)+abs(uv.y);a=(dia<0.3)?1.0:0.0;}if(a<0.01)discard;gl_FragColor=vec4(vColor,a*opacity);}';
   var mat=new THREE.ShaderMaterial({
-    uniforms:{size:{value:3},opacity:{value:0.85}},
+    uniforms:{size:{value:(markerDefaultSize=pos.length/3>5000?2:3)},opacity:{value:0.85}},
     vertexShader:markerVS,
     fragmentShader:markerFS,
     transparent:true,
@@ -1663,6 +1687,7 @@ function debounce(fn,wait){var t;return function(){var args=arguments,ctx=this;c
 function initWorker(){try{orbitalWorker=new Worker('orbital-worker.js');orbitalWorker.onmessage=function(e){var m=e.data;if(m.type==='ready'){workerReady=true;console.log('[Worker] Ready:',m.debrisCount,'debris,',m.catalogCount,'catalog');}};orbitalWorker.onerror=function(e){console.log('[Worker] Error:',e.message);orbitalWorker=null;workerReady=false;};}catch(e){console.log('[Worker] Init failed:',e.message);}}
 function connectSSE(){try{sseConnection=new EventSource('/api/stream');sseConnection.onmessage=function(e){try{var data=JSON.parse(e.data);if(data.type==='heartbeat'){sseRetryCount=0;console.log('[SSE] Heartbeat received');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}var hd=document.getElementById('health-dot'),ht=document.getElementById('health-text');if(hd&&ht){hd.style.background='#10b981';ht.style.color='#10b981';ht.textContent='FRESH';}}}catch(se){}};sseConnection.onerror=function(){console.log('[SSE] Error, retrying...');sseConnection.close();sseConnection=null;if(sseRetryCount<sseMaxRetries){sseRetryCount++;setTimeout(connectSSE,Math.pow(2,sseRetryCount)*1000);}};}catch(e){console.log('[SSE] Init failed:',e.message);}}
 function fetchWithRetry(url,retries){return new Promise(function(resolve,reject){function attempt(n){fetch(url).then(function(r){if(r.ok)resolve(r);else if(n>0)setTimeout(function(){attempt(n-1)},Math.pow(2,retries-n+1)*500);else reject(new Error('HTTP '+r.status));}).catch(function(e){if(n>0)setTimeout(function(){attempt(n-1)},Math.pow(2,retries-n+1)*500);else reject(e);});}attempt(retries||3);});}
+function fetchWithTimeout(url,ms){var ctrl=new AbortController();var tid=setTimeout(function(){ctrl.abort();},ms||5000);return fetch(url,{signal:ctrl.signal}).then(function(r){clearTimeout(tid);return r;}).catch(function(e){clearTimeout(tid);throw e;});}
 var _debSearchDebris=debounce(function(){renderDebris();},250);
 var _debSearchCat=debounce(function(){renderCat();},250);
 var _debGlobeSearch=debounce(function(){globeSearch();},300);
@@ -1682,12 +1707,12 @@ initWorker();
 // Connect SSE for live push heartbeats
 connectSSE();
 // Catalog: try file fetch, then embedded fallback
-try{var r4b=await fetch('satcat_catalog.json?v='+Date.now());if(r4b.ok)cat=await r4b.json();console.log('Catalog loaded via file:',cat.length);}catch(e){cat=[];showApiFallback('Catalog data feed unavailable.');}
+try{var r4b=await fetchWithTimeout('satcat_catalog.json?v='+Date.now(),5000);if(r4b.ok)cat=await r4b.json();console.log('Catalog loaded via file:',cat.length);}catch(e){cat=[];showApiFallback('Catalog data feed unavailable — using embedded fallback.');}
 // Build predMap for quick lookup
 var predMap={};for(var i=0;i<preds.length;i++)predMap[preds[i].ObjectName]=preds[i];
 window.PRED_MAP=predMap;
 // Orbital data: try file fetch, then embedded fallback
-try{var r=await fetch('orbital_data.json?v='+Date.now());if(r.ok){var fullData=await r.json();if(fullData&&fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects via file');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded orbital data');}
+try{var r=await fetchWithTimeout('orbital_data.json?v='+Date.now(),5000);if(r.ok){var fullData=await r.json();if(fullData&&fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects via file');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded orbital data (fetch timeout or error)');showApiFallback('Live orbital data feed unavailable — using cached embedded data.');}
 // Predictions and collision: using embedded data (API endpoints available for future live mode)
 // Send data to worker for background processing
 if(orbitalWorker){orbitalWorker.postMessage({type:'init',debrisData:objs,catalogData:cat});}
@@ -1698,9 +1723,9 @@ try{populateCountries();}catch(e){console.error('populateCountries',e);}
 try{renderDebris();}catch(e){console.error('renderDebris',e);}
 try{renderCat();}catch(e){console.error('renderCat',e);}
 try{renderPreds();}catch(e){console.error('renderPreds',e);}
-try{initDashboard();}catch(e){console.error('initDashboard',e);}
-try{initCollide();}catch(e){console.error('initCollide',e);}
-try{applyModeText();}catch(e){console.error('applyModeText',e);}
+// Defer non-critical chart rendering to idle time for faster initial load
+var _ric=window.requestIdleCallback||function(cb){setTimeout(cb,50);};
+_ric(function(){try{initDashboard();}catch(e){console.error('initDashboard',e);}try{initCollide();}catch(e){console.error('initCollide',e);}try{applyModeText();}catch(e){console.error('applyModeText',e);}});
 
 try{if(predCount>0&&document.getElementById('c-pred'))document.getElementById('c-pred').textContent=(predCount/1000).toFixed(0)+'K';}catch(e){}
 try{if(cd){
