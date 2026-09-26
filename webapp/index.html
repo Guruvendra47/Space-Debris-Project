@@ -1708,13 +1708,13 @@ console.log('Embedded: objs='+objs.length+' preds='+preds.length+' stats='+Objec
 initWorker();
 // Connect SSE for live push heartbeats
 connectSSE();
-// Catalog: try file fetch, then embedded fallback
-try{var r4b=await fetchWithTimeout('satcat_catalog.json?v='+Date.now(),5000);if(r4b.ok)cat=await r4b.json();console.log('Catalog loaded via file:',cat.length);}catch(e){cat=[];showApiFallback('Catalog data feed unavailable — using embedded fallback.');}
+// Catalog: try file fetch for extended dataset; embedded fallback used by default
+cat=window.EMBEDDED_CATALOG||[];try{var r4b=await fetchWithTimeout('satcat_catalog.json?v='+Date.now(),5000);if(r4b.ok){var fc=await r4b.json();if(fc&&fc.length>cat.length){cat=fc;console.log('Catalog upgraded via file:',cat.length);}}}catch(e){console.log('Using embedded catalog data');}
 // Build predMap for quick lookup
 var predMap={};for(var i=0;i<preds.length;i++)predMap[preds[i].ObjectName]=preds[i];
 window.PRED_MAP=predMap;
-// Orbital data: try file fetch, then embedded fallback
-try{var r=await fetchWithTimeout('orbital_data.json?v='+Date.now(),5000);if(r.ok){var fullData=await r.json();if(fullData&&fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects via file');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded orbital data (fetch timeout or error)');showApiFallback('Live orbital data feed unavailable — using cached embedded data.');}
+// Orbital data: try file fetch for upgrade; embedded data is primary source
+try{var r=await fetchWithTimeout('orbital_data.json?v='+Date.now(),5000);if(r.ok){var fullData=await r.json();if(fullData&&fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects via file');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded orbital data (file fetch unavailable — embedded is primary source)');}
 // Predictions and collision: using embedded data (API endpoints available for future live mode)
 // Send data to worker for background processing
 if(orbitalWorker){orbitalWorker.postMessage({type:'init',debrisData:objs,catalogData:cat});}
