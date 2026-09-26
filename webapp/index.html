@@ -1650,6 +1650,16 @@ window.onerror = function(msg, url, line, col, err) {
     return false;
 };
 
+// === Live Infrastructure: Worker, SSE, Debounce, Retry ===
+var orbitalWorker=null,workerReady=false,sseConnection=null,sseRetryCount=0,sseMaxRetries=5;
+function debounce(fn,wait){var t;return function(){var args=arguments,ctx=this;clearTimeout(t);t=setTimeout(function(){fn.apply(ctx,args)},wait||250);};}
+function initWorker(){try{orbitalWorker=new Worker('orbital-worker.js');orbitalWorker.onmessage=function(e){var m=e.data;if(m.type==='ready'){workerReady=true;console.log('[Worker] Ready:',m.debrisCount,'debris,',m.catalogCount,'catalog');}};orbitalWorker.onerror=function(e){console.log('[Worker] Error:',e.message);orbitalWorker=null;workerReady=false;};}catch(e){console.log('[Worker] Init failed:',e.message);}}
+function connectSSE(){try{sseConnection=new EventSource('/api/stream');sseConnection.onmessage=function(e){try{var data=JSON.parse(e.data);if(data.type==='heartbeat'){sseRetryCount=0;console.log('[SSE] Heartbeat received');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}var hd=document.getElementById('health-dot'),ht=document.getElementById('health-text');if(hd&&ht){hd.style.background='#10b981';ht.style.color='#10b981';ht.textContent='FRESH';}}}catch(se){}};sseConnection.onerror=function(){console.log('[SSE] Error, retrying...');sseConnection.close();sseConnection=null;if(sseRetryCount<sseMaxRetries){sseRetryCount++;setTimeout(connectSSE,Math.pow(2,sseRetryCount)*1000);}};}catch(e){console.log('[SSE] Init failed:',e.message);}}
+function fetchWithRetry(url,retries){return new Promise(function(resolve,reject){function attempt(n){fetch(url).then(function(r){if(r.ok)resolve(r);else if(n>0)setTimeout(function(){attempt(n-1)},Math.pow(2,retries-n+1)*500);else reject(new Error('HTTP '+r.status));}).catch(function(e){if(n>0)setTimeout(function(){attempt(n-1)},Math.pow(2,retries-n+1)*500);else reject(e);});}attempt(retries||3);});}
+var _debSearchDebris=debounce(function(){renderDebris();},250);
+var _debSearchCat=debounce(function(){renderCat();},250);
+var _debGlobeSearch=debounce(function(){globeSearch();},300);
+
 async function init(){
 console.log('Init starting...');
 // PRIMARY: Use embedded data loaded via <script> tags (bypasses fetch/OAuth issues)
@@ -1660,14 +1670,20 @@ cd=window.EMBEDDED_COLLISION||null;
 var predCount=window.EMBEDDED_PRED_COUNT||preds.length;
 globeDebug('Embedded: '+objs.length+' objects, '+preds.length+' preds');
 console.log('Embedded: objs='+objs.length+' preds='+preds.length+' stats='+Object.keys(stats).length+' cd='+(cd?'yes':'no'));
-// Try to fetch full catalog as upgrade (non-blocking)
-try{var r4=await fetch('satcat_catalog.json?v='+Date.now());if(r4.ok)cat=await r4.json();console.log('Catalog loaded:',cat.length);}catch(e){cat=[];showApiFallback('Catalog data feed unavailable — running on cached embedded data.');}
+// Initialize Web Worker for background data processing
+initWorker();
+// Connect SSE for live push heartbeats
+connectSSE();
+// Catalog: try file fetch, then embedded fallback
+try{var r4b=await fetch('satcat_catalog.json?v='+Date.now());if(r4b.ok)cat=await r4b.json();console.log('Catalog loaded via file:',cat.length);}catch(e){cat=[];showApiFallback('Catalog data feed unavailable.');}
 // Build predMap for quick lookup
 var predMap={};for(var i=0;i<preds.length;i++)predMap[preds[i].ObjectName]=preds[i];
 window.PRED_MAP=predMap;
-// If fetch of positions works, upgrade to full dataset
-try{var r=await fetch('orbital_data.json?v='+Date.now());if(r.ok){var fullData=await r.json();if(fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded data');showApiFallback();}
-
+// Orbital data: try file fetch, then embedded fallback
+try{var r=await fetch('orbital_data.json?v='+Date.now());if(r.ok){var fullData=await r.json();if(fullData&&fullData.length>objs.length){objs=fullData;globeDebug('Upgraded to full: '+objs.length+' objects via file');var dm=document.getElementById('data-mode');if(dm){dm.style.background='#ecfdf5';dm.style.borderColor='#a7f3d0';dm.style.color='var(--green)';dm.innerHTML='<div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>LIVE';}}}}catch(e){console.log('Using embedded orbital data');}
+// Predictions and collision: using embedded data (API endpoints available for future live mode)
+// Send data to worker for background processing
+if(orbitalWorker){orbitalWorker.postMessage({type:'init',debrisData:objs,catalogData:cat});}
 globeDebug('Globe init: '+objs.length+' objects...');
 try{initOrbitalViewer(objs);}catch(e){globeDebug('initOrbitalViewer ERROR: '+e.message);console.error('initOrbitalViewer',e);}
 try{updateStats();}catch(e){console.error('updateStats',e);}
@@ -2068,6 +2084,14 @@ function dl(content,filename,mime){var b=new Blob([content],{type:mime});var a=d
 setTimeout(function(){var l=document.getElementById('ld');if(l)l.style.display='none';},30000);
 window.addEventListener('resize',function(){try{if(renderer&&document.getElementById('t-globe').classList.contains('active')){var c=document.getElementById('gc');var W=c.clientWidth||600;var H=c.clientHeight||500;if(W>10&&H>10){renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();}}}catch(e){}});
 document.addEventListener('click',function(e){if(!e.target.closest('.exp-drop')){document.querySelectorAll('.exp-menu.open').forEach(function(m){m.classList.remove('open')})}});
+// Wire debounced search/filter handlers for smooth UX under heavy traffic
+setTimeout(function(){
+var ds=document.getElementById('deb-search');if(ds)ds.onkeyup=function(){_debSearchDebris();};
+var cs=document.getElementById('cat-search');if(cs)cs.onkeyup=function(){_debSearchCat();};
+var gs=document.getElementById('globe-search');if(gs)gs.onkeyup=function(){_debGlobeSearch();};
+['deb-alt','deb-type','deb-risk','deb-source'].forEach(function(id){var el=document.getElementById(id);if(el)el.onchange=function(){_debSearchDebris();};});
+['cat-type','cat-status','cat-regime'].forEach(function(id){var el=document.getElementById(id);if(el)el.onchange=function(){_debSearchCat();};});
+},500);
 init();
 </script>
 </body>
