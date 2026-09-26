@@ -210,10 +210,11 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div style="font-size:10px;color:var(--text3);margin-top:8px;text-align:center">Click any marker on the globe for live data</div>
 </div></div>
 <div class="pb" id="panel-cl"><h3 style="display:flex;justify-content:space-between;align-items:center">Color Legend <span onclick="toggleSection('panel-cl')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
-<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#3b82f6" id="lg-payload"></div>Payload (Active Satellite)</div>
-<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#f59e0b" id="lg-rocket"></div>Rocket Body</div>
-<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ef4444" id="lg-debris"></div>Debris Fragment</div>
-<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#94a3b8" id="lg-unk"></div>Unclassified / Other</div>
+<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>🛰 Payload (Satellite shape)</div>
+<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>🚀 Rocket Body (Cylinder)</div>
+<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>💥 Debris (Jagged shard)</div>
+<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>◆ Unclassified (Diamond)</div>
+<div style="font-size:9px;color:var(--text3);margin-top:4px;line-height:1.4">Each object type renders as a distinct 3D shape on the globe — satellite, cylinder, shard, or diamond.</div>
 <div style="font-size:10px;color:var(--text3);margin-top:6px;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Altitude Shells — Click to Isolate</div><div class="lg" onclick="toggleShell('leo')"><div class="d" style="background:#3b82f6" id="sh-leo"></div>LEO (under 2000 km)</div><div class="lg" onclick="toggleShell('meo')"><div class="d" style="background:#8b5cf6" id="sh-meo"></div>MEO (2000-35786 km)</div><div class="lg" onclick="toggleShell('geo')"><div class="d" style="background:#06b6d4" id="sh-geo"></div>GEO (~35786 km)</div><div class="lg" onclick="toggleShell('heo')"><div class="d" style="background:#f59e0b" id="sh-heo"></div>HEO (over 36000 km)</div></div>
 </div></div></div>
 <div id="t-dash" class="tab">
@@ -310,7 +311,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 </div>
 <div class="cr"><div class="cd"><h3>Risk × Object Type Breakdown</h3><p class="ds">Stacked bar: object counts by risk tier, segmented by object type. Hover bars for detailed counts.</p><canvas id="ch-risk"></canvas></div><div class="cd"><h3>Probability Distribution & CDF (%)</h3><p class="ds">Histogram of decay probability with cumulative percentage overlay — identify what proportion exceeds operational thresholds</p><canvas id="ch-prob"></canvas></div></div>
 <div class="cr full"><div class="cd"><h3>Re-entry Risk Density Heat Map (Decay Probability vs Est. Days to Impact)</h3><p class="ds">2D density matrix showing object concentration across decay probability and estimated days to re-entry. Color intensity indicates object count per cell — hot zones reveal clustering of high-risk objects.</p><canvas id="ch-toprisk"></canvas></div></div>
-<div class="sc" style="padding-top:0"><div class="sh"><h2 style="font-size:17px">Top 20 Highest-Risk Objects - Detailed View</h2><div style="display:flex;gap:8px;align-items:center"><select class="sl" id="pred-owner" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer"><option value="all">All Owners / Countries</option><option value="RU">Russia / USSR</option><option value="CN">China</option><option value="US">USA</option><option value="IN">India</option><option value="EU">Europe (ESA)</option><option value="JP">Japan</option><option value="other">Other / Unknown</option></select><select class="sl" id="pred-incl" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer" title="Filter by orbital inclination band"><option value="all">All Inclinations</option><option value="equatorial">Equatorial (0–30°)</option><option value="mid">Mid-inclination (30–60°)</option><option value="polar">Polar / SSO (60–100°)</option><option value="retro">Retrograde (>100°)</option></select><select class="sl" id="pred-type" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer" title="Filter by object type"><option value="all">All Types</option><option value="Payload">Payload Only</option><option value="Rocket Body">Rocket Bodies</option><option value="Debris">Debris Only</option></select><select class="sl" id="pred-rcs" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer" title="Filter by Radar Cross Section (RCS) size"><option value="all">All RCS Sizes</option><option value="Small">Small (<0.1 m²)</option><option value="Medium">Medium (0.1–1 m²)</option><option value="Large">Large (>1 m²)</option><option value="Unknown">Unknown / Unspecified</option></select><span id="pred-filter-info" style="font-size:12px;color:var(--accent);font-weight:600"></span><button id="pred-sort-btn" onclick="togglePredSort()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text2)" title="Toggle sort order by decay probability">↓ Highest Risk</button></div></div></div>
+<div class="sc" style="padding-top:0"><div class="sh"><h2 style="font-size:17px">Top 20 Highest-Risk Objects - Detailed View</h2><div style="display:flex;gap:8px;align-items:center"><select class="sl" id="pred-owner" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text)"><option value="all">All Owners / Countries</option><option value="RU">Russia / USSR</option><option value="CN">China</option><option value="US">USA</option><option value="IN">India</option><option value="EU">Europe (ESA)</option><option value="JP">Japan</option><option value="other">Other / Unknown</option></select><select class="sl" id="pred-incl" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text)" title="Filter by orbital inclination band"><option value="all">All Inclinations</option><option value="equatorial">Equatorial (0–30°)</option><option value="mid">Mid-inclination (30–60°)</option><option value="polar">Polar / SSO (60–100°)</option><option value="retro">Retrograde (>100°)</option></select><select class="sl" id="pred-type" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text)" title="Filter by object type"><option value="all">All Types</option><option value="Payload">Payload Only</option><option value="Rocket Body">Rocket Bodies</option><option value="Debris">Debris Only</option></select><select class="sl" id="pred-rcs" onchange="renderPreds()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text)" title="Filter by Radar Cross Section (RCS) size"><option value="all">All RCS Sizes</option><option value="Small">Small (<0.1 m²)</option><option value="Medium">Medium (0.1–1 m²)</option><option value="Large">Large (>1 m²)</option><option value="Unknown">Unknown / Unspecified</option></select><span id="pred-filter-info" style="font-size:12px;color:var(--accent);font-weight:600"></span><button id="pred-sort-btn" onclick="togglePredSort()" style="padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text);color:var(--text2)" title="Toggle sort order by decay probability">↓ Highest Risk</button></div></div></div>
 <div class="pr" id="pred-list"></div>
 <div id="impact-modal" class="mo" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:520px"><div class="mh"><h2>Ground Track Impact Footprint</h2><button class="mc" onclick="document.getElementById('impact-modal').classList.remove('show')">X</button></div><div class="mb" id="impact-modal-body"></div></div></div>
 </div>
@@ -557,7 +558,7 @@ print(f'Velocity (km/s): {v}')</pre>
 <div class="mh"><h2 id="tour-title">Welcome</h2><button class="mc" onclick="document.getElementById('tour-modal').classList.remove('show')">X</button></div>
 <div class="mb"><p id="tour-text" style="font-size:14px;line-height:1.6;margin-bottom:16px"></p>
 <div style="display:flex;justify-content:space-between;align-items:center">
-<button onclick="tourPrev()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">← Back</button>
+<button onclick="tourPrev()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text);font-family:inherit">← Back</button>
 <span id="tour-step" style="font-size:12px;color:var(--text3);font-weight:600"></span>
 <button onclick="tourNext()" style="padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Next →</button>
 </div></div></div></div>
@@ -1080,8 +1081,8 @@ function drawConjunctionVectors(){
 function toggleHeatmap(){
   heatmapMode=!heatmapMode;
   if(currentPointCloud){
-    currentPointCloud.material.size=heatmapMode?8:3;
-    currentPointCloud.material.opacity=heatmapMode?0.4:0.85;
+    currentPointCloud.material.uniforms.size.value=heatmapMode?8:3;
+    currentPointCloud.material.uniforms.opacity.value=heatmapMode?0.4:0.85;
     currentPointCloud.material.blending=heatmapMode?THREE.AdditiveBlending:THREE.NormalBlending;
     currentPointCloud.material.depthWrite=!heatmapMode;
     currentPointCloud.material.needsUpdate=true;
@@ -1165,7 +1166,7 @@ function renderGlobe(){
 
   // Color per type: blue=cyan payloads, amber=rocket, red=debris, grey=unknown
   var cP=new THREE.Color(0x00bfff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
-  var pos=[],col=[];
+  var pos=[],col=[],typ=[];
   var counts={Payload:0,Debris:0,'Rocket Body':0,Other:0};
 
   for(var i=0;i<data.length;i++){
@@ -1190,6 +1191,7 @@ function renderGlobe(){
     var v=latLngTo3D(lat,lng,alt);
     pos.push(v.x,v.y,v.z);
     col.push(c.r,c.g,c.b);
+     typ.push(ot==='Payload'?0:ot==='Rocket Body'?1:ot==='Debris'?2:3);
     globePointData.push({name:o.Name,norad:o.NORAD_ID,type:ot,alt_km:o.AltitudeKM,owner:o.Owner,inc:o.Inclination,ap:o.Apogee,pe:o.Perigee});
   }
 
@@ -1200,14 +1202,19 @@ function renderGlobe(){
   var geom=new THREE.BufferGeometry();
   geom.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
   geom.setAttribute('color',new THREE.Float32BufferAttribute(col,3));
+  geom.setAttribute('aType',new THREE.Float32BufferAttribute(typ,1));
 
   // Fixed pixel size, no attenuation — always visible regardless of zoom
-  var mat=new THREE.PointsMaterial({
-    size:3,
-    sizeAttenuation:false,
-    vertexColors:true,
+  // Custom shader: draws distinct shapes per object type
+  // Type 0=Payload (satellite), 1=Rocket Body (cylinder), 2=Debris (jagged shard), 3=Unknown (diamond)
+  var markerVS='attribute vec3 color;attribute float aType;varying vec3 vColor;varying float vType;uniform float size;void main(){vColor=color;vType=aType;gl_PointSize=size;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
+  var markerFS='varying vec3 vColor;varying float vType;uniform float opacity;void main(){vec2 uv=gl_PointCoord-0.5;float d=length(uv);int t=int(vType+0.5);float a=0.0;if(t==0){float body=max(abs(uv.x)-0.15,abs(uv.y)-0.08);float panels=max(abs(uv.x)-0.42,abs(uv.y)-0.03);a=(min(body,panels)<0.0)?1.0:0.0;}else if(t==1){float rocket=max(abs(uv.x)-0.08,abs(uv.y)-0.35);a=(rocket<0.0)?1.0:0.0;}else if(t==2){float ang=atan(uv.y,uv.x);float r=0.25+0.12*sin(ang*5.0);a=(d<r)?1.0:0.0;}else{float dia=abs(uv.x)+abs(uv.y);a=(dia<0.3)?1.0:0.0;}if(a<0.01)discard;gl_FragColor=vec4(vColor,a*opacity);}';
+  var mat=new THREE.ShaderMaterial({
+    uniforms:{size:{value:3},opacity:{value:0.85}},
+    vertexShader:markerVS,
+    fragmentShader:markerFS,
     transparent:true,
-    opacity:0.85
+    vertexColors:true
   });
 
   currentPointCloud=new THREE.Points(geom,mat);
@@ -1215,8 +1222,8 @@ function renderGlobe(){
   scene.add(currentPointCloud);
   // Re-apply heatmap mode if active
   if(heatmapMode){
-    currentPointCloud.material.size=8;
-    currentPointCloud.material.opacity=0.4;
+    currentPointCloud.material.uniforms.size.value=8;
+    currentPointCloud.material.uniforms.opacity.value=0.4;
     currentPointCloud.material.blending=THREE.AdditiveBlending;
     currentPointCloud.material.depthWrite=false;
     currentPointCloud.material.needsUpdate=true;
