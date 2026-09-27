@@ -1111,7 +1111,7 @@ function drawConjunctionVectors(){
 function toggleHeatmap(){
   heatmapMode=!heatmapMode;
   if(currentPointCloud){
-    currentPointCloud.material.size=heatmapMode?8:3;
+    currentPointCloud.material.size=heatmapMode?14:7;
     currentPointCloud.material.opacity=heatmapMode?0.4:0.85;
     currentPointCloud.material.blending=heatmapMode?THREE.AdditiveBlending:THREE.NormalBlending;
     currentPointCloud.material.depthWrite=!heatmapMode;
@@ -1234,7 +1234,7 @@ function renderGlobe(){
 
   // Fixed pixel size, no attenuation — always visible regardless of zoom
   var mat=new THREE.PointsMaterial({
-    size:3,
+    size:7,
     sizeAttenuation:false,
     vertexColors:true,
     transparent:true,
@@ -1246,7 +1246,7 @@ function renderGlobe(){
   scene.add(currentPointCloud);
   // Re-apply heatmap mode if active
   if(heatmapMode){
-    currentPointCloud.material.size=8;
+    currentPointCloud.material.size=14;
     currentPointCloud.material.opacity=0.4;
     currentPointCloud.material.blending=THREE.AdditiveBlending;
     currentPointCloud.material.depthWrite=false;
