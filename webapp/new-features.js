@@ -41,30 +41,6 @@ function zoomGlobe(dir){
 }
 
 // === 5. LOADING OVERLAY ===
-function initLoadingOverlay(){
-  var ov=document.getElementById("loading-overlay");
-  if(!ov) return;
-  var bar=document.getElementById("loading-bar");
-  var txt=document.getElementById("loading-status");
-  var ticker=document.getElementById("loading-ticker");
-  var pct=0;
-  var total=31356;
-  var interval=setInterval(function(){
-    pct+=Math.random()*12;
-    if(pct>=100){
-      pct=100;
-      clearInterval(interval);
-      setTimeout(function(){
-        ov.style.opacity="0";
-        setTimeout(function(){ov.style.display="none";},500);
-      },800);
-    }
-    if(bar) bar.style.width=pct+"%";
-    if(txt) txt.textContent=pct<100?"FETCHING TLE CATALOG... "+Math.floor(pct)+"%":"100% SATELLITES LOADED!";
-    if(ticker) ticker.textContent="ACQUIRING "+Math.floor(total*pct/100).toLocaleString()+" OF "+total.toLocaleString()+" TRACKED OBJECTS";
-  },200);
-}
-
 // === 6. OPERATOR SIDEBAR ===
 function renderOperatorSidebar(){
   var el=document.getElementById("operator-sidebar");
@@ -200,15 +176,9 @@ function setAnomalyFilter(cat,val){
 
 // === INIT ALL FEATURES ON WINDOW LOAD ===
 window.addEventListener("load",function(){
-  try{initLoadingOverlay();}catch(e){console.log("[Loading] error:",e.message);}
-  try{renderOperatorSidebar();}catch(e){console.log("[Operator] error:",e.message);}
+    try{renderOperatorSidebar();}catch(e){console.log("[Operator] error:",e.message);}
   try{renderSpaceWeatherBanner();}catch(e){console.log("[SWBanner] error:",e.message);}
   try{renderAnomaliesPanel();}catch(e){console.log("[Anomaly] error:",e.message);}
   try{renderConjunctionAlerts();}catch(e){console.log("[ConjAlert] error:",e.message);}
-  // Fallback: hide loading overlay after 8 seconds no matter what
-  setTimeout(function(){
-    var ov=document.getElementById("loading-overlay");
-    if(ov){ov.style.opacity="0";setTimeout(function(){ov.style.display="none";},500);}
-  },8000);
   console.log("[New Features] All 27 Globe features initialized");
 });
