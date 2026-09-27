@@ -238,11 +238,11 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div style="font-size:10px;color:var(--text3);margin-top:8px;text-align:center">Click any marker on the globe for live data</div>
 </div></div>
 <div class="pb" id="panel-cl"><h3 style="display:flex;justify-content:space-between;align-items:center">Color Legend <span onclick="toggleSection('panel-cl')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
-<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>🛰 Payload (Satellite shape)</div>
-<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>🚀 Rocket Body (Cylinder)</div>
-<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>💥 Debris (Jagged shard)</div>
-<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>◆ Unclassified (Diamond)</div>
-<div style="font-size:9px;color:var(--text3);margin-top:4px;line-height:1.4">Each object type renders as a distinct 3D shape on the globe — satellite, cylinder, shard, or diamond.</div>
+<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>🛰 Payload (Satellite)</div>
+<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>🚀 Rocket Body (Upper stage)</div>
+<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>💥 Debris (Fragment)</div>
+<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>◆ Unclassified (Unknown)</div>
+<div style="font-size:9px;color:var(--text3);margin-top:4px;line-height:1.4">Each object type renders as a colored sphere on the globe — differentiated by color (cyan, amber, red, grey).</div>
 <div style="font-size:10px;color:var(--text3);margin-top:6px;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Altitude Shells — Click to Isolate</div><div class="lg" onclick="toggleShell('leo')"><div class="d" style="background:#3b82f6" id="sh-leo"></div>LEO (under 2000 km)</div><div class="lg" onclick="toggleShell('meo')"><div class="d" style="background:#8b5cf6" id="sh-meo"></div>MEO (2000-35786 km)</div><div class="lg" onclick="toggleShell('geo')"><div class="d" style="background:#06b6d4" id="sh-geo"></div>GEO (~35786 km)</div><div class="lg" onclick="toggleShell('heo')"><div class="d" style="background:#f59e0b" id="sh-heo"></div>HEO (over 36000 km)</div></div>
 </div></div></div>
 <div id="t-dash" class="tab">
@@ -1236,47 +1236,11 @@ function renderGlobe(){
 
   if(allPos.length===0){globeDebug('No valid positions!');return;}
 
-  // High-detail compound geometries — merged primitives for realistic appearance
-  // Helper: merge multiple geometries into one (replaces BufferGeometryUtils)
-  function mergeGeoms(geoms){
-    var pos=[],nor=[],idx=[],off=0;
-    for(var k=0;k<geoms.length;k++){
-      var g=geoms[k];g.computeVertexNormals();
-      var p=g.attributes.position.array;
-      var n=g.attributes.normal?g.attributes.normal.array:new Float32Array(p.length);
-      var ii=g.index?g.index.array:null;
-      for(var i=0;i<p.length;i++)pos.push(p[i]);
-      for(var i=0;i<n.length;i++)nor.push(n[i]);
-      if(ii){for(var i=0;i<ii.length;i++)idx.push(ii[i]+off);}
-      else{for(var i=0;i<p.length/3;i++)idx.push(i+off);}
-      off+=p.length/3;
-    }
-    var m=new THREE.BufferGeometry();
-    m.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
-    m.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));
-    m.setIndex(idx);
-    return m;
-  }
-  // 0=Payload: satellite bus + solar panel wings + antenna dish
-  var sBus=new THREE.BoxGeometry(1.2,0.6,0.6);
-  var sPanL=new THREE.BoxGeometry(2.0,0.04,0.5);sPanL.translate(-1.6,0,0);
-  var sPanR=new THREE.BoxGeometry(2.0,0.04,0.5);sPanR.translate(1.6,0,0);
-  var sAnt=new THREE.ConeGeometry(0.12,0.4,6);sAnt.translate(0,0.5,0);
-  // 1=Rocket Body: main cylinder + flared nozzle + interstage collar
-  var rBody=new THREE.CylinderGeometry(0.3,0.3,3.5,8);
-  var rNoz=new THREE.ConeGeometry(0.25,0.6,8);rNoz.rotateX(Math.PI);rNoz.translate(0,-2.0,0);
-  var rTop=new THREE.CylinderGeometry(0.35,0.3,0.3,8);rTop.translate(0,1.9,0);
-  // 2=Debris: irregular merged tetrahedrons at different angles
-  var dSh1=new THREE.TetrahedronGeometry(1.2);
-  var dSh2=new THREE.TetrahedronGeometry(0.8);dSh2.rotateY(Math.PI/3);dSh2.translate(0.5,0.3,0.2);
-  // 3=Unknown: octahedron diamond
-  var uDia=new THREE.OctahedronGeometry(1.2);
-  var geometries=[
-    mergeGeoms([sBus,sPanL,sPanR,sAnt]),
-    mergeGeoms([rBody,rNoz,rTop]),
-    mergeGeoms([dSh1,dSh2]),
-    uDia
-  ];
+  // Clean, simple spheres — crisp distinct dots against space background
+  // All types use the same SphereGeometry, differentiated by per-instance color
+  // Low segment count (8x6) for performance with 5K+ objects
+  var sphereGeom=new THREE.SphereGeometry(0.8,8,6);
+  var geometries=[sphereGeom,sphereGeom,sphereGeom,sphereGeom];
 
   // Group with InstancedMesh per type — single draw call each, MeshBasicMaterial for glow
   currentPointCloud=new THREE.Group();
