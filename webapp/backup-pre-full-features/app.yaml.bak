@@ -1,0 +1,6 @@
+entrypoint: python app.py
+
+dependencies:
+  - flask
+  - skyfield
+  - numpy
