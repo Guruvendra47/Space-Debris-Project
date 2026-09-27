@@ -1232,13 +1232,46 @@ function renderGlobe(){
 
   if(allPos.length===0){globeDebug('No valid positions!');return;}
 
-  // Distinct 3D geometries per object type
-  // 0=Payload: satellite bus (BoxGeometry), 1=Rocket: cylinder, 2=Debris: shard, 3=Unknown: diamond
+  // High-detail compound geometries — merged primitives for realistic appearance
+  // Helper: merge multiple geometries into one (replaces BufferGeometryUtils)
+  function mergeGeoms(geoms){
+    var pos=[],nor=[],idx=[],off=0;
+    for(var k=0;k<geoms.length;k++){
+      var g=geoms[k];g.computeVertexNormals();
+      var p=g.attributes.position.array;
+      var n=g.attributes.normal?g.attributes.normal.array:new Float32Array(p.length);
+      var ii=g.index?g.index.array:null;
+      for(var i=0;i<p.length;i++)pos.push(p[i]);
+      for(var i=0;i<n.length;i++)nor.push(n[i]);
+      if(ii){for(var i=0;i<ii.length;i++)idx.push(ii[i]+off);}
+      else{for(var i=0;i<p.length/3;i++)idx.push(i+off);}
+      off+=p.length/3;
+    }
+    var m=new THREE.BufferGeometry();
+    m.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+    m.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));
+    m.setIndex(idx);
+    return m;
+  }
+  // 0=Payload: satellite bus + solar panel wings + antenna dish
+  var sBus=new THREE.BoxGeometry(1.2,0.6,0.6);
+  var sPanL=new THREE.BoxGeometry(2.0,0.04,0.5);sPanL.translate(-1.6,0,0);
+  var sPanR=new THREE.BoxGeometry(2.0,0.04,0.5);sPanR.translate(1.6,0,0);
+  var sAnt=new THREE.ConeGeometry(0.12,0.4,6);sAnt.translate(0,0.5,0);
+  // 1=Rocket Body: main cylinder + flared nozzle + interstage collar
+  var rBody=new THREE.CylinderGeometry(0.3,0.3,3.5,8);
+  var rNoz=new THREE.ConeGeometry(0.25,0.6,8);rNoz.rotateX(Math.PI);rNoz.translate(0,-2.0,0);
+  var rTop=new THREE.CylinderGeometry(0.35,0.3,0.3,8);rTop.translate(0,1.9,0);
+  // 2=Debris: irregular merged tetrahedrons at different angles
+  var dSh1=new THREE.TetrahedronGeometry(1.2);
+  var dSh2=new THREE.TetrahedronGeometry(0.8);dSh2.rotateY(Math.PI/3);dSh2.translate(0.5,0.3,0.2);
+  // 3=Unknown: octahedron diamond
+  var uDia=new THREE.OctahedronGeometry(1.2);
   var geometries=[
-    new THREE.BoxGeometry(2.5,1.0,0.5),
-    new THREE.CylinderGeometry(0.4,0.4,5.0,8),
-    new THREE.TetrahedronGeometry(1.5),
-    new THREE.OctahedronGeometry(1.2)
+    mergeGeoms([sBus,sPanL,sPanR,sAnt]),
+    mergeGeoms([rBody,rNoz,rTop]),
+    mergeGeoms([dSh1,dSh2]),
+    uDia
   ];
 
   // Group with InstancedMesh per type — single draw call each, MeshBasicMaterial for glow
