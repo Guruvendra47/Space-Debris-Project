@@ -1103,9 +1103,9 @@ var allOrbitalObjects=[];
 var scene=null,camera=null,renderer=null,earth=null,starField=null;
 var globePointData=[],currentPointCloud=null,heatmapCloud=null;
 var EARTH_R=100,globeRotating=true;
-var camTheta=-0.5,camPhi=1.3,camDist=380;
+var camTheta=0.4,camPhi=0.35,camDist=250;
 var camVelTheta=0,camVelPhi=0;
-var MIN_DIST=130,MAX_DIST=500;
+var MIN_DIST=108,MAX_DIST=1500;
 var globeReady=false;
 var globeLOD=5000,shellFilter=null;
 var cameraLocked=false,lockedTarget=null,orbitTrackLine=null;
@@ -1284,7 +1284,7 @@ function focusOnObject(name){
   globeRotating=false;
   var d=Math.sqrt(x*x+y*y+z*z);
   // Convert object position to spherical coordinates for camera
-  camDist=Math.max(MIN_DIST+10,Math.min(MAX_DIST,d+50));
+  camDist=Math.max(MIN_DIST+20,Math.min(MAX_DIST,d+80));
   camPhi=Math.acos(y/d);
   camTheta=Math.atan2(x,z);
   camVelTheta=0;camVelPhi=0;
@@ -1686,8 +1686,8 @@ function initThreeJS(){
   globeDebug('initThreeJS: '+W+'x'+H+' THREE r'+THREE.REVISION);
 
   scene=new THREE.Scene();
-  camera=new THREE.PerspectiveCamera(40,W/H,0.1,5000);
-  camera.position.set(0,0,400);
+  camera=new THREE.PerspectiveCamera(50,W/H,0.1,5000);
+  camera.position.set(0,0,250);
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
   renderer.setSize(W,H);
   renderer.setPixelRatio(window.devicePixelRatio||1);
@@ -2069,9 +2069,9 @@ function checkKpBanner(){
 function renderAllOrbitalRadar(){try{renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();checkKpBanner();}catch(e){console.log('[OrbitalRadar]',e.message);}}
 
 function toggleRotate(){globeRotating=!globeRotating;}
-function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.8);}
-function zoomOut(){camDist=Math.min(MAX_DIST,camDist*1.2);}
-function resetView(){camTheta=-0.5;camPhi=1.3;camDist=380;camVelTheta=0;camVelPhi=0;clearFocus();}
+function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.75);}
+function zoomOut(){camDist=Math.min(MAX_DIST,camDist*1.33);}
+function resetView(){camTheta=0.4;camPhi=0.35;camDist=250;camVelTheta=0;camVelPhi=0;clearFocus();}
 
 function globeSearch(){
   var q=document.getElementById('globe-search').value.trim();
