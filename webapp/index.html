@@ -1103,7 +1103,7 @@ var allOrbitalObjects=[];
 var scene=null,camera=null,renderer=null,earth=null,starField=null;
 var globePointData=[],currentPointCloud=null,heatmapCloud=null;
 var EARTH_R=100,globeRotating=true;
-var camTheta=0.4,camPhi=0.35,camDist=180;
+var camTheta=0.4,camPhi=0.35,camDist=300;
 var camVelTheta=0,camVelPhi=0;
 var MIN_DIST=130,MAX_DIST=500;
 var globeReady=false;
@@ -1687,7 +1687,7 @@ function initThreeJS(){
 
   scene=new THREE.Scene();
   camera=new THREE.PerspectiveCamera(50,W/H,0.1,5000);
-  camera.position.set(0,0,180);
+  camera.position.set(0,0,300);
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
   renderer.setSize(W,H);
   renderer.setPixelRatio(window.devicePixelRatio||1);
@@ -2071,7 +2071,7 @@ function renderAllOrbitalRadar(){try{renderCategoryBreakdown();renderOperatorLea
 function toggleRotate(){globeRotating=!globeRotating;}
 function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.8);}
 function zoomOut(){camDist=Math.min(MAX_DIST,camDist*1.2);}
-function resetView(){camTheta=0.4;camPhi=0.35;camDist=180;camVelTheta=0;camVelPhi=0;clearFocus();}
+function resetView(){camTheta=0.4;camPhi=0.35;camDist=300;camVelTheta=0;camVelPhi=0;clearFocus();}
 
 function globeSearch(){
   var q=document.getElementById('globe-search').value.trim();
