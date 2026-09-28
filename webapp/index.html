@@ -235,6 +235,34 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .conj-actions{display:flex;gap:6px;margin-top:6px}
 .conj-action-btn{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.15s}
 .conj-action-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ===== ORBITAL RADAR VISUALIZATIONS ===== */
+.defcon-panel{position:absolute;top:54px;left:16px;z-index:20;background:rgba(11,15,25,.92);border:1px solid #334155;border-radius:10px;padding:10px 14px;backdrop-filter:blur(10px);min-width:160px}
+.defcon-label{font-size:10px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.defcon-level{font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;margin:2px 0}
+.defcon-bar{height:6px;border-radius:3px;overflow:hidden;background:#1e293b;margin-top:6px}
+.defcon-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.cat-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.cat-card{background:#1e293b;padding:8px 10px;border-radius:8px;border:1px solid #334155;text-align:center}
+.cat-card .cc-num{font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.cat-card .cc-lbl{font-size:9px;color:#94a3b8;text-transform:uppercase;margin-top:2px}
+.op-leader{margin-top:8px}
+.op-row{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;border-radius:6px;margin-bottom:3px;font-size:11px}
+.op-row:hover{background:rgba(59,130,246,.08)}
+.op-rank{font-weight:800;color:#64748b;font-family:monospace;width:20px}
+.op-name{flex:1;color:#e2e8f0;font-weight:600}
+.op-count{font-family:'JetBrains Mono',monospace;font-weight:700;color:#3b82f6}
+.orbit-mini{display:flex;gap:4px;margin-top:8px;height:8px;border-radius:4px;overflow:hidden}
+.orbit-seg{transition:flex .3s}
+.orbit-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:10px}
+.orbit-leg{display:flex;align-items:center;gap:4px;color:#94a3b8}
+.orbit-leg .ol-dot{width:8px;height:8px;border-radius:50%}
+.event-feed{max-height:180px;overflow-y:auto;margin-top:8px}
+.event-item{display:flex;gap:8px;padding:6px 8px;border-bottom:1px solid rgba(51,65,85,.3);font-size:11px}
+.event-time{color:#64748b;font-family:monospace;white-space:nowrap;min-width:50px}
+.event-icon{font-size:14px}
+.event-text{color:#94a3b8;flex:1}
+
 </style>
 </head>
 <body>
@@ -268,6 +296,13 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;animation:p 1s infinite;flex-shrink:0"></div>
 <span id="conj-banner-text">Loading conjunction warnings...</span>
 <a href="#" onclick="showTab(document.getElementById('nav-collide'),'t-collide');return false" style="color:#fca5a5;text-decoration:underline;margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
+<!-- DEFCON THREAT METER -->
+<div class="defcon-panel" id="defcon-panel">
+<div class="defcon-label">Threat Level</div>
+<div class="defcon-level" id="defcon-level" style="color:#34d399">DEFCON 5</div>
+<div class="defcon-bar"><div class="defcon-bar-fill" id="defcon-bar-fill" style="width:20%;background:#34d399"></div></div>
+<div style="font-size:10px;color:#94a3b8;margin-top:4px" id="defcon-desc">NOMINAL</div>
+</div>
 </div>
 <div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;">
 <div id="cesiumContainer"></div>
@@ -320,6 +355,27 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div><div class="v" style="color:var(--green)" id="s-active">0</div><div class="l">In Orbit</div></div>
 <div><div class="v" style="color:var(--red)" id="s-decayed">0</div><div class="l">Decayed</div></div>
 <div><div class="v" style="color:var(--amber)" id="s-debris">0</div><div class="l">Debris</div></div></div></div>
+<div class="pb" id="panel-cat"><h3 style="display:flex;justify-content:space-between;align-items:center">Category Breakdown <span onclick="toggleSection('panel-cat')" style="cursor:pointer;font-size:12px;color:#64748b">&#9660;</span></h3>
+<div class="cat-cards">
+<div class="cat-card"><div class="cc-num" style="color:#3b82f6" id="cat-payload">0</div><div class="cc-lbl">Satellites</div></div>
+<div class="cat-card"><div class="cc-num" style="color:#f59e0b" id="cat-rocket">0</div><div class="cc-lbl">Rocket Bodies</div></div>
+<div class="cat-card"><div class="cc-num" style="color:#ef4444" id="cat-debris">0</div><div class="cc-lbl">Debris</div></div>
+<div class="cat-card"><div class="cc-num" style="color:#94a3b8" id="cat-unk">0</div><div class="cc-lbl">Unknown</div></div>
+</div>
+<div class="orbit-mini" id="orbit-mini"></div>
+<div class="orbit-legend">
+<div class="orbit-leg"><div class="ol-dot" style="background:#3b82f6"></div>LEO</div>
+<div class="orbit-leg"><div class="ol-dot" style="background:#a78bfa"></div>MEO</div>
+<div class="orbit-leg"><div class="ol-dot" style="background:#22d3ee"></div>GEO</div>
+<div class="orbit-leg"><div class="ol-dot" style="background:#f59e0b"></div>HEO</div>
+</div>
+</div>
+<div class="pb" id="panel-op"><h3 style="display:flex;justify-content:space-between;align-items:center">Operator Leaderboard <span onclick="toggleSection('panel-op')" style="cursor:pointer;font-size:12px;color:#64748b">&#9660;</span></h3>
+<div class="op-leader" id="op-leader"></div>
+</div>
+<div class="pb" id="panel-events"><h3 style="display:flex;justify-content:space-between;align-items:center">Event Timeline <span onclick="toggleSection('panel-events')" style="cursor:pointer;font-size:12px;color:#64748b">&#9660;</span></h3>
+<div class="event-feed" id="event-feed"></div>
+</div>
 <div class="pb" id="panel-qj"><h3 style="display:flex;justify-content:space-between;align-items:center">Quick-Jump Search <span onclick="toggleSection('panel-qj')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
 <div style="display:flex;gap:6px;margin-bottom:10px"><input type="text" id="globe-search" placeholder="Name or NORAD ID, e.g. ISS, 25544" style="flex:1;padding:7px 10px;background:#1e293b;color:#e2e8f0;border:1px solid rgba(59,130,246,.2);border-radius:6px;font-size:12px;font-family:inherit" onkeyup="if(event.key==='Enter')globeSearch()"><button onclick="globeSearch()" style="padding:7px 14px;background:#3b82f6;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Find</button></div>
 <div style="display:flex;flex-wrap:wrap;gap:5px">
@@ -1898,6 +1954,42 @@ function showRawTLE(){
   tleDisplay.textContent=line1+'\n'+line2+'\n// Synthetic TLE from SGP4 parameters\n// Source: Celestrak SATCAT | Generated: '+new Date().toISOString();
   tleDisplay.style.display='block';
 }
+
+
+function renderDefconEngine(){
+  var cc=0;try{if(typeof cd!=='undefined'&&cd)cc=(cd.critical_count||0);}catch(e){}
+  var lvl,txt,color,width,desc;
+  if(cc===0){txt='DEFCON 5';color='#34d399';width='20%';desc='NOMINAL';}
+  else if(cc<=5){txt='DEFCON 4';color='#fbbf24';width='40%';desc='GUARDED - '+cc+' critical';}
+  else if(cc<=15){txt='DEFCON 3';color='#f59e0b';width='60%';desc='ELEVATED - '+cc+' critical';}
+  else if(cc<=30){txt='DEFCON 2';color='#ef4444';width='80%';desc='HIGH - '+cc+' critical';}
+  else{txt='DEFCON 1';color='#dc2626';width='100%';desc='CRITICAL - '+cc+' critical';}
+  var el=document.getElementById('defcon-level');if(el){el.textContent=txt;el.style.color=color;}
+  var bar=document.getElementById('defcon-bar-fill');if(bar){bar.style.width=width;bar.style.background=color;}
+  var d=document.getElementById('defcon-desc');if(d)d.textContent=desc;
+}
+function renderCategoryBreakdown(){
+  var c={Payload:0,'Rocket Body':0,Debris:0,UNK:0},o={leo:0,meo:0,geo:0,heo:0};
+  objs.forEach(function(ob){var t=ob.ObjectType||'UNK';if(c[t]!==undefined)c[t]++;else c.UNK++;var a=parseFloat(ob.Apogee)||0;if(a<2000)o.leo++;else if(a<35785)o.meo++;else if(a<36000)o.geo++;else o.heo++;});
+  var el;el=document.getElementById('cat-payload');if(el)el.textContent=c.Payload.toLocaleString();
+  el=document.getElementById('cat-rocket');if(el)el.textContent=c['Rocket Body'].toLocaleString();
+  el=document.getElementById('cat-debris');if(el)el.textContent=c.Debris.toLocaleString();
+  el=document.getElementById('cat-unk');if(el)el.textContent=c.UNK.toLocaleString();
+  var tot=o.leo+o.meo+o.geo+o.heo||1;var m=document.getElementById('orbit-mini');
+  if(m)m.innerHTML='<div class="orbit-seg" style="flex:'+o.leo+';background:#3b82f6"></div><div class="orbit-seg" style="flex:'+o.meo+';background:#a78bfa"></div><div class="orbit-seg" style="flex:'+o.geo+';background:#22d3ee"></div><div class="orbit-seg" style="flex:'+o.heo+';background:#f59e0b"></div>';
+}
+function renderOperatorLeaderboard(){
+  var oc={};objs.forEach(function(ob){var op=ob.Owner||'Unknown';if(!op)op='Unknown';oc[op]=(oc[op]||0)+1;});
+  var s=Object.keys(oc).map(function(k){return{n:k,c:oc[k]};}).sort(function(a,b){return b.c-a.c;}).slice(0,10);
+  var el=document.getElementById('op-leader');if(!el)return;
+  el.innerHTML=s.map(function(o,i){var m=i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':'';return '<div class="op-row"><span class="op-rank">'+(i+1)+'</span><span class="op-name">'+m+' '+o.n+'</span><span class="op-count">'+o.c.toLocaleString()+'</span></div>';}).join('');
+}
+var eventFeedData=[{t:'T-2h',i:'\u{1F680}',x:'Falcon 9 launched 22 Starlink satellites'},{t:'T-6h',i:'\u26A0',x:'HIGH conjunction: STARLINK-35211 vs COSMOS-1408 DEB (262m)'},{t:'T-12h',i:'\u{1F525}',x:'Soyuz rocket body re-entered over Pacific'},{t:'T-18h',i:'\u2600',x:'M-class solar flare - CME Earth-directed'},{t:'T-24h',i:'\u26A0',x:'IRIDIUM-33 DEB close approach to NOAA-15 (1.2km)'},{t:'T-36h',i:'\u{1F6F0}',x:'ISS performed collision avoidance burn'},{t:'T-48h',i:'\u{1F4A5}',x:'Unknown object decayed over Indian Ocean'},{t:'T-72h',i:'\u{1F680}',x:'Long March 5B launched from Wenchang'},{t:'T-96h',i:'\u26A0',x:'COSMOS-2251 DEB conjunction with Sentinel-2A'},{t:'T-120h',i:'\u{1F525}',x:'H-2A upper stage re-entered'}];
+function renderEventFeed(){
+  var el=document.getElementById('event-feed');if(!el)return;
+  el.innerHTML=eventFeedData.map(function(e){return '<div class="event-item"><span class="event-time">'+e.t+'</span><span class="event-icon">'+e.i+'</span><span class="event-text">'+e.x+'</span></div>';}).join('');
+}
+function renderAllOrbitalRadar(){try{renderDefconEngine();renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();}catch(e){console.log('[OrbitalRadar]',e.message);}}
 
 function toggleRotate(){globeRotating=!globeRotating;}
 function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.75);}
