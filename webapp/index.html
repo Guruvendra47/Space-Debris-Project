@@ -268,8 +268,68 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 @media(max-width:768px){
   
   .conj-filter-panel{max-width:140px;font-size:10px}
-  .pn{width:220px!important}
   .cat-cards{grid-template-columns:1fr}
+}
+
+/* === MOBILE RESPONSIVE === */
+@media(max-width:768px){
+  /* Fix sidebar: full-width toggle panel, not fixed 220px */
+  .pn{width:100%!important;max-height:45vh;border-left:none;border-top:1px solid rgba(59,130,246,.15);position:absolute;bottom:0;left:0;right:0;z-index:50;transform:translateY(100%);transition:transform .3s ease}
+  .pn.open{transform:translateY(0)}
+  #gw{height:100vh!important;flex-direction:column!important}
+  #gc{height:100vh!important;flex:1}
+  .panel-toggle{display:flex!important;position:absolute;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
+  
+  /* Body navigation: compact, top, no overlap */
+  .body-nav{top:56px;gap:4px;padding:4px;border-radius:8px;max-width:95vw;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .body-btn{padding:5px 10px;font-size:11px;white-space:nowrap}
+  
+  /* Globe controls: larger touch targets */
+  .gctl button{width:44px!important;height:44px!important;font-size:18px!important;display:flex!important;align-items:center;justify-content:center}
+  .gctl{bottom:80px!important;right:12px!important}
+  
+  /* Density slider & visual layers: compact */
+  #lod-slider{width:70px!important;height:32px!important}
+  .gctl + div[style],div[style*="bottom:72px"]{bottom:80px!important;font-size:9px!important;padding:6px 8px!important}
+  
+  /* Debug overlay: smaller */
+  #globe-debug{font-size:9px!important;padding:4px 6px!important;max-width:200px;word-wrap:break-word}
+  
+  /* Object inspector: full width on mobile */
+  .pb{padding:10px!important}
+  .pb h3{font-size:13px!important}
+  .oi{font-size:12px!important}
+  .on{font-size:14px!important}
+  
+  /* Filter section: compact */
+  .collap-body{padding:10px!important}
+  .ft select,.ft label{font-size:11px!important}
+  .preset-btn{padding:4px 8px!important;font-size:10px!important}
+  
+  /* Tabs: scrollable */
+  .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap!important}
+  .nt{flex-shrink:0;white-space:nowrap}
+  
+  /* Header: compact */
+  .header{height:50px!important}
+  .brand h1{font-size:12px!important}
+  .brand p{font-size:8px!important}
+  .brand-icon{width:28px!important;height:28px!important;font-size:11px!important}
+  
+  /* Body nav below header */
+  .body-nav{top:52px}
+  
+  /* Mission clock: compact */
+  .mission-clock{font-size:10px!important;padding:3px 8px!important}
+  
+  /* Globe canvas: full width */
+  #gc canvas{width:100%!important}
+  
+  /* Focus banner: mobile-friendly */
+  #focus-banner{top:100px!important;font-size:11px!important;padding:4px 10px!important;max-width:80vw}
+  
+  /* Tooltip: larger text for touch */
+  #globe-tooltip{font-size:13px!important;padding:8px 14px!important}
 }
 
 /* Celestial Body Navigation */
@@ -990,7 +1050,7 @@ try{if(id==='t-collide')initCollideCharts();}catch(e){}
 }
 
 
-function togglePanel(){var pn=document.querySelector('.pn');var pt=document.getElementById('panel-toggle');if(pn){pn.classList.toggle('collapsed');if(pt)pt.textContent=pn.classList.contains('collapsed')?'☰':'☰';}}
+function togglePanel(){var pn=document.querySelector('.pn');var pt=document.getElementById('panel-toggle');if(pn){pn.classList.toggle('collapsed');pn.classList.toggle('open');if(pt)pt.textContent=pn.classList.contains('collapsed')?'☰':'✕';}}
 
 function toggleSection(id){
   var panel=document.getElementById(id);
@@ -1617,7 +1677,7 @@ function initThreeJS(){
   scene.add(starField);
 
   // Spherical orbit controls with momentum damping
-  var px=0,py=0,moved=false;drag=false;
+  var px=0,py=0,moved=false;drag=false;var pinchDist=null;
   container.onmousedown=function(e){drag=true;moved=false;px=e.clientX;py=e.clientY;camVelTheta=0;camVelPhi=0;};
   container.onmouseup=function(){drag=false;container.style.cursor='grab';};
   container.onmouseleave=function(){drag=false;var tt=document.getElementById('globe-tooltip');if(tt)tt.style.display='none';container.style.cursor='default';};
@@ -1708,9 +1768,9 @@ function initThreeJS(){
     camDist=Math.max(MIN_DIST,Math.min(MAX_DIST,camDist));
   };
   // Touch support for mobile
-  container.ontouchstart=function(e){if(e.touches.length===1){drag=true;moved=false;px=e.touches[0].clientX;py=e.touches[0].clientY;camVelTheta=0;camVelPhi=0;}};
-  container.ontouchend=function(){drag=false;};
-  container.ontouchmove=function(e){if(drag&&e.touches.length===1){e.preventDefault();var dx=e.touches[0].clientX-px,dy=e.touches[0].clientY-py;camVelTheta=dx*0.005;camVelPhi=dy*0.005;camTheta+=camVelTheta;camPhi+=camVelPhi;camPhi=Math.max(0.05,Math.min(Math.PI-0.05,camPhi));px=e.touches[0].clientX;py=e.touches[0].clientY;moved=true;}};
+  container.ontouchstart=function(e){if(e.touches.length===1){drag=true;moved=false;px=e.touches[0].clientX;py=e.touches[0].clientY;camVelTheta=0;camVelPhi=0;}else if(e.touches.length===2){drag=false;var dxp=e.touches[0].clientX-e.touches[1].clientX;var dyp=e.touches[0].clientY-e.touches[1].clientY;pinchDist=Math.sqrt(dxp*dxp+dyp*dyp);}};
+  container.ontouchend=function(){drag=false;pinchDist=null;};
+  container.ontouchmove=function(e){if(e.touches.length===1&&drag){e.preventDefault();var dx=e.touches[0].clientX-px,dy=e.touches[0].clientY-py;camVelTheta=dx*0.005;camVelPhi=dy*0.005;camTheta+=camVelTheta;camPhi+=camVelPhi;camPhi=Math.max(0.05,Math.min(Math.PI-0.05,camPhi));px=e.touches[0].clientX;py=e.touches[0].clientY;moved=true;}else if(e.touches.length===2&&pinchDist){e.preventDefault();var dx2=e.touches[0].clientX-e.touches[1].clientX;var dy2=e.touches[0].clientY-e.touches[1].clientY;var newDist=Math.sqrt(dx2*dx2+dy2*dy2);var scale=newDist/pinchDist;camDist=Math.max(MIN_DIST,Math.min(MAX_DIST,camDist/scale));pinchDist=newDist;moved=true;}};
 
   // Click to inspect
   var rc=new THREE.Raycaster(),ms=new THREE.Vector2();
