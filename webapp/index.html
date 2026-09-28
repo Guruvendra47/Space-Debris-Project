@@ -237,11 +237,11 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .conj-action-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* ===== ORBITAL RADAR VISUALIZATIONS ===== */
-.defcon-panel{position:absolute;top:54px;left:16px;z-index:20;background:rgba(11,15,25,.92);border:1px solid #334155;border-radius:10px;padding:10px 14px;backdrop-filter:blur(10px);min-width:160px}
-.defcon-label{font-size:10px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:1px}
-.defcon-level{font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;margin:2px 0}
-.defcon-bar{height:6px;border-radius:3px;overflow:hidden;background:#1e293b;margin-top:6px}
-.defcon-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+
+
+
+
+
 .cat-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
 .cat-card{background:#1e293b;padding:8px 10px;border-radius:8px;border:1px solid #334155;text-align:center}
 .cat-card .cc-num{font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}
@@ -274,7 +274,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .kp-banner{display:none;position:absolute;top:0;left:0;right:0;z-index:35;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fca5a5;padding:6px 20px;font-size:12px;font-weight:600;text-align:center}
 .kp-banner.show{display:block}
 @media(max-width:768px){
-  .defcon-panel{min-width:120px;font-size:10px}
+  
   .conj-filter-panel{max-width:140px;font-size:10px}
   .pn{width:220px!important}
   .cat-cards{grid-template-columns:1fr}
@@ -313,13 +313,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;animation:p 1s infinite;flex-shrink:0"></div>
 <span id="conj-banner-text">Loading conjunction warnings...</span>
 <a href="#" onclick="showTab(document.getElementById('nav-collide'),'t-collide');return false" style="color:#fca5a5;text-decoration:underline;margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
-<!-- DEFCON THREAT METER -->
-<div class="defcon-panel" id="defcon-panel">
-<div class="defcon-label">Threat Level</div>
-<div class="defcon-level" id="defcon-level" style="color:#34d399">DEFCON 5</div>
-<div class="defcon-bar"><div class="defcon-bar-fill" id="defcon-bar-fill" style="width:20%;background:#34d399"></div></div>
-<div style="font-size:10px;color:#94a3b8;margin-top:4px" id="defcon-desc">NOMINAL</div>
-</div>
+
 
 <!-- CONJUNCTION FILTER -->
 <div class="conj-filter-panel" id="conj-filter-panel">
@@ -1989,18 +1983,7 @@ function showRawTLE(){
 }
 
 
-function renderDefconEngine(){
-  var cc=0;try{if(typeof cd!=='undefined'&&cd)cc=(cd.critical_count||0);}catch(e){}
-  var lvl,txt,color,width,desc;
-  if(cc===0){txt='DEFCON 5';color='#34d399';width='20%';desc='NOMINAL';}
-  else if(cc<=5){txt='DEFCON 4';color='#fbbf24';width='40%';desc='GUARDED - '+cc+' critical';}
-  else if(cc<=15){txt='DEFCON 3';color='#f59e0b';width='60%';desc='ELEVATED - '+cc+' critical';}
-  else if(cc<=30){txt='DEFCON 2';color='#ef4444';width='80%';desc='HIGH - '+cc+' critical';}
-  else{txt='DEFCON 1';color='#dc2626';width='100%';desc='CRITICAL - '+cc+' critical';}
-  var el=document.getElementById('defcon-level');if(el){el.textContent=txt;el.style.color=color;}
-  var bar=document.getElementById('defcon-bar-fill');if(bar){bar.style.width=width;bar.style.background=color;}
-  var d=document.getElementById('defcon-desc');if(d)d.textContent=desc;
-}
+
 function renderCategoryBreakdown(){
   var c={Payload:0,'Rocket Body':0,Debris:0,UNK:0},o={leo:0,meo:0,geo:0,heo:0};
   objs.forEach(function(ob){var t=ob.ObjectType||'UNK';if(c[t]!==undefined)c[t]++;else c.UNK++;var a=parseFloat(ob.Apogee)||0;if(a<2000)o.leo++;else if(a<35785)o.meo++;else if(a<36000)o.geo++;else o.heo++;});
@@ -2083,7 +2066,7 @@ function checkKpBanner(){
   }
 }
 
-function renderAllOrbitalRadar(){try{renderDefconEngine();renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();checkKpBanner();}catch(e){console.log('[OrbitalRadar]',e.message);}}
+function renderAllOrbitalRadar(){try{renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();checkKpBanner();}catch(e){console.log('[OrbitalRadar]',e.message);}}
 
 function toggleRotate(){globeRotating=!globeRotating;}
 function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.75);}
