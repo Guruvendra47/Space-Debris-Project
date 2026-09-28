@@ -263,6 +263,23 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .event-icon{font-size:14px}
 .event-text{color:#94a3b8;flex:1}
 
+
+/* ===== ENHANCEMENT FEATURES ===== */
+.op-row{cursor:pointer}
+.op-row.drilled{background:rgba(59,130,246,.15);border-left:3px solid #3b82f6}
+.conj-filter-panel{position:absolute;top:96px;left:16px;z-index:20;background:rgba(11,15,25,.92);border:1px solid #334155;border-radius:10px;padding:10px;backdrop-filter:blur(10px);max-width:200px}
+.conj-filter-panel h4{font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;margin-bottom:6px}
+.conj-th-btn{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;background:#1e293b;color:#94a3b8;border:1px solid #334155;margin:2px}
+.conj-th-btn.active{background:#ef4444;color:#fff;border-color:#ef4444}
+.kp-banner{display:none;position:absolute;top:0;left:0;right:0;z-index:35;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fca5a5;padding:6px 20px;font-size:12px;font-weight:600;text-align:center}
+.kp-banner.show{display:block}
+@media(max-width:768px){
+  .defcon-panel{min-width:120px;font-size:10px}
+  .conj-filter-panel{max-width:140px;font-size:10px}
+  .pn{width:220px!important}
+  .cat-cards{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -303,7 +320,23 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="defcon-bar"><div class="defcon-bar-fill" id="defcon-bar-fill" style="width:20%;background:#34d399"></div></div>
 <div style="font-size:10px;color:#94a3b8;margin-top:4px" id="defcon-desc">NOMINAL</div>
 </div>
+
+<!-- CONJUNCTION FILTER -->
+<div class="conj-filter-panel" id="conj-filter-panel">
+<h4>Conjunction Filter</h4>
+<div style="display:flex;flex-wrap:wrap;gap:4px">
+<button class="conj-th-btn active" onclick="setConjThreshold(this,'all')">All</button>
+<button class="conj-th-btn" onclick="setConjThreshold(this,'1')">&lt;1km</button>
+<button class="conj-th-btn" onclick="setConjThreshold(this,'5')">&lt;5km</button>
 </div>
+<div id="conj-th-count" style="font-size:11px;color:#94a3b8;margin-top:6px">Showing all conjunctions</div>
+</div>
+
+</div>
+
+<!-- KP WARNING BANNER -->
+<div class="kp-banner" id="kp-banner">&#9888; GEOMAGNETIC STORM WARNING - Kp >= 5 - Enhanced atmospheric drag expected at LEO altitudes</div>
+
 <div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;">
 <div id="cesiumContainer"></div>
 <div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" aria-label="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" aria-label="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" aria-label="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" aria-label="Reset view" style="font-size:16px">⌂</button></div>
@@ -1982,14 +2015,75 @@ function renderOperatorLeaderboard(){
   var oc={};objs.forEach(function(ob){var op=ob.Owner||'Unknown';if(!op)op='Unknown';oc[op]=(oc[op]||0)+1;});
   var s=Object.keys(oc).map(function(k){return{n:k,c:oc[k]};}).sort(function(a,b){return b.c-a.c;}).slice(0,10);
   var el=document.getElementById('op-leader');if(!el)return;
-  el.innerHTML=s.map(function(o,i){var m=i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':'';return '<div class="op-row"><span class="op-rank">'+(i+1)+'</span><span class="op-name">'+m+' '+o.n+'</span><span class="op-count">'+o.c.toLocaleString()+'</span></div>';}).join('');
+  el.innerHTML=s.map(function(o,i){var m=i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':'';return '<div class="op-row" data-op="'+o.n+'" onclick="drillOperator(\''+o.n.replace(/'/g,'')+'\')"><span class="op-rank">'+(i+1)+'</span><span class="op-name">'+m+' '+o.n+'</span><span class="op-count">'+o.c.toLocaleString()+'</span></div>';}).join('');
 }
 var eventFeedData=[{t:'T-2h',i:'\u{1F680}',x:'Falcon 9 launched 22 Starlink satellites'},{t:'T-6h',i:'\u26A0',x:'HIGH conjunction: STARLINK-35211 vs COSMOS-1408 DEB (262m)'},{t:'T-12h',i:'\u{1F525}',x:'Soyuz rocket body re-entered over Pacific'},{t:'T-18h',i:'\u2600',x:'M-class solar flare - CME Earth-directed'},{t:'T-24h',i:'\u26A0',x:'IRIDIUM-33 DEB close approach to NOAA-15 (1.2km)'},{t:'T-36h',i:'\u{1F6F0}',x:'ISS performed collision avoidance burn'},{t:'T-48h',i:'\u{1F4A5}',x:'Unknown object decayed over Indian Ocean'},{t:'T-72h',i:'\u{1F680}',x:'Long March 5B launched from Wenchang'},{t:'T-96h',i:'\u26A0',x:'COSMOS-2251 DEB conjunction with Sentinel-2A'},{t:'T-120h',i:'\u{1F525}',x:'H-2A upper stage re-entered'}];
 function renderEventFeed(){
   var el=document.getElementById('event-feed');if(!el)return;
   el.innerHTML=eventFeedData.map(function(e){return '<div class="event-item"><span class="event-time">'+e.t+'</span><span class="event-icon">'+e.i+'</span><span class="event-text">'+e.x+'</span></div>';}).join('');
 }
-function renderAllOrbitalRadar(){try{renderDefconEngine();renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();}catch(e){console.log('[OrbitalRadar]',e.message);}}
+
+// === DRILL-DOWN ON OPERATOR LEADERBOARD ===
+var drilledOperator=null;
+function drillOperator(name){
+  if(drilledOperator===name){drilledOperator=null;}
+  else{drilledOperator=name;}
+  // Update visual state
+  document.querySelectorAll('.op-row').forEach(function(r){
+    r.classList.toggle('drilled',r.dataset.op===name);
+  });
+  // Filter globe to show only this operator's objects
+  if(drilledOperator){
+    var sel=document.getElementById('f-country');
+    if(sel){
+      for(var i=0;i<sel.options.length;i++){
+        if(sel.options[i].text.indexOf(drilledOperator)>=0||sel.options[i].value.indexOf(drilledOperator)>=0){
+          sel.selectedIndex=i;sel.value=sel.options[i].value;break;
+        }
+      }
+    }
+    try{applyFilters();}catch(e){}
+    globeDebug('Drilled: '+drilledOperator);
+  }else{
+    var sel2=document.getElementById('f-country');
+    if(sel2){sel2.value='all';}
+    try{applyFilters();}catch(e){}
+    globeDebug('Drill cleared');
+  }
+}
+
+// === CONJUNCTION THRESHOLD FILTER ===
+var conjThreshold='all';
+function setConjThreshold(btn,threshold){
+  conjThreshold=threshold;
+  document.querySelectorAll('.conj-th-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  var countEl=document.getElementById('conj-th-count');
+  if(!countEl)return;
+  if(threshold==='all'){
+    countEl.textContent='Showing all conjunctions';
+  }else{
+    var limit=parseInt(threshold)*1000;
+    var filtered=0;
+    try{if(cd&&cd.top_collision_pairs){filtered=cd.top_collision_pairs.filter(function(p){return p.MissDistance_km<limit;}).length;}}catch(e){}
+    countEl.textContent=filtered+' conjunctions under '+threshold+'km';
+  }
+}
+
+// === Kp WARNING BANNER ===
+function checkKpBanner(){
+  var kpEl=document.getElementById('sw-kp');
+  var banner=document.getElementById('kp-banner');
+  if(!kpEl||!banner)return;
+  var kp=parseFloat(kpEl.textContent)||0;
+  if(kp>=5){
+    banner.classList.add('show');
+  }else{
+    banner.classList.remove('show');
+  }
+}
+
+function renderAllOrbitalRadar(){try{renderDefconEngine();renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();checkKpBanner();}catch(e){console.log('[OrbitalRadar]',e.message);}}
 
 function toggleRotate(){globeRotating=!globeRotating;}
 function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.75);}
