@@ -2,12 +2,44 @@ import os
 import json
 import time
 import math
+import logging
+import threading
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from flask import Flask, send_from_directory, request, Response, jsonify, stream_with_context
 
+try:
+    from flask_compress import Compress
+except ImportError:
+    Compress = None
+
 app = Flask(__name__, static_folder='.')
+app.config['COMPRESS_MIME_TYPES'] = [
+    'text/html', 'text/css', 'text/plain', 'application/json',
+    'application/javascript', 'application/xml', 'image/svg+xml'
+]
+app.config['COMPRESS_LEVEL'] = 6
+if Compress:
+    Compress(app)
+
+# --- Request Logging (item 11) ---
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logger = logging.getLogger('space-debris-tracker')
+
+_app_start_time = time.time()
+
+@app.before_request
+def log_request_start():
+    request._start_time = time.time()
+    logger.info(f'{request.method} {request.path} from {request.remote_addr}')
+
+@app.after_request
+def log_request_end(response):
+    elapsed = getattr(request, '_start_time', time.time())
+    duration_ms = round((time.time() - elapsed) * 1000, 1)
+    logger.info(f'{request.method} {request.path} -> {response.status_code} ({duration_ms}ms)')
+    return response
 
 # --- In-Memory Data Cache (pre-loaded on startup) ---
 _data_cache = {}
@@ -21,38 +53,53 @@ def _load_data(name, filename):
             _data_cache[name] = None
     return _data_cache[name]
 
-# --- Simple Rate Limiting (per IP, in-memory) ---
+# --- Rate Limiting (per IP, in-memory, burst-tolerant, thread-safe) (item 4) ---
 _request_counts = {}
+_rate_limit_lock = threading.Lock()
 
-def rate_limit(max_per_minute=60):
+def rate_limit(max_per_minute=120, burst_size=None):
+    burst = burst_size or max_per_minute
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
             ip = request.remote_addr or 'unknown'
             now = time.time()
-            if ip not in _request_counts:
-                _request_counts[ip] = []
-            _request_counts[ip] = [t for t in _request_counts[ip] if now - t < 60]
-            if len(_request_counts[ip]) >= max_per_minute:
-                return jsonify({'error': 'Rate limit exceeded', 'retry_after': 60}), 429
-            _request_counts[ip].append(now)
+            with _rate_limit_lock:
+                if ip not in _request_counts:
+                    _request_counts[ip] = []
+                _request_counts[ip] = [t for t in _request_counts[ip] if now - t < 60]
+                if len(_request_counts[ip]) >= burst:
+                    return jsonify({'error': 'Rate limit exceeded', 'retry_after': 60}), 429
+                _request_counts[ip].append(now)
+                if len(_request_counts) > 50000:
+                    stale = [k for k, v in _request_counts.items() if not v or now - v[-1] > 120]
+                    for k in stale:
+                        del _request_counts[k]
             return f(*args, **kwargs)
         return wrapper
     return decorator
 
-# --- Static file routes (existing, unchanged) ---
+# --- Static file routes with long cache headers (item 5) ---
+_STATIC_CACHE_TYPES = {'.js', '.jpg', '.jpeg', '.png', '.gif', '.svg', '.woff', '.woff2', '.css'}
+
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    resp = send_from_directory('.', 'index.html')
+    resp.headers['Cache-Control'] = 'public, max-age=3600'
+    return resp
 
 @app.route('/<path:filename>')
 def serve_file(filename):
-    return send_from_directory('.', filename)
+    resp = send_from_directory('.', filename)
+    ext = os.path.splitext(filename)[1].lower()
+    if ext in _STATIC_CACHE_TYPES:
+        resp.headers['Cache-Control'] = 'public, max-age=86400'
+    return resp
 
 # --- API Endpoints with Cache-Control Headers ---
 
 @app.route('/api/orbital-data')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_orbital_data():
     data = _load_data('orbital', 'orbital_data.json')
     if data is None:
@@ -63,7 +110,7 @@ def api_orbital_data():
     return resp
 
 @app.route('/api/catalog')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_catalog():
     data = _load_data('catalog', 'satcat_catalog.json')
     if data is None:
@@ -74,7 +121,7 @@ def api_catalog():
     return resp
 
 @app.route('/api/predictions')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_predictions():
     data = _load_data('predictions', 'ml_predictions.json')
     if data is None:
@@ -85,7 +132,7 @@ def api_predictions():
     return resp
 
 @app.route('/api/collision')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_collision():
     data = _load_data('collision', 'collision_risk.json')
     if data is None:
@@ -111,7 +158,7 @@ def _fetch_noaa_kp():
             kp_history = [float(r[1]) for r in recent if r[1] not in ('', None)]
             return {'current_kp': current_kp, 'history': kp_history, 'readings': recent[-1][0]}
     except Exception as e:
-        print(f'NOAA Kp fetch error: {e}')
+        logger.error(f'NOAA Kp fetch error: {e}')
     return None
 
 def _fetch_noaa_solar_wind():
@@ -129,7 +176,7 @@ def _fetch_noaa_solar_wind():
                 'bz': float(latest[3]) if len(latest) > 3 and latest[3] not in ('', None) else 0.0,
             }
     except Exception as e:
-        print(f'NOAA solar wind fetch error: {e}')
+        logger.error(f'NOAA solar wind fetch error: {e}')
     return None
 
 def _fetch_noaa_flare_flux():
@@ -143,7 +190,7 @@ def _fetch_noaa_flare_flux():
             latest = raw[-1]
             return {'f107': float(latest.get('flux', 0) or 0), 'date': latest.get('date', '')}
     except Exception as e:
-        print(f'NOAA F10.7 fetch error: {e}')
+        logger.error(f'NOAA F10.7 fetch error: {e}')
     return None
 
 def _fetch_noaa_3day_forecast():
@@ -156,7 +203,7 @@ def _fetch_noaa_3day_forecast():
         if raw and isinstance(raw, list) and len(raw) > 0:
             return raw[-72:]
     except Exception as e:
-        print(f'NOAA 3-day forecast fetch error: {e}')
+        logger.error(f'NOAA 3-day forecast fetch error: {e}')
     return None
 
 def _get_space_weather():
@@ -169,6 +216,11 @@ def _get_space_weather():
     solar_wind = _fetch_noaa_solar_wind()
     f107_data = _fetch_noaa_flare_flux()
     forecast_3day = _fetch_noaa_3day_forecast()
+    
+    # Fallback: serve stale cache if all external fetches failed (item 6)
+    if not kp_data and not solar_wind and not f107_data and _space_weather_cache['data']:
+        logger.warning('All NOAA fetches failed, serving stale space weather cache')
+        return _space_weather_cache['data']
     
     kp = kp_data['current_kp'] if kp_data else 0.0
     if kp >= 9: g_scale = 'G5 (Extreme)'
@@ -212,7 +264,7 @@ def _get_space_weather():
     return data
 
 @app.route('/api/space-weather')
-@rate_limit(max_per_minute=20)
+@rate_limit(max_per_minute=120)
 def api_space_weather():
     data = _get_space_weather()
     resp = jsonify(data)
@@ -253,11 +305,14 @@ def _get_launches():
         _launch_cache['ts'] = now
         return _launch_cache['data']
     except Exception as e:
-        print(f'Launch Library fetch error: {e}')
+        logger.error(f'Launch Library fetch error: {e}')
+        if _launch_cache['data']:
+            logger.warning('Serving stale launch cache')
+            return _launch_cache['data']
         return {'launches': [], 'count': 0, 'error': str(e)}
 
 @app.route('/api/launches')
-@rate_limit(max_per_minute=20)
+@rate_limit(max_per_minute=120)
 def api_launches():
     data = _get_launches()
     resp = jsonify(data)
@@ -267,7 +322,7 @@ def api_launches():
 
 # --- Threat Level (derived from collision data + space weather) ---
 @app.route('/api/threat-level')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_threat_level():
     collision = _load_data('collision', 'collision_risk.json')
     sw = _get_space_weather()
@@ -468,7 +523,7 @@ def _azimuth_to_compass(az_deg):
     return dirs[idx]
 
 @app.route('/api/pass-predictions')
-@rate_limit(max_per_minute=15)
+@rate_limit(max_per_minute=60, burst_size=80)
 def api_pass_predictions():
     sat_name = request.args.get('sat', '')
     try:
@@ -523,7 +578,7 @@ def api_pass_predictions():
     })
 
 @app.route('/api/search-satellites')
-@rate_limit(max_per_minute=30)
+@rate_limit(max_per_minute=120)
 def api_search_satellites():
     """Search catalog for satellite names for autocomplete."""
     query = request.args.get('q', '').upper().strip()
@@ -553,21 +608,54 @@ def api_health():
     return jsonify({
         'status': 'ok',
         'timestamp': time.time(),
-        'data_loaded': {k: v is not None for k, v in _data_cache.items()}
+        'uptime_seconds': round(time.time() - _app_start_time, 1),
+        'data_loaded': {k: v is not None for k, v in _data_cache.items()},
+        'sse_connections': _sse_connections,
+        'rate_limited_ips': len(_request_counts),
+        'space_weather_cached': _space_weather_cache['data'] is not None,
+        'launches_cached': _launch_cache['data'] is not None
     })
 
-# --- Server-Sent Events for Live Push ---
+# --- Server-Sent Events with Connection Cap and Auto-Timeout (item 3) ---
+_sse_connections = 0
+_sse_lock = threading.Lock()
+_MAX_SSE_CONNECTIONS = 100
+_SSE_TIMEOUT_SECONDS = 300
+
 @app.route('/api/stream')
 def api_stream():
+    # SSE not supported on Vercel serverless (no persistent connections)
+    if _IS_VERCEL:
+        return jsonify({
+            'status': 'ok',
+            'message': 'SSE not available in serverless mode',
+            'space_weather': _get_space_weather(),
+            'launches': _get_launches(),
+            'threat_level': None
+        }), 200
+    global _sse_connections
+    with _sse_lock:
+        if _sse_connections >= _MAX_SSE_CONNECTIONS:
+            return jsonify({'error': 'Too many concurrent stream connections'}), 503
+        _sse_connections += 1
+    
     def event_stream():
-        while True:
-            data = {
-                'type': 'heartbeat',
-                'timestamp': time.time(),
-                'message': 'sync-check'
-            }
-            yield f"data: {json.dumps(data)}\n\n"
-            time.sleep(30)
+        global _sse_connections
+        try:
+            start = time.time()
+            while time.time() - start < _SSE_TIMEOUT_SECONDS:
+                data = {
+                    'type': 'heartbeat',
+                    'timestamp': time.time(),
+                    'message': 'sync-check'
+                }
+                yield f"data: {json.dumps(data)}\n\n"
+                time.sleep(30)
+            yield f"data: {json.dumps({'type': 'close', 'message': 'Connection timeout, please reconnect'})}\n\n"
+        finally:
+            with _sse_lock:
+                _sse_connections -= 1
+    
     return Response(
         stream_with_context(event_stream()),
         content_type='text/event-stream',
@@ -578,16 +666,74 @@ def api_stream():
         }
     )
 
-if __name__ == '__main__':
-    # Pre-load data into memory cache on startup
-    print('Pre-loading data cache...')
+# --- Background Refresh Thread for External APIs (item 7) ---
+def _background_refresh_loop():
+    """Refresh external API data (NOAA, Launch Library) every 5 minutes."""
+    while True:
+        try:
+            time.sleep(300)
+            logger.info('Background refresh: fetching NOAA space weather...')
+            _get_space_weather()
+            logger.info('Background refresh: fetching Launch Library...')
+            _get_launches()
+        except Exception as e:
+            logger.error(f'Background refresh error: {e}')
+
+_bg_thread = None
+
+def _start_background_refresh():
+    global _bg_thread
+    if _bg_thread is None or not _bg_thread.is_alive():
+        _bg_thread = threading.Thread(target=_background_refresh_loop, daemon=True)
+        _bg_thread.start()
+        logger.info('Background refresh thread started')
+
+# --- Preload data caches when imported as a module (gunicorn workers or Vercel) ---
+_IS_VERCEL = os.environ.get('VERCEL') is not None
+if __name__ != '__main__':
+    logger.info('Pre-loading local data cache...')
     _load_data('orbital', 'orbital_data.json')
     _load_data('catalog', 'satcat_catalog.json')
     _load_data('predictions', 'ml_predictions.json')
     _load_data('collision', 'collision_risk.json')
-    print('Pre-loading space weather from NOAA SWPC...')
-    _get_space_weather()
-    print('Pre-loading launches from Launch Library 2...')
-    _get_launches()
-    print('Data cache ready.')
-    app.run(host='0.0.0.0', port=os.environ.get('DATABRICKS_APP_PORT', 8000), threaded=True)
+    if _IS_VERCEL:
+        # On Vercel serverless: skip external API on cold start (10s timeout)
+        # APIs fetch on-demand when called — background thread not supported
+        logger.info('Vercel detected — skipping background refresh and external API preloading.')
+    else:
+        logger.info('Pre-loading space weather from NOAA SWPC...')
+        _get_space_weather()
+        logger.info('Pre-loading launches from Launch Library 2...')
+        _get_launches()
+        _start_background_refresh()
+        logger.info('Data cache ready. App initialized.')
+
+if __name__ == '__main__':
+    # Start via gunicorn for production (item 1), or fall back to Flask dev server
+    port = int(os.environ.get('DATABRICKS_APP_PORT', 8000))
+    try:
+        import sys
+        from gunicorn.app.wsgiapp import run as gunicorn_run
+        sys.argv = [
+            'gunicorn',
+            '--bind', f'0.0.0.0:{port}',
+            '--workers', '4',
+            '--threads', '8',
+            '--timeout', '120',
+            '--graceful-timeout', '30',
+            '--max-requests', '1000',
+            '--max-requests-jitter', '100',
+            'app:app'
+        ]
+        logger.info(f'Starting gunicorn on 0.0.0.0:{port} with 4 workers x 8 threads')
+        gunicorn_run()
+    except ImportError:
+        logger.warning('gunicorn not installed, falling back to Flask dev server')
+        _load_data('orbital', 'orbital_data.json')
+        _load_data('catalog', 'satcat_catalog.json')
+        _load_data('predictions', 'ml_predictions.json')
+        _load_data('collision', 'collision_risk.json')
+        _get_space_weather()
+        _get_launches()
+        _start_background_refresh()
+        app.run(host='0.0.0.0', port=port, threaded=True)

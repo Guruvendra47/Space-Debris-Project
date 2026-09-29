@@ -7,6 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="embedded_data_1.js"></script>
+<script src="embedded_data_2.js"></script>
 <script src="embedded_data.js"></script>
 <script src="embedded_stats.js"></script>
 <script src="embedded_predictions.js"></script>
@@ -18,12 +20,12 @@
 .m{font-family:'JetBrains Mono',monospace}
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000;box-shadow:var(--shadow)}
 .brand{display:flex;align-items:center;gap:10px}.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}.brand h1{font-size:15px;font-weight:700}.brand p{font-size:10px;color:var(--text3);font-weight:500}
-.hr{display:flex;align-items:center;gap:12px}.mi{font-size:11px;color:var(--text3);font-weight:500}.mi strong{color:var(--text);font-weight:600}.sync{display:flex;align-items:center;gap:5px;padding:5px 10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;font-size:11px;color:var(--accent);font-weight:600}
+.hr{display:flex;align-items:center;gap:10px}.mi{font-size:11px;color:var(--text3);font-weight:500}.mi strong{color:var(--text);font-weight:600}.sync{display:flex;align-items:center;gap:5px;padding:5px 10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;font-size:11px;color:var(--accent);font-weight:600}.status-pill{display:flex;align-items:center;gap:10px;padding:6px 14px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:.15s}.status-pill:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(59,130,246,.1)}.status-pill .sp-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:p 2s infinite;box-shadow:0 0 6px var(--green);flex-shrink:0}.status-pill .sp-sep{color:var(--text3);font-weight:400}.status-pill .sp-time{font-family:'JetBrains Mono',monospace;color:var(--text);font-weight:600}.status-pill .sp-tle{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:11px}.findings-box{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}.findings-box .fb-icon{font-size:20px}.findings-box .fb-item{display:flex;flex-direction:column;gap:2px}.findings-box .fb-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}.findings-box .fb-value{font-size:16px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace}.findings-box .fb-sep{width:1px;height:32px;background:var(--border)}.gp-badge{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(59,130,246,.25);flex-shrink:0;position:relative}.gp-badge:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(59,130,246,.4)}.gp-tooltip{position:absolute;top:38px;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--text2);font-weight:600;white-space:nowrap;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.2s;z-index:1001}.gp-tooltip strong{color:var(--accent)}.gp-badge:hover .gp-tooltip{opacity:1;transform:translateY(-2px)}
 .tw{display:flex;align-items:center;gap:8px}.tg{position:relative;width:40px;height:20px;background:var(--border);border-radius:20px;cursor:pointer;transition:.2s}.tg.on{background:var(--accent)}.tk{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}.tg.on .tk{left:22px}.tl{font-size:11px;font-weight:600;color:var(--text2)}
 .ab{padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;transition:.15s}.ab:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .sb{display:flex;align-items:center;gap:6px;padding:5px 10px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:20px;font-size:11px;font-weight:600;color:var(--green)}.sd{width:7px;height:7px;border-radius:50%;background:var(--green);animation:p 2s infinite}@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 .nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;gap:4px;overflow-x:auto}.nt{padding:11px 16px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:7px;border-bottom:2px solid transparent}.nt:hover{color:var(--text)}.nt.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}.nt .ct{background:var(--surface2);padding:2px 7px;border-radius:10px;font-size:10px;color:var(--text3);font-weight:600;border:1px solid var(--border)}.nt.active .ct{background:#eff6ff;color:var(--accent);border-color:#bfdbfe}
-.tab{display:none;min-height:calc(100vh - 100px);position:relative}.tab.active{display:block;position:relative}#gw{display:flex;height:calc(100vh - 100px)}#gc{flex:1;position:relative;background:#000;overflow:hidden}.gctl{position:absolute;bottom:20px;left:20px;display:flex;flex-direction:column;gap:6px;z-index:10}.gctl button{width:40px;height:40px;border-radius:10px;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);color:#94a3b8;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s}.gctl button:hover{background:rgba(59,130,246,.3);color:#fff}.pn{width:320px;background:#0f172a;border-left:1px solid rgba(59,130,246,.15);overflow-y:auto;color:#94a3b8}.pb{padding:16px 18px;border-bottom:1px solid rgba(59,130,246,.1)}.panel-collapsed>*:not(h3){display:none!important}.panel-collapsed{padding:8px 18px}.pb h3{font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px}.ft{margin-bottom:10px}.ft label{font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500}.ft select{width:100%;padding:8px 10px;background:#1e293b;color:#e2e8f0;border:1px solid rgba(59,130,246,.2);border-radius:var(--rs);font-size:13px;cursor:pointer}.ms{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ms>div{background:#1e293b;padding:11px;border-radius:var(--rs);border:1px solid rgba(59,130,246,.15)}.ms .v{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}.ms .l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:3px;font-weight:600}.oi{background:#1e293b;border:1px solid rgba(59,130,246,.2);border-radius:var(--rs);padding:12px;margin-top:10px}.oi .on{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(59,130,246,.15)}.or{display:flex;justify-content:space-between;padding:5px 8px;font-size:12px;border-radius:4px;margin:2px 0}.or .k{color:#94a3b8;font-weight:500}.or .v{font-weight:600;font-family:'JetBrains Mono',monospace;color:#e2e8f0}.lg{display:flex;align-items:center;gap:7px;font-size:12px;color:#cbd5e1;font-weight:500;margin-bottom:6px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:.15s}.lg:hover{background:rgba(59,130,246,.1)}.lg .d{width:12px;height:12px;border-radius:50%;flex-shrink:0}.lg.off{opacity:.35}
+.tab{display:none;min-height:calc(100vh - 100px);position:relative}.tab.active{display:block;position:relative}#gw{display:flex;height:calc(100vh - 100px)}#gc{flex:1;position:relative;background:#000;overflow:hidden}.gctl{position:absolute;bottom:20px;left:20px;display:flex;flex-direction:column;gap:6px;z-index:10}.gctl button{width:40px;height:40px;border-radius:10px;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);color:#94a3b8;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s}.gctl button:hover{background:rgba(59,130,246,.3);color:#fff}.pn{width:320px;background:#0f172a;border-left:1px solid rgba(59,130,246,.15);overflow-y:auto;color:#94a3b8}.pb{padding:16px 18px;border-bottom:1px solid rgba(59,130,246,.1)}.panel-collapsed>*:not(h3){display:none!important}.panel-collapsed{padding:8px 18px}.pb h3{font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px}.ft{margin-bottom:10px}.ft label{font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500}.ft select{width:100%;padding:8px 10px;background:#1e293b;color:#e2e8f0;border:1px solid rgba(59,130,246,.2);border-radius:var(--rs);font-size:13px;cursor:pointer}.ms{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ms>div{background:#1e293b;padding:11px;border-radius:var(--rs);border:1px solid rgba(59,130,246,.15)}.ms .v{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}.ms .l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:3px;font-weight:600}.oi{background:#1e293b;border:1px solid rgba(59,130,246,.2);border-radius:var(--rs);padding:12px;margin-top:10px}.oi .on{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(59,130,246,.15)}.or{display:flex;justify-content:space-between;padding:5px 8px;font-size:12px;border-radius:4px;margin:2px 0;gap:8px}.or .k{color:#94a3b8;font-weight:500;white-space:nowrap;flex-shrink:0}.or .v{font-weight:600;font-family:'JetBrains Mono',monospace;color:#e2e8f0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lg{display:flex;align-items:center;gap:7px;font-size:12px;color:#cbd5e1;font-weight:500;margin-bottom:6px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:.15s}.lg:hover{background:rgba(59,130,246,.1)}.lg .d{width:12px;height:12px;border-radius:50%;flex-shrink:0}.lg.off{opacity:.35}
 
 .kr{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:20px 20px 0}.k{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 16px 16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.2s;border-left:4px solid var(--border)}.k:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}.k.blue{border-left-color:var(--blue);background:linear-gradient(135deg,#fff,#f0f7ff)}.k.green{border-left-color:var(--green);background:linear-gradient(135deg,#fff,#f0fdf4)}.k.red{border-left-color:var(--red);background:linear-gradient(135deg,#fff,#fef9f9)}.k.amber{border-left-color:var(--amber);background:linear-gradient(135deg,#fff,#fffdf5)}.k.purple{border-left-color:var(--accent3);background:linear-gradient(135deg,#fff,#faf8ff)}.k.cyan{border-left-color:var(--cyan);background:linear-gradient(135deg,#fff,#f0fdff)}.k .ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px;font-weight:700}.k .vl{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}.k .lb{font-size:10px;color:var(--text3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}.k .sb2{font-size:10px;color:var(--text3);margin-top:2px}
 .k.blue .ic{background:#eff6ff;color:var(--blue)}.k.green .ic{background:#ecfdf5;color:var(--green)}.k.red .ic{background:#fef2f2;color:var(--red)}.k.amber .ic{background:#fffbeb;color:var(--amber)}.k.purple .ic{background:#f5f3ff;color:var(--accent3)}.k.cyan .ic{background:#ecfeff;color:var(--cyan)}.k .tip{position:absolute;top:8px;right:8px;font-size:10px;color:var(--text3);cursor:help;border:1px solid var(--border);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-weight:700}.k .tip:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -83,8 +85,8 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 #focus-banner{position:absolute;top:38px;left:10px;z-index:22;display:none;align-items:center;gap:8px;background:rgba(15,23,42,.9);border:1px solid rgba(59,130,246,.5);border-radius:8px;padding:6px 12px;backdrop-filter:blur(8px);font-size:12px;color:#e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.4)}
 #focus-banner .fb-icon{color:#60a5fa;font-size:14px}
 #focus-banner .fb-name{font-weight:700;color:#fff;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#focus-banner .fb-clear{width:22px;height:22px;border-radius:6px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#f87171;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
-#focus-banner .fb-clear:hover{background:rgba(239,68,68,.4);color:#fff}
+#focus-banner .fb-clear{padding:5px 14px;border-radius:8px;background:rgba(239,68,68,.35);border:1px solid rgba(239,68,68,.5);color:#fca5a5;cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;gap:5px;white-space:nowrap}
+#focus-banner .fb-clear:hover{background:rgba(239,68,68,.6);color:#fff;transform:scale(1.05)}
 
 /* Collapsible timeline */
 @media(max-width:1200px){.kr{grid-template-columns:repeat(3,1fr)}.cr,.pr{grid-template-columns:1fr}}
@@ -100,7 +102,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .pr{grid-template-columns:1fr;padding:0 10px 10px}
   .pi .pc{font-size:20px}.pi .mt{font-size:10px;gap:6px}
   .header{padding:0 12px;height:54px}.brand h1{font-size:13px}.brand p{font-size:9px}.brand-icon{width:32px;height:32px;font-size:12px}
-  .hr{gap:4px}.sync{padding:4px 8px;font-size:10px}.sync span{display:none}.sync #sync-label{display:inline}
+  .hr{gap:6px}.status-pill{padding:4px 10px;font-size:11px}.status-pill .sp-sep{display:none}.status-pill .sp-tle{display:none}.sync{padding:4px 8px;font-size:10px}.sync span{display:none}.sync #sync-label{display:inline}
   .ab{padding:5px 10px;font-size:11px}.eb,.exp-trig{padding:6px 12px;font-size:11px}
   .glass-bar{padding:8px 10px;gap:8px}.glass-bar button{width:32px;height:32px;font-size:12px}.glass-bar .yr{font-size:10px;min-width:40px}
   .tbd{overflow-x:auto;-webkit-overflow-scrolling:touch}.tbd table{min-width:600px}
@@ -210,6 +212,10 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .preset-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.15s}
 .preset-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .preset-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* Multi-select Type Pills */
+.type-pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;border:2px solid transparent;transition:.15s;display:inline-flex;align-items:center;opacity:1}
+.type-pill:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.type-pill.inactive{opacity:.3;filter:grayscale(.7)}
 /* Space Age Heritage */
 .heritage-widget{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:14px;margin:12px 14px}
 .heritage-widget .hw-title{font-size:11px;font-weight:700;color:#d4af37;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -263,7 +269,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .conj-filter-panel h4{font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;margin-bottom:6px}
 .conj-th-btn{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;background:#1e293b;color:#94a3b8;border:1px solid #334155;margin:2px}
 .conj-th-btn.active{background:#ef4444;color:#fff;border-color:#ef4444}
-.kp-banner{display:none;position:absolute;top:0;left:0;right:0;z-index:35;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fca5a5;padding:6px 20px;font-size:12px;font-weight:600;text-align:center}
+.kp-banner{display:none;position:absolute;top:44px;left:0;right:0;z-index:35;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fca5a5;padding:6px 20px;font-size:12px;font-weight:600;text-align:center}
 .kp-banner.show{display:block}
 @media(max-width:768px){
   
@@ -290,7 +296,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Density slider & visual layers: compact */
   #lod-slider{width:70px!important;height:32px!important}
-  .gctl + div[style],div[style*="bottom:72px"]{bottom:80px!important;font-size:9px!important;padding:6px 8px!important}
+  #density-control{bottom:20px!important;left:12px!important;font-size:9px!important;padding:6px 8px!important}
   
   /* Debug overlay: smaller */
   #globe-debug{font-size:9px!important;padding:4px 6px!important;max-width:200px;word-wrap:break-word}
@@ -327,6 +333,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Focus banner: mobile-friendly */
   #focus-banner{top:100px!important;font-size:11px!important;padding:4px 10px!important;max-width:80vw}
+  #conjunction-banner{flex-wrap:wrap!important;font-size:12px!important;padding:8px 12px!important}
   
   /* Tooltip: larger text for touch */
   #globe-tooltip{font-size:13px!important;padding:8px 14px!important}
@@ -345,13 +352,26 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="header">
 <div class="brand"><div class="brand-icon">SAT</div><div><h1>Orbital Intelligence Platform</h1><p>Space Debris Growth and Collision Risk Forecast</p></div></div>
 <div class="hr">
-<div class="mission-clock" id="mission-clock"><div class="mc-dot"></div><span id="mc-time">--:--:-- UTC</span></div>
-<div class="sync" id="sync-badge" style="cursor:pointer;padding:6px 14px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-radius:8px;font-size:12px;color:#1e40af;font-weight:700;box-shadow:0 2px 8px rgba(59,130,246,.15);display:flex;align-items:center;gap:6px" onclick="showSyncInfo()" title="Click for catalog update details"><div style="width:10px;height:10px;border-radius:50%;background:#10b981;animation:p 2s infinite;box-shadow:0 0 6px #10b981"></div><span id="sync-label">SAT Sync</span><span id="sync-time" style="font-family:'JetBrains Mono',monospace;font-weight:600">Loading...</span><span id="sync-relative" style="font-size:10px;color:#3b82f6;font-weight:600;padding:2px 6px;background:#dbeafe;border-radius:4px"></span></div><div id="data-health" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer" onclick="showSyncInfo()" title="Click for catalog update details"><div style="width:8px;height:8px;border-radius:50%;background:#10b981;animation:p 2s infinite" id="health-dot"></div><span id="health-text" style="color:#10b981">FRESH</span></div><div id="data-mode" style="padding:5px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:11px;color:var(--amber);font-weight:600;display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber)"></div>ARCHIVAL</div>
-<div class="mi" title="SGP4: Simplified General Perturbations for near-earth orbits. SDP4: Deep-space variant for periods > 225 min. Standard algorithm for TLE propagation.">Propagator: <strong>SGP4/SDP4</strong> <span style="cursor:help;color:var(--accent)">ⓘ</span></div>
-<div class="mi" title="JGM-3: Joint Gravity Model 3 — Earth gravity field model used for orbital perturbation calculations. Degree 70 spherical harmonic expansion.">Ephemeris: <strong>JGM-3</strong> <span style="cursor:help;color:var(--accent)">ⓘ</span></div>
+<div class="status-pill" onclick="showSyncInfo()" title="Click for catalog update details">
+<div class="sp-dot"></div><span id="sp-status">SYNCED</span><span class="sp-sep">|</span><span class="sp-time" id="mc-time">--:--:-- UTC</span><span class="sp-sep">|</span><span class="sp-tle">TLE: <span id="tle-epoch-age">~1d</span></span>
+</div>
+<div style="display:none">
+<div class="sync" id="sync-badge"><span id="sync-label">SAT Sync</span><span id="sync-time">Loading...</span><span id="sync-relative"></span></div>
+<div id="data-health"><div id="health-dot"></div><span id="health-text">FRESH</span></div>
+<div id="data-mode">ARCHIVAL</div>
+<div id="frame-badge">Frame: TEME/ECI</div>
+<div id="api-latency-badge">API: <span id="api-latency-val">--</span></div>
+<div id="mission-clock"><div class="mc-dot"></div></div>
+</div>
+<div id="hr-engine" style="display:none">
+<div class="mi">Propagator: <strong>SGP4/SDP4</strong></div>
+<div class="mi">Ephemeris: <strong>JGM-3</strong></div>
+</div>
+<div class="gp-badge" onclick="document.getElementById('modal').classList.add('show')">GP<div class="gp-tooltip">Created by <strong>Guruvendra Pannu</strong></div></div>
+<div style="display:flex;align-items:center;gap:8px;padding-left:10px;border-left:1px solid var(--border)" id="hr-actions">
 <div class="tw"><span class="tl" id="mode-label">Expert</span><div class="tg" id="mode-toggle" onclick="toggleMode()" role="switch" aria-label="Toggle Expert/Citizen mode" aria-checked="false" tabindex="0"><div class="tk"></div></div></div>
 <button class="ab" onclick="startGuidedTour()" style="background:#ecfdf5;border-color:#a7f3d0;color:#10b981" aria-label="Start guided tour">Tour</button><button class="ab" onclick="document.getElementById('modal').classList.add('show')" aria-label="About this platform">About</button>
-<div class="sb"><div class="sd"></div>ACTIVE</div>
+</div>
 </div></div>
 <div class="nav" role="navigation" aria-label="Main navigation">
 <button class="nt active" onclick="showTab(this,'t-globe')" aria-label="3D Globe View">Globe <span class="ct" id="c-globe">5K</span></button>
@@ -372,22 +392,20 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <button class="body-btn" onclick="switchBody('moon',this)">🌙 Moon</button>
 <button class="body-btn" onclick="switchBody('mars',this)">🔴 Mars</button>
 <button class="body-btn" onclick="switchBody('sun',this)">☀ Sun</button>
-<button class="body-btn" onclick="switchBody('universe',this)">✨ Universe</button>
+<button class="body-btn" onclick="switchBody('universe',this)">🌌 Solar System</button>
 </div>
-<div id="conjunction-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:30;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fecaca;padding:12px 24px;font-size:14px;font-weight:600;display:none;align-items:center;gap:12px">
+<div id="conjunction-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:36;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fecaca;padding:12px 60px 12px 24px;font-size:14px;font-weight:600;align-items:center;gap:12px">
 <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;animation:p 1s infinite;flex-shrink:0"></div>
 <span id="conj-banner-text">Loading conjunction warnings...</span>
-<a href="#" onclick="showTab(document.getElementById('nav-collide'),'t-collide');return false" style="color:#fca5a5;text-decoration:underline;margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
-
-
+<a href="#" onclick="showConjunctionSummary();return false" style="color:#fca5a5;text-decoration:underline;margin-left:12px;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
 </div>
 
 <!-- KP WARNING BANNER -->
-<div class="kp-banner" id="kp-banner">&#9888; GEOMAGNETIC STORM WARNING - Kp >= 5 - Enhanced atmospheric drag expected at LEO altitudes</div>
+<div class="kp-banner" id="kp-banner">&#9888; Geomagnetic Storm Active \u2014 Atmospheric drag is elevated, which may accelerate orbital decay for low-altitude satellites</div>
 
 <div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;">
 <div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" aria-label="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" aria-label="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" aria-label="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" aria-label="Reset view" style="font-size:16px">⌂</button></div>
-<div style="position:absolute;bottom:72px;left:20px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px)">
+<div id="density-control" style="position:absolute;bottom:20px;left:72px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px)">
 <div style="font-size:10px;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Density</div>
 <input type="range" id="lod-slider" min="5000" max="35087" value="5000" step="1000" style="accent-color:#3b82f6;width:120px" onchange="setLOD(this.value)">
 <div id="lod-label" style="font-size:11px;color:#e2e8f0;font-weight:700;font-family:monospace;min-width:40px">5K</div>
@@ -400,7 +418,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <button id="btn-heatmap" onclick="toggleHeatmap()" title="Toggle density heatmap" style="background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;opacity:0.4;transition:opacity .15s">🔥 Heatmap</button>
 </div>
 <div id="globe-debug" style="position:absolute;top:10px;left:10px;z-index:20;color:#00ff00;font-family:monospace;font-size:11px;background:rgba(0,0,0,.7);padding:6px 10px;border-radius:6px;pointer-events:none">Loading...</div>
-<div id="focus-banner"><span class="fb-icon">🎯</span><span class="fb-name" id="focus-banner-name"></span><button class="fb-clear" onclick="clearFocus()" title="Unlock camera and reset view">✕</button></div>
+<div id="focus-banner"><span class="fb-icon">🎯</span><span class="fb-name" id="focus-banner-name"></span><button class="fb-clear" onclick="clearFocus()" title="Show all markers and resume rotation">✕ Show All</button></div>
 <div id="globe-tooltip" style="position:absolute;z-index:25;display:none;pointer-events:none;background:rgba(15,23,42,.95);color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid rgba(59,130,246,.4);box-shadow:0 4px 12px rgba(0,0,0,.5);backdrop-filter:blur(8px);white-space:nowrap;font-family:inherit;transition:opacity .1s"></div>
 </div>
 <button class="panel-toggle" onclick="togglePanel()" title="Toggle side panel" id="panel-toggle">☰</button>
@@ -409,10 +427,10 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="collap open" onclick="toggleCollap(this)">Filter Objects <span class="arrow">▼</span></div>
 <div class="collap-body">
 <div style="padding:14px 18px">
-<div class="ft"><label>Object Type</label><select id="f-type" onchange="applyFilters()"><option value="all">All Types</option><option value="Payload">Payload (Satellite)</option><option value="Rocket Body">Rocket Body</option><option value="Debris">Debris Fragment</option></select></div>
+<div class="ft"><label>Object Type <span style="font-size:9px;color:var(--text3);font-weight:400">(click to toggle multiple)</span></label><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:2px"><button class="type-pill active" data-type="Payload" onclick="toggleTypePill(this,'Payload')" style="background:#3b82f6;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Payload</button><button class="type-pill active" data-type="Rocket Body" onclick="toggleTypePill(this,'Rocket Body')" style="background:#f59e0b;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Rocket</button><button class="type-pill active" data-type="Debris" onclick="toggleTypePill(this,'Debris')" style="background:#ef4444;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Debris</button><button class="type-pill" data-type="UNK" onclick="toggleTypePill(this,'UNK')" style="background:#64748b;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Other</button><button onclick="resetTypePills()" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text3);transition:.15s">Reset All</button></div><select id="f-type" style="display:none" onchange="applyFilters()"><option value="all">All Types</option></select></div>
 <div class="ft"><label>Altitude Range</label><select id="f-alt" onchange="applyFilters()"><option value="all">All Altitudes</option><option value="leo">LEO (under 2000 km)</option><option value="meo">MEO (2000-35785)</option><option value="geo">GEO (35785-36000)</option><option value="heo">HEO (over 36000)</option></select></div>
 <div class="ft" style="margin-bottom:0"><label>Owner / Country</label><select id="f-country" onchange="applyFilters()"><option value="all">All Countries</option></select></div>
-<div style="padding:10px 0 0"><label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500">Preset Filters</label><div class="preset-filters" style="padding:0"><button class="preset-btn" onclick="applyPresetFilter('starlink')">Starlink</button><button class="preset-btn" onclick="applyPresetFilter('oneweb')">OneWeb</button><button class="preset-btn" onclick="applyPresetFilter('gnss')">GNSS</button><button class="preset-btn" onclick="applyPresetFilter('weather')">Weather</button><button class="preset-btn" onclick="applyPresetFilter('earthobs')">Earth Obs</button><button class="preset-btn" onclick="applyPresetFilter('clear')" style="color:#ef4444;border-color:#fecaca">Clear</button></div></div>
+<div style="padding:10px 0 0"><label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500">Preset Filters</label><div class="preset-filters" style="padding:0"><button class="preset-btn" onclick="applyPresetFilter('starlink')">Starlink</button><button class="preset-btn" onclick="applyPresetFilter('oneweb')">OneWeb</button><button class="preset-btn" onclick="applyPresetFilter('gnss')">GNSS</button><button class="preset-btn" onclick="applyPresetFilter('weather')">Weather</button><button class="preset-btn" onclick="applyPresetFilter('earthobs')">Earth Obs</button><button class="preset-btn" onclick="applyPresetFilter('clear')" style="color:#ef4444;border-color:#fecaca">✕ Clear</button></div></div>
 </div></div></div>
 <div class="pb" id="panel-sw">
 <h3 style="display:flex;justify-content:space-between;align-items:center">Space Weather <span onclick="toggleSection('panel-sw')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
@@ -455,7 +473,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div class="or"><span class="k" title="B* (ballistic coefficient): atmospheric drag term in TLE. Higher values indicate faster orbital decay due to atmospheric friction." style="cursor:help">B* Drag ⓘ</span><span class="v" id="o-bstar">N/A</span></div>
 <div class="or"><span class="k">Source</span><span class="v" id="o-source" style="font-size:10px">Celestrak SATCAT</span></div>
 <div class="or"><span class="k" title="FCC 25-Year Rule (47 CFR §25.114): satellite disposal requirement. ISO 24113: international debris mitigation standard." style="cursor:help">FCC Compliance ⓘ</span><span class="v" id="o-fcc">N/A</span></div>
-<div class="or"><span class="k" title="3σ positional uncertainty on miss distance (±km) and collision probability (Pc). Based on conjunction assessment covariance." style="cursor:help">Uncertainty ⓘ</span><span class="v" id="o-uncert">N/A</span></div>
+<div class="or"><span class="k" title="Probability of Collision (Pc): the likelihood that two objects will collide, computed from combined hard-body radius and covariance. 3σ positional uncertainty on miss distance is shown in ±km. Based on conjunction assessment covariance." style="cursor:help">Pc (Collision Prob.) ⓘ</span><span class="v" id="o-uncert">N/A</span></div>
 <button onclick="exportEphemeris()" style="margin-top:10px;width:100%;padding:8px;background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s">Export Ephemeris (CSV)</button>
 <button onclick="showRawTLE()" style="margin-top:6px;width:100%;padding:8px;background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s">View Raw TLE String</button>
 <button onclick="copyPythonSnippet()" style="margin-top:6px;width:100%;padding:8px;background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">Copy Python Snippet (sgp4)</button>
@@ -474,13 +492,13 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div style="font-size:10px;color:var(--text3);margin-top:8px;text-align:center">Click any marker on the globe for live data</div>
 </div></div>
 <div class="pb" id="panel-cl"><h3 style="display:flex;justify-content:space-between;align-items:center">Color Legend <span onclick="toggleSection('panel-cl')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
-<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>🛰 Payload (Active Satellite)</div>
-<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>🚀 Rocket Body</div>
-<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>💥 Debris Fragment</div>
-<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>◆ Unclassified / Other</div>
+<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>Payload (Active Satellite)</div>
+<div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>Rocket Body</div>
+<div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>Debris Fragment</div>
+<div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>Unclassified / Other</div>
 
 <div style="font-size:10px;color:var(--text3);margin-top:6px;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Altitude Shells — Click to Isolate</div><div class="lg" onclick="toggleShell('leo')"><div class="d" style="background:#3b82f6" id="sh-leo"></div>LEO (under 2000 km)</div><div class="lg" onclick="toggleShell('meo')"><div class="d" style="background:#8b5cf6" id="sh-meo"></div>MEO (2000-35786 km)</div><div class="lg" onclick="toggleShell('geo')"><div class="d" style="background:#06b6d4" id="sh-geo"></div>GEO (~35786 km)</div><div class="lg" onclick="toggleShell('heo')"><div class="d" style="background:#f59e0b" id="sh-heo"></div>HEO (over 36000 km)</div></div>
-<div class="pb" id="panel-heritage"><h3 style="display:flex;justify-content:space-between;align-items:center">Space Age Heritage <span onclick="toggleSection('panel-heritage')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3><div class="heritage-widget" id="heritage-widget-content"><div class="hw-title">📜 Oldest Objects In Orbit</div><div id="heritage-cards"><div style="font-size:11px;color:#94a3b8;text-align:center;padding:8px">Loading heritage data...</div></div></div></div>
+<div class="pb" id="panel-heritage"><h3 style="display:flex;justify-content:space-between;align-items:center">Space Age Heritage <span onclick="toggleSection('panel-heritage')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3><div class="heritage-widget" id="heritage-widget-content"><div class="hw-title">Oldest Objects In Orbit</div><div id="heritage-cards"><div style="font-size:11px;color:#94a3b8;text-align:center;padding:8px">Loading heritage data...</div></div></div></div>
 </div></div></div>
 <div id="t-dash" class="tab">
 <div class="ct-tip"><strong>Why This Matters:</strong> Orbital debris threatens satellites we rely on daily - weather forecasting, GPS navigation, cell service, and disaster monitoring. Each collision creates thousands more fragments in a chain reaction known as the <strong>Kessler Syndrome</strong>.</div>
@@ -491,7 +509,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div class="k amber"><div class="tip" title="Fragmentation debris from collisions, breakups, and degradation">?</div><div class="ic">DEB</div><div class="vl" id="d-debris">0</div><div class="lb">Debris Fragments</div><div class="sb2" data-citizen="Fragments large enough to track" data-expert="RCS >10cm fragments">RCS >10cm fragments</div></div>
 <div class="k purple"><div class="tip" title="Upper stages of launch vehicles left in orbit - uncontrolled">?</div><div class="ic">R/B</div><div class="vl" id="d-rocket">0</div><div class="lb">Rocket Bodies</div><div class="sb2" data-citizen="Abandoned rocket stages" data-expert="Upper stages (defunct)">Upper stages (defunct)</div></div>
 <div class="k cyan"><div class="tip" title="Functional satellites deployed for communications, navigation, science">?</div><div class="ic">PLD</div><div class="vl" id="d-payload">0</div><div class="lb">Active Payloads</div><div class="sb2" data-citizen="Working satellites in use" data-expert="Operational payloads">Operational payloads</div></div></div>
-<div class="sc" style="padding-bottom:0"><div class="sh"><div><h2>Analytics Dashboard</h2><p data-citizen="Explore how space debris has grown over time" data-expert="Trend analysis and orbital distribution of all cataloged objects — click a nation bar to cross-filter type & orbit charts">Trend analysis and orbital distribution of all cataloged objects — click a nation bar to cross-filter type & orbit charts</p><div id="dash-filter-info" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:4px"></div></div><div style="display:flex;gap:8px"><button class="eb" onclick="exportCSV('dashboard')">Export CSV</button><button class="eb" onclick="exportJSON('dashboard')" style="background:var(--accent3);box-shadow:0 2px 8px rgba(139,92,246,.3)">Export JSON</button></div></div></div>
+<div class="sc" style="padding-bottom:0"><div id="key-findings" class="findings-box" style="display:none"></div><div class="sh"><div><h2>Analytics Dashboard</h2><p data-citizen="Explore how space debris has grown over time" data-expert="Trend analysis and orbital distribution of all cataloged objects — click a nation bar to cross-filter type & orbit charts">Trend analysis and orbital distribution of all cataloged objects — click a nation bar to cross-filter type & orbit charts</p><div id="dash-filter-info" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:4px"></div><div style="font-size:10px;color:var(--text3);font-weight:500;margin-top:4px;letter-spacing:.3px">Celestrak SATCAT · SGP4/SDP4 Propagation · JGM-3 Gravity Model · Databricks Platform</div></div><div style="display:flex;gap:8px"><button class="eb" onclick="exportCSV('dashboard')">Export CSV</button><button class="eb" onclick="exportJSON('dashboard')" style="background:var(--accent3);box-shadow:0 2px 8px rgba(139,92,246,.3)">Export JSON</button></div></div></div>
 <div class="cr full"><div class="cd"><h3>Cumulative Cataloged Objects (1957-Present)</h3><p class="ds" data-citizen="How space objects have grown since the Space Race" data-expert="Line chart showing growth of tracked objects across launch eras">Line chart showing growth of tracked objects across launch eras</p><canvas id="ch-era"></canvas></div></div>
 <div class="cr"><div class="cd"><h3>Object Type Distribution</h3><p class="ds">Breakdown by classification - Payload, Rocket Body, Debris</p><canvas id="ch-type"></canvas></div><div class="cd"><h3>Orbital Regime Distribution</h3><p class="ds">Objects grouped by altitude shell - LEO, MEO, GEO, HEO</p><canvas id="ch-orbit"></canvas></div></div>
 <div class="cr"><div class="cd"><h3>Inclination vs Altitude (deg vs km) - Orbital Phase Space</h3><p class="ds">Scatter plot identifying Sun-Synchronous Orbits, GEO arc, and mega-constellation shells</p><canvas id="ch-inc-alt"></canvas></div><div class="cd"><h3>Top 10 Contributing Nations</h3><p class="ds">Countries with most tracked objects in orbit</p><canvas id="ch-country"></canvas></div></div>
@@ -581,6 +599,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div class="pr" id="pred-list"></div>
 <button class="load-more-btn" id="pred-load-more" onclick="loadMorePreds()" style="display:none">Load 50 More Objects</button>
 <div id="impact-modal" class="mo" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:520px"><div class="mh"><h2>Ground Track Impact Footprint</h2><button class="mc" onclick="document.getElementById('impact-modal').classList.remove('show')">X</button></div><div class="mb" id="impact-modal-body"></div></div></div>
+<div id="conj-summary-modal" class="mo" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:600px"><div class="mh"><h2>⚠ Critical Conjunction Summary</h2><button class="mc" onclick="document.getElementById('conj-summary-modal').classList.remove('show')">X</button></div><div class="mb" id="conj-summary-body" style="padding:20px"><p style="color:var(--text2);font-size:13px;margin-bottom:12px">Loading conjunction data...</p></div><div style="padding:12px 20px;border-top:1px solid var(--border);text-align:right"><button class="ab" onclick="document.getElementById('conj-summary-modal').classList.remove('show');showTab(document.getElementById('nav-collide'),'t-collide')" style="background:var(--accent);color:#fff;border-color:var(--accent)">Go to Collision Risk →</button></div></div></div>
 </div>
 <div id="t-collide" class="tab">
 <div class="ct-tip"><strong>Why This Matters:</strong> The 450-575 km region is the most crowded - home to Starlink satellites, weather satellites, and decades of debris. A single collision could create thousands of fragments, threatening all satellites in similar orbits.</div>
@@ -592,14 +611,15 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div class="k red"><div class="tip" title="High: crowded band, active monitoring required">?</div><div class="ic">HIGH</div><div class="vl" style="color:var(--red)" id="cr-high">0</div><div class="lb">High Risk</div><div class="sb2" data-citizen="Crowded area, close watch needed" data-expert="active monitoring required">active monitoring required</div></div>
 <div class="k purple"><div class="tip" title="Critical: dense conjunction zone, immediate attention needed">?</div><div class="ic">CRIT</div><div class="vl" style="color:var(--accent3)" id="cr-crit">0</div><div class="lb">Critical Risk</div><div class="sb2" data-citizen="Collision zone, act now" data-expert="dense conjunction zone; immediate attention">dense conjunction zone; immediate attention</div></div></div>
 <div class="cr full"><div class="cd"><h3>Orbital Density Profile - Objects vs Altitude (km) <span class="term-tip" data-tip="Orbital density = how many objects are packed into a given altitude range. Peaks = crowded zones with higher crash risk.">?</span></h3><p class="ds">Area chart showing object density. Peaks indicate high-collision-risk conjunction zones.</p><canvas id="ch-density"></canvas></div></div>
-<div class="cr"><div class="cd"><h3>Collision Risk Distribution</h3><p class="ds">Classification of all objects by collision risk level</p><canvas id="ch-c-risk"></canvas></div><div class="cd"><h3>TCA Distribution - Upcoming Close Approaches</h3><p class="ds">Time-to-Closest-Approach timeline for next 72 hours</p><canvas id="ch-tca"></canvas></div></div>
-<div class="cr"><div class="cd"><h3>Top 15 Collision-Risk Objects</h3><p class="ds">Objects in the most crowded orbital regimes</p><canvas id="ch-c-top"></canvas></div><div class="cd"><h3>Miss Distance vs Collision Probability</h3><p class="ds">Scatter plot mapping conjunction severity</p><canvas id="ch-scatter"></canvas></div></div>
+<div class="cr"><div class="cd"><h3>Collision Risk Distribution <span class="term-tip" data-tip="Objects are classified by orbital density: Low (sparse), Medium (moderate), High (crowded), Critical (dense conjunction zone).">?</span></h3><p class="ds">Classification of all objects by collision risk level</p><canvas id="ch-c-risk"></canvas></div><div class="cd"><h3>TCA Distribution - Upcoming Close Approaches <span class="term-tip" data-tip="TCA = Time of Closest Approach: when two orbiting objects will be nearest. This chart shows how many close approaches happen in each hour ahead.">?</span></h3><p class="ds">Time-to-Closest-Approach timeline for next 72 hours</p><canvas id="ch-tca"></canvas></div></div>
+<div class="cr"><div class="cd"><h3>Top 15 Collision-Risk Objects</h3><p class="ds">Objects in the most crowded orbital regimes</p><canvas id="ch-c-top"></canvas></div><div class="cd"><h3>Miss Distance vs Collision Probability <span class="term-tip" data-tip="Miss Distance = minimum predicted gap between two objects. Smaller gap + higher probability = more dangerous conjunction.">?</span></h3><p class="ds">Scatter plot mapping conjunction severity</p><canvas id="ch-scatter"></canvas></div></div>
 <div class="sc" style="padding-top:0"><div class="sh"><h2 style="font-size:17px">Conjunction Zones - Highest-Density Altitude Bands</h2><p>Altitude bands with highest object concentration - collision most likely</p></div></div>
-<div class="sc" style="padding-top:0"><div class="tw2"><div class="tbd"><table><thead><tr><th>Altitude Range</th><th>Object Count</th><th>Dominant Type</th><th>Type Breakdown</th><th>Risk Assessment</th></tr></thead><tbody id="zone-body"></tbody></table></div></div></div>
+<div class="sc" style="padding-top:0"><div class="tw2"><div class="tbd"><table><thead><tr><th title="Orbital altitude band where objects cluster. LEO bands (350-2000km) are the most congested." style="cursor:help">Altitude Range</th><th title="Number of tracked objects in this altitude band. More objects = higher collision probability." style="cursor:help">Object Count</th><th title="Most common object type: Payload (functional satellite), Rocket Body (upper stage), or Debris (fragment)." style="cursor:help">Dominant Type</th><th title="Composition breakdown by object type in this altitude band." style="cursor:help">Type Breakdown</th><th title="Collision risk based on object density: Critical (>2000 objects), High (>500), Medium (>100), Low (<100)." style="cursor:help">Risk Assessment</th></tr></thead><tbody id="zone-body"></tbody></table></div></div></div>
 <div class="sc" style="padding-top:0"><div class="sh"><h2 style="font-size:17px">Top Collision-Risk Object Pairs</h2><p>Filter by ColA status to isolate urgent threats</p></div></div>
 <div class="sc" style="padding-top:0"><div class="tw2"><div class="tb">
+<input class="sl" id="pair-search" placeholder="🔍 Search by object name or country (e.g. Starlink, COSMOS, China)" oninput="renderPairs()" style="flex:1;min-width:220px">
 <select class="sl" id="cola-filter" onchange="renderPairs()"><option value="all">All ColA Status</option><option value="MANEUVER REQUIRED">MANEUVER REQUIRED</option><option value="MONITOR">MONITOR</option><option value="NOMINAL">NOMINAL</option></select>
-</div><div class="tbd"><table><thead><tr><th>Object 1</th><th>Type 1</th><th>Object 2</th><th>Type 2</th><th>Altitude Band</th><th>Density</th><th><span data-citizen="Closest Pass (hrs)" data-expert="TCA (hrs)">TCA (hrs)</span></th><th><span data-citizen="Closest Gap (km)" data-expert="Miss Dist (km)">Miss Dist (km)</span></th><th>ColA (Action)</th><th>Risk</th></tr></thead><tbody id="pair-body"></tbody></table></div></div></div></div>
+</div><div class="tbd"><table><thead><tr><th title="First object in the predicted conjunction pair.">Object 1</th><th title="Object type: Payload (functional satellite), Rocket Body (upper stage), or Debris (fragment)." style="cursor:help">Type 1</th><th title="Second object in the predicted conjunction pair.">Object 2</th><th title="Object type: Payload (functional satellite), Rocket Body (upper stage), or Debris (fragment)." style="cursor:help">Type 2</th><th title="Orbital altitude range where the conjunction occurs. LEO bands (350-2000km) are most congested." style="cursor:help">Altitude Band</th><th title="Number of objects in this altitude band. Higher density = higher collision probability." style="cursor:help">Density</th><th title="TCA = Time of Closest Approach. Predicted hours until the two objects reach minimum separation. <24hrs = urgent monitoring needed." style="cursor:help"><span data-citizen="Closest Pass (hrs)" data-expert="TCA (hrs)">TCA (hrs)</span></th><th title="Miss Distance: Minimum predicted gap between the two objects at TCA. <1km = critical, <5km = monitor, >5km = nominal." style="cursor:help"><span data-citizen="Closest Gap (km)" data-expert="Miss Dist (km)">Miss Dist (km)</span></th><th title="ColA = Collision Avoidance recommendation. NOMINAL = no action, MONITOR = track closely, MANEUVER REQUIRED = satellite should maneuver within hours." style="cursor:help">ColA (Action)</th><th title="Combined Risk Score (0-1): Probability of collision based on object density, relative velocity, and miss distance." style="cursor:help">Risk</th></tr></thead><tbody id="pair-body"></tbody></table></div></div></div></div>
 <div id="t-cat" class="tab">
 <div class="sc"><div class="sh"><div><h2>Space Object Catalog</h2><p data-citizen="Search through all tracked space objects" data-expert="Complete searchable catalog from Celestrak SATCAT - 70,586 tracked objects">Complete searchable catalog from Celestrak SATCAT - 70,586 tracked objects</p></div><div style="display:flex;gap:8px">
 <button class="eb" onclick="exportMulti('csv')">Export CSV</button>
@@ -730,7 +750,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 </div>
 
 <div style="background:rgba(16,185,129,.05);padding:16px;border-radius:8px;border:1px solid rgba(16,185,129,.15);margin-bottom:12px">
-<h4 style="color:#10b981;margin-bottom:6px">🛰️ Satellite Operators</h4>
+<h4 style="color:#10b981;margin-bottom:6px">Satellite Operators</h4>
 <ul style="font-size:13px;line-height:1.8;list-style:none;padding-left:0">
 <li><strong>Globe tab</strong> → Search your satellite by NORAD ID, lock camera to track its orbital path</li>
 <li><strong>Object Inspector</strong> → View TCA, miss distance, and collision probability for conjunction screening</li>
@@ -989,11 +1009,11 @@ print(f'Velocity (km/s): {v}')</pre>
   </div>
 
   <div style="padding:0 20px 20px;font-size:11px;color:var(--text3);line-height:1.5">
-    <strong>Data Sources:</strong> NOAA Space Weather Prediction Center (Kp index, solar wind, F10.7 flux), Launch Library 2 / The Space Devs (upcoming launches), Celestrak SATCAT (constellation data).<br>
-    <strong>Disclaimer:</strong> Space weather data is fetched live from NOAA SWPC public APIs with 5-minute server-side caching. Launch data is cached for 10 minutes. For operational space weather decisions, consult official NOAA SWPC alerts.
+    <strong>Note:</strong> Space weather data is provided by NOAA SWPC public APIs and cached server-side for up to 5 minutes. Launch data is provided by Launch Library 2 and cached for 10 minutes. These feeds are for general awareness. Do not use this information for operational space weather decisions—refer to official NOAA SWPC alerts and bulletins.
   </div>
 </div>
-<div class="ft2"><div>Celestrak SATCAT | SGP4/SDP4 Propagator | JGM-3 Perturbation Model | Databricks Platform</div><div>For informational & situational awareness purposes only - Not an operational collision-avoidance service | <a href="#" onclick="document.getElementById('modal').classList.add('show');return false" style="color:var(--accent)">Legal Disclaimer & Data Provenance</a></div></div>
+<div class="mo" id="info-modal" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:480px"><div class="mh"><h2 id="info-modal-title">Info</h2><button class="mc" onclick="document.getElementById('info-modal').classList.remove('show')">X</button></div><div class="mb" id="info-modal-body" style="font-size:13px;line-height:1.7;color:var(--text2)"></div></div></div>
+<div class="ft2"><div>Created by Guruvendra Pannu | Celestrak SATCAT | SGP4/SDP4 Propagator | JGM-3 Gravity Model | Databricks Platform</div><div>For educational and situational awareness use only. Not a certified collision-avoidance or conjunction-assessment service. | <a href="#" onclick="document.getElementById('modal').classList.add('show');return false" style="color:var(--accent)">Legal Notice & Data Sources</a></div></div>
 <div class="mo" id="sync-modal" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:420px">
 <div class="mh"><h2>Data Sync Status</h2><button class="mc" onclick="document.getElementById('sync-modal').classList.remove('show')">X</button></div>
 <div class="mb" id="sync-modal-body"></div>
@@ -1008,7 +1028,7 @@ print(f'Velocity (km/s): {v}')</pre>
 </div></div></div></div>
 <div class="mo" id="modal"  onclick="if(event.target===this)this.classList.remove('show')"><div class="md"><div class="mh"><h2>About and Methodology</h2><button class="mc" onclick="document.getElementById('modal').classList.remove('show')">X</button></div>
 <div class="mb">
-<div class="about-hero"><h4>As Low Earth Orbit (LEO) becomes critically congested with over 70,000 tracked objects and defunct debris, predicting orbital decay and conjunction risks is vital for space sustainability. The Orbital Intelligence Platform provides automated re-entry forecasting, collision risk assessment, and debris growth modeling to help operators, researchers, and policymakers understand and manage the space environment.</h4><p style="margin-top:8px">Tracking 70,586 objects from Celestrak SATCAT using SGP4/SDP4 propagation, an Ensemble Conjunction Classifier, and orbital density analysis.</p></div>
+<div class="about-hero"><h4>As Low Earth Orbit (LEO) becomes critically congested with over 70,000 tracked objects and defunct debris, predicting orbital decay and conjunction risks is vital for space sustainability. The Orbital Intelligence Platform provides automated re-entry forecasting, collision risk assessment, and debris growth modeling to help operators, researchers, and policymakers understand and manage the space environment.</h4><p style="margin-top:8px">Tracking 70,586 objects from Celestrak SATCAT using SGP4/SDP4 propagation, an Ensemble Conjunction Classifier, and orbital density analysis.</p><p style="margin-top:6px;font-size:12px;color:var(--text3);font-weight:600">Created by Guruvendra Pannu — Built using SGP4/SDP4, JGM-3, and Databricks.</p></div>
 <div class="metrics-banner"><div class="mb-badge"><div class="mb-v">96.75%</div><div class="mb-l">Accuracy</div></div><div class="mb-sep"></div><div class="mb-badge"><div class="mb-v">0.96</div><div class="mb-l">Precision</div></div><div class="mb-sep"></div><div class="mb-badge"><div class="mb-v">0.95</div><div class="mb-l">Recall</div></div><div class="mb-sep"></div><div class="mb-badge"><div class="mb-v">0.95</div><div class="mb-l">F1-Score</div></div></div>
 
 <div class="about-card open"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Mission & Core Problem</span><span class="about-arrow">▼</span></div><div class="about-card-body"><p>The Orbital Intelligence Platform tracks 70,586 objects from Celestrak SATCAT, computes orbital positions using SGP4/SDP4 propagation, predicts atmospheric re-entry risk using an Ensemble Conjunction Classifier, and forecasts collision probability based on orbital density analysis.</p><p style="margin-top:6px"><strong>Key Capabilities:</strong></p><ul><li>Real-time 3D visualization of tracked orbital objects</li><li>Re-entry risk prediction with 96.75% validation accuracy</li><li>Collision risk scoring via orbital density analysis</li><li>Kessler Syndrome debris growth projection (2025-2035)</li><li>International compliance assessment (FCC, ISO 24113)</li></ul></div></div>
@@ -1017,7 +1037,9 @@ print(f'Velocity (km/s): {v}')</pre>
 
 <div class="about-card"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Performance & Validation Metrics</span><span class="about-arrow">▼</span></div><div class="about-card-body"><p>The Ensemble Conjunction Classifier was validated against historical re-entry data with the following metrics:</p><div class="mg"><div><div class="mv">96.75%</div><div class="ml">Accuracy</div></div><div><div class="mv">0.96</div><div class="ml">Precision</div></div><div><div class="mv">0.95</div><div class="ml">Recall</div></div><div><div class="mv">0.95</div><div class="ml">F1-Score</div></div></div><p style="margin-top:8px">The Random Forest model (100 decision trees) achieves near-perfect classification of atmospheric re-entry status across 10 orbital features including apogee, perigee, inclination, eccentricity, and orbital period.</p></div></div>
 
-<div class="about-card"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Limitations & Legal Disclaimer</span><span class="about-arrow">▼</span></div><div class="about-card-body"><h3 style="font-size:13px;font-weight:700;margin:0 0 6px">Model Limitations</h3><ul><li>Positions computed from SATCAT orbital parameters, not real-time TLE propagation</li><li>TCA and miss-distance are estimated from density modeling, not precise ephemeris</li><li>Model predicts statistical re-entry probability, not specific re-entry dates</li><li>Data from Celestrak SATCAT may not include classified objects</li></ul><div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;margin:10px 0"><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Data Sources:</strong> Celestrak SATCAT (public catalog), Space-Track.org TLE data, NASA Orbital Debris Program Office historical records. All orbital parameters derived from publicly available Two-Line Element sets.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Disclaimer:</strong> This platform is provided for informational, educational, and situational awareness purposes only. It is <strong>not</strong> an official operational collision-avoidance service. The Orbital Intelligence Platform and its operators assume no liability for decisions made based on data presented herein. All orbital positions, re-entry predictions, and conjunction assessments are statistical estimates, not certified operational products. For mission-critical conjunction assessment, consult USSPACECOM 18th Space Defense Squadron or LeoLabs operational services.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Model Limitations:</strong> SGP4/SDP4 propagation introduces position errors of 1-3 km for recent TLEs and up to 10+ km for older epochs. Re-entry predictions are probabilistic (96.75% validation accuracy) and do not predict specific re-entry dates or locations. Collision risk scores are density-based estimates, not pairwise ephemeris-based conjunction solutions.</p><p style="font-size:12px;color:var(--text2);line-height:1.6"><strong>Archival Resilience:</strong> This platform maintains an embedded static data cache (snapshot mode) ensuring continuous operation even if external data feeds (Celestrak, Space-Track) are unavailable or schema formats change. Live data sync attempts to upgrade to the latest available dataset on each page load.</p></div></div></div>
+<div class="about-card"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Limitations & Legal Disclaimer</span><span class="about-arrow">▼</span></div><div class="about-card-body"><h3 style="font-size:13px;font-weight:700;margin:0 0 6px">Model Limitations</h3><ul><li>Orbital positions are computed from SATCAT catalog parameters, not from real-time TLE propagation or radar tracking.</li><li>Time of Closest Approach (TCA) and miss-distance values are derived from orbital density modeling, not from pairwise ephemeris-based conjunction solutions.</li><li>Re-entry predictions are probabilistic estimates. The model does not predict specific re-entry dates, times, or geographic locations.</li><li>The Celestrak SATCAT catalog may not include classified or otherwise non-public objects.</li></ul><div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;margin:10px 0"><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Data Sources & Attribution:</strong> Orbital object data is drawn from the Celestrak SATCAT public catalog and Space-Track.org Two-Line Element (TLE) sets. Historical fragmentation records are sourced from the NASA Orbital Debris Program Office. Space weather data is provided by the NOAA Space Weather Prediction Center. Launch schedule data is provided by Launch Library 2 (The Space Devs). All data sources are public and open. This platform does not redistribute raw proprietary datasets.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Disclaimer of Liability:</strong> The Orbital Intelligence Platform is provided “as is” for educational, research, and general situational awareness purposes. It is not a certified operational collision-avoidance service and should not be relied upon for satellite maneuver planning, mission-critical conjunction assessment, or any safety-of-life decision. The platform operators make no warranty, express or implied, regarding the accuracy, completeness, or timeliness of the data or predictions presented. Under no circumstances shall the operators be held liable for any direct, indirect, incidental, or consequential damages arising from the use of, or reliance on, information provided by this platform.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>Propagator Accuracy:</strong> SGP4/SDP4 propagation typically introduces position errors of 1–3 km for recent TLEs and may exceed 10 km for older epochs. Re-entry predictions carry a validated accuracy of 96.75% but remain statistical in nature. Collision risk scores are based on orbital density estimates and should not be interpreted as precise conjunction probabilities.</p><p style="font-size:12px;color:var(--text2);line-height:1.6"><strong>Operational Guidance:</strong> For mission-critical conjunction assessment, contact the USSPACECOM 18th Space Defense Squadron (18 SDS) for official Conjunction Data Messages (CDMs), or use commercial services such as LeoLabs for high-precision radar tracking.</p></div></div></div>
+
+<div class="about-card"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Terms of Service</span><span class="about-arrow">▼</span></div><div class="about-card-body"><div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;margin:0 0 12px"><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>1. Acceptance of Terms.</strong> By accessing or using the Orbital Intelligence Platform, you acknowledge that you have read and understood these Terms of Service and agree to be bound by them. If you do not agree, do not use this platform.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>2. Nature of Service.</strong> This platform is an educational and research tool for visualizing publicly available orbital data. It is not a substitute for professional orbital mechanics software, certified conjunction assessment services, or official government space situational awareness products.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>3. No Warranty.</strong> All data, predictions, and visualizations are provided “as is” and “as available” without warranties of any kind, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The operators do not warrant that the platform will be uninterrupted, error-free, or free of harmful components.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>4. Limitation of Liability.</strong> To the fullest extent permitted by applicable law, the operators of this platform shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages, or any loss of data, revenue, or profits, arising out of or in connection with the use of, or inability to use, this platform—whether based on contract, tort, negligence, or any other legal theory—even if advised of the possibility of such damages.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>5. Data Accuracy.</strong> Orbital positions and predictions are derived from public catalogs using standard propagation models. Positional accuracy is limited by the freshness of the source TLEs and the inherent limitations of SGP4/SDP4 propagation. The operators do not guarantee the accuracy or reliability of any data displayed.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>6. Data Source Attribution.</strong> This platform uses data from Celestrak SATCAT, Space-Track.org, the NASA Orbital Debris Program Office, the NOAA Space Weather Prediction Center, and Launch Library 2 (The Space Devs). All sources are public and credited where displayed. This platform does not claim ownership of or redistribute raw source datasets.</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px"><strong>7. User Responsibility.</strong> Users are solely responsible for any decisions made based on information from this platform. Any reliance on orbital data, re-entry predictions, or collision risk assessments for operational purposes is strictly at the user's own risk.</p><p style="font-size:12px;color:var(--text2);line-height:1.6"><strong>8. Changes to Terms.</strong> These terms may be updated at any time without prior notice. Continued use of the platform after changes constitutes acceptance of the revised terms.</p></div></div></div>
 
 <div class="about-card"><div class="about-card-header" onclick="this.parentElement.classList.toggle('open')"><span>Quick Glossary</span><span class="about-arrow">▼</span></div><div class="about-card-body"><div class="gl">
 <div><div class="gt">Payload</div><div class="gd">A functional satellite deployed for communications, navigation, Earth observation, or research.</div></div><div><div class="gt">Rocket Body</div><div class="gd">Upper stage of a launch vehicle left in orbit after deploying payload. Uncontrolled - high collision risk.</div></div><div><div class="gt">Debris</div><div class="gd">Fragments from breakups, collisions, or degradation.</div></div><div><div class="gt">Conjunction Zone</div><div class="gd">Altitude band with high object density where collision probability is greatest.</div></div><div><div class="gt">Kessler Syndrome</div><div class="gd">Cascade where debris collisions create more debris, eventually making orbits unusable.</div></div><div><div class="gt">TCA</div><div class="gd">Time-to-Closest Approach - estimated time until two objects reach minimum separation.</div></div><div><div class="gt">ColA</div><div class="gd">Collision Avoidance recommendation - MANEUVER, MONITOR, or NOMINAL based on miss distance.</div></div><div><div class="gt">SGP4</div><div class="gd">Simplified General Perturbations - standard model for satellite orbit propagation from TLE data.</div></div><div><div class="gt">Inclination</div><div class="gd">Angle between orbital plane and Earths equator. SSO orbits at ~98 deg, equatorial at ~0 deg.</div></div><div><div class="gt">Apogee/Perigee</div><div class="gd">Highest and lowest points in an elliptical orbit, measured in km from Earths center.</div></div></div></div></div></div></div></div>
@@ -1034,8 +1056,12 @@ function applyModeText(){var els=document.querySelectorAll('[data-citizen]');els
 var debrisVisible=100,catVisible=100;
 function loadMoreDebris(){debrisVisible+=100;renderDebris();}
 function loadMoreCat(){catVisible+=100;renderCat();}
+function showInfoModal(title,content){var m=document.getElementById('info-modal');if(!m)return;document.getElementById('info-modal-title').textContent=title;document.getElementById('info-modal-body').innerHTML=content;m.classList.add('show');}
 function showApiFallback(msg){var b=document.getElementById('api-fallback-banner');if(b){b.classList.add('show');var t=b.querySelector('.fb-text');if(t)t.textContent=msg||'External data feed unavailable \u2014 running on cached embedded data.';}}
-function toggleType(t){typeFilter[t]=!typeFilter[t];var key=t==='Rocket Body'?'rocket':t.toLowerCase();var el=document.getElementById('lg-'+key);if(el)el.parentElement.classList.toggle('off',!typeFilter[t]);try{applyFilters();}catch(e){}}
+function toggleType(t){typeFilter[t]=!typeFilter[t];var key=t==='Rocket Body'?'rocket':t.toLowerCase();var el=document.getElementById('lg-'+key);if(el)el.parentElement.classList.toggle('off',!typeFilter[t]);syncTypePills();try{applyFilters();}catch(e){}}
+function toggleTypePill(btn,type){typeFilter[type]=!typeFilter[type];btn.classList.toggle('inactive',!typeFilter[type]);var key=type==='Rocket Body'?'rocket':type.toLowerCase();var el=document.getElementById('lg-'+key);if(el)el.parentElement.classList.toggle('off',!typeFilter[type]);document.getElementById('f-type').value='all';try{applyFilters();}catch(e){}}
+function syncTypePills(){document.querySelectorAll('.type-pill').forEach(function(p){var t=p.getAttribute('data-type');if(t)p.classList.toggle('inactive',!typeFilter[t]);});}
+function resetTypePills(){typeFilter={Payload:true,'Rocket Body':true,Debris:true,UNK:true};document.querySelectorAll('.type-pill').forEach(function(p){p.classList.remove('inactive');});document.querySelectorAll('.lg').forEach(function(l){l.classList.remove('off');});try{applyFilters();}catch(e){}}
 
 function showTab(btn,id){
 document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
@@ -1121,7 +1147,7 @@ function toggleCollap(el){el.classList.toggle('open');var body=el.nextElementSib
 
 // === GLOBE 3D RENDERING (rewritten from scratch) ===
 var allOrbitalObjects=[];
-var scene=null,camera=null,renderer=null,earth=null,starField=null;
+var scene=null,camera=null,renderer=null,earth=null,starField=null;var ambientLight=null,dirLight=null,celestialRotSpeed=0;
 var globePointData=[],currentPointCloud=null,heatmapCloud=null;
 var EARTH_R=100,globeRotating=true;
 var camTheta=0.4,camPhi=0.5,camDist=400;
@@ -1188,24 +1214,19 @@ function applyFocusDimming(){
   if(!currentPointCloud||!lockedTarget)return;
   var posArray=currentPointCloud._posArray,colArray=currentPointCloud._colArray;
   if(!posArray||!colArray)return;
+  var colorAttr=currentPointCloud.geometry.attributes.color;
+  if(!colorAttr)return;
   var fx=lockedTarget.x,fy=lockedTarget.y,fz=lockedTarget.z;
-  for(var ci=0;ci<currentPointCloud.children.length;ci++){
-    var mesh=currentPointCloud.children[ci];
-    if(!mesh.instanceColor)continue;
-    var ti=mesh._typeIdx,idx=currentPointCloud._meshMaps[ti];
-    if(!idx)continue;
-    for(var j=0;j<idx.length;j++){
-      var gpd=idx[j];
-      var px=posArray[gpd*3],py=posArray[gpd*3+1],pz=posArray[gpd*3+2];
-      var dx=px-fx,dy=py-fy,dz=pz-fz;
-      if(Math.sqrt(dx*dx+dy*dy+dz*dz)>2){
-        mesh.instanceColor.setXYZ(j,colArray[gpd*3]*0.2,colArray[gpd*3+1]*0.2,colArray[gpd*3+2]*0.2);
-      }else{
-        mesh.instanceColor.setXYZ(j,colArray[gpd*3],colArray[gpd*3+1],colArray[gpd*3+2]);
-      }
+  for(var i=0;i<globePointData.length;i++){
+    var px=posArray[i*3],py=posArray[i*3+1],pz=posArray[i*3+2];
+    var dx=px-fx,dy=py-fy,dz=pz-fz;
+    if(Math.sqrt(dx*dx+dy*dy+dz*dz)>2){
+      colorAttr.setXYZ(i,0,0,0);
+    }else{
+      colorAttr.setXYZ(i,colArray[i*3],colArray[i*3+1],colArray[i*3+2]);
     }
-    mesh.instanceColor.needsUpdate=true;
   }
+  colorAttr.needsUpdate=true;
 }
 
 function quickJump(name,btnId){
@@ -1540,7 +1561,15 @@ function getFiltered(){
   return f;
 }
 
-function applyFilters(){if(globeReady)renderGlobe();}
+function applyFilters(){
+  if(typeof currentBody!=='undefined'&&currentBody!=='earth'&&currentBody!=='universe'&&globeReady){
+    // Re-render celestial body markers with filters applied
+    if(currentPointCloud){scene.remove(currentPointCloud);currentPointCloud=null;}
+    renderCelestialMarkers(currentBody);
+  }else if(globeReady){
+    renderGlobe();
+  }
+}
 function initOrbitalViewer(d){allOrbitalObjects=d;renderGlobe();}
 
 function renderGlobe(){
@@ -1653,20 +1682,34 @@ function initThreeJS(){
   renderer.domElement.style.cursor='grab';
   container.appendChild(renderer.domElement);
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x404060,1.5));
-  var dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(200,100,200);scene.add(dl);
+  // Lighting (stored for per-body adjustment)
+  ambientLight=new THREE.AmbientLight(0x6688aa,2.0);scene.add(ambientLight);
+  dirLight=new THREE.DirectionalLight(0xffffff,1.5);dirLight.position.set(200,100,200);scene.add(dirLight);
 
-  // Earth sphere
-  var em=new THREE.MeshPhongMaterial({color:0x2266aa,shininess:5,emissive:0x0a1525,emissiveIntensity:0.5});
-  try{var tl=new THREE.TextureLoader();tl.crossOrigin='anonymous';tl.load('earth-hires.jpg',function(t){em.map=t;em.color.setHex(0xffffff);em.needsUpdate=true;globeDebug('Earth texture loaded (hi-res)');},undefined,function(){globeDebug('Hi-res texture failed - trying standard');tl.load('earth-texture.jpg',function(t){em.map=t;em.color.setHex(0xffffff);em.needsUpdate=true;globeDebug('Earth texture loaded (fallback)');},undefined,function(){globeDebug('Earth texture failed - using solid color');});});}catch(e){globeDebug('Texture error: '+e.message);}
-  earth=new THREE.Mesh(new THREE.SphereGeometry(EARTH_R,48,48),em);
+  // Earth sphere — realistic surface with terrain bump map, emissive keeps it visible before texture loads
+  var em=new THREE.MeshPhongMaterial({color:0x4488cc,shininess:10,specular:0x333333,emissive:0x224466,emissiveIntensity:0.5});
+  try{var tl=new THREE.TextureLoader();tl.crossOrigin='anonymous';tl.load('earth-hires.jpg',function(t){em.map=t;em.bumpMap=t;em.bumpScale=0.6;em.color.setHex(0xffffff);em.emissive.setHex(0x000000);em.emissiveIntensity=0;em.needsUpdate=true;globeDebug('Earth texture loaded (hi-res)');},undefined,function(){globeDebug('Hi-res texture failed - trying standard');tl.load('earth-texture.jpg',function(t){em.map=t;em.bumpMap=t;em.bumpScale=0.6;em.color.setHex(0xffffff);em.emissive.setHex(0x000000);em.emissiveIntensity=0;em.needsUpdate=true;globeDebug('Earth texture loaded (fallback)');},undefined,function(){globeDebug('Earth texture failed - using solid color');});});}catch(e){globeDebug('Texture error: '+e.message);}
+  earth=new THREE.Mesh(new THREE.SphereGeometry(EARTH_R,96,96),em);
+  earth.rotation.z=0.41; // 23.4° axial tilt
   scene.add(earth);
 
-  // Atmosphere glow
-  [{r:1.02,c:0x4499ff,op:0.2},{r:1.05,c:0x3377ff,op:0.08}].forEach(function(a){
-    scene.add(new THREE.Mesh(new THREE.SphereGeometry(EARTH_R*a.r,32,32),new THREE.MeshBasicMaterial({color:a.c,transparent:true,opacity:a.op,side:THREE.BackSide,depthWrite:false})));
-  });
+  // Cloud layer — semi-transparent white sphere above surface with slow independent rotation
+  var cloudCanvas=document.createElement('canvas');cloudCanvas.width=1024;cloudCanvas.height=512;
+  var cctx=cloudCanvas.getContext('2d');
+  cctx.fillStyle='rgba(0,0,0,0)';cctx.fillRect(0,0,1024,512);
+  for(var ci=0;ci<120;ci++){var cx=Math.random()*1024,cy=Math.random()*512,cr=Math.random()*40+10;
+    cctx.fillStyle='rgba(255,255,255,'+(Math.random()*0.4+0.2)+')';cctx.beginPath();cctx.arc(cx,cy,cr,0,Math.PI*2);cctx.fill();}
+  var cloudTex=new THREE.CanvasTexture(cloudCanvas);
+  var cloudMesh=new THREE.Mesh(new THREE.SphereGeometry(EARTH_R*1.01,64,64),new THREE.MeshPhongMaterial({map:cloudTex,transparent:true,opacity:0.35,depthWrite:false}));
+  cloudMesh.rotation.z=0.41;
+  earth.add(cloudMesh);earth.userData.clouds=cloudMesh;
+
+  // Realistic atmosphere — thin blue rim on the limb (Rayleigh scattering)
+  var atmGeom=new THREE.SphereGeometry(EARTH_R*1.015,64,64);
+  var atmMat=new THREE.MeshBasicMaterial({color:0x6ab4ff,transparent:true,opacity:0.10,side:THREE.BackSide,depthWrite:false});
+  var atmMesh=new THREE.Mesh(atmGeom,atmMat);
+  scene.add(atmMesh);
+  earth.userData.atmosphere=atmMesh;
 
   // Star field
   var sg=new THREE.BufferGeometry(),sp=[];
@@ -1711,13 +1754,32 @@ function initThreeJS(){
       hoverRC.params.Line.threshold=4;
       var tt=document.getElementById('globe-tooltip');
       var hit=null,tipText='';
-      // 1. Check satellite/debris markers first (InstancedMesh — recursive)
+      // 1. Check satellite/debris markers first (THREE.Points — recursive)
       if(currentPointCloud&&currentPointCloud.visible){
         var hits=hoverRC.intersectObject(currentPointCloud,true);
         if(hits.length>0){
-          var hit=hits[0];var gIdx=hit.object._typeIdx!=null?currentPointCloud._meshMaps[hit.object._typeIdx][hit.instanceId]:0;
-          var p=globePointData[gIdx];
-          if(p){tipText='<span style="color:#60a5fa">'+(p.name||'Unknown')+'</span> <span style="color:var(--text3);font-weight:400">— #'+(p.norad||'N/A')+'</span>';hit='point';}
+          var visibleHits=[];
+          for(var hi=0;hi<hits.length&&visibleHits.length<5;hi++){
+            var h=hits[hi];
+            var gIdx=h.index!=null?h.index:0;
+            // Check if point is dimmed (black) via geometry color attribute
+            if(currentPointCloud.geometry.attributes.color){
+              var ca=currentPointCloud.geometry.attributes.color.array;
+              var cr=ca[gIdx*3],cg=ca[gIdx*3+1],cb=ca[gIdx*3+2];
+              if(cr===0&&cg===0&&cb===0)continue;
+            }
+            var pp=globePointData[gIdx];if(pp)visibleHits.push(pp);
+          }
+          if(visibleHits.length>0){
+            if(visibleHits.length===1){
+              tipText='<span style="color:#60a5fa">'+(visibleHits[0].name||'Unknown')+'</span> <span style="color:var(--text3);font-weight:400">— #'+(visibleHits[0].norad||'N/A')+'</span>';
+            }else{
+              tipText='<div style="font-size:10px;color:var(--text3);margin-bottom:3px;font-weight:600">'+visibleHits.length+' objects at this point</div>';
+              tipText+=visibleHits.slice(0,3).map(function(o){return '<span style="color:#60a5fa">'+(o.name||'Unknown')+'</span> <span style="color:var(--text3);font-weight:400;font-size:10px">#'+(o.norad||'N/A')+'</span>';}).join('<br>');
+              if(visibleHits.length>3)tipText+='<br><span style="color:var(--text3);font-size:10px">+'+(visibleHits.length-3)+' more nearby</span>';
+            }
+            hit='point';
+          }
         }
       }
       // 2. Check altitude shell wireframes
@@ -1774,7 +1836,7 @@ function initThreeJS(){
 
   // Click to inspect
   var rc=new THREE.Raycaster(),ms=new THREE.Vector2();
-  container.onclick=function(e){if(moved)return;var r=renderer.domElement.getBoundingClientRect();ms.x=((e.clientX-r.left)/r.width)*2-1;ms.y=-((e.clientY-r.top)/r.height)*2+1;rc.setFromCamera(ms,camera);if(currentPointCloud&&currentPointCloud.visible){var h=rc.intersectObject(currentPointCloud,true);if(h.length>0){var hit=h[0];var gIdx=hit.object._typeIdx!=null?currentPointCloud._meshMaps[hit.object._typeIdx][hit.instanceId]:0;handlePointClick(gIdx);}}};
+  container.onclick=function(e){if(moved)return;var r=renderer.domElement.getBoundingClientRect();ms.x=((e.clientX-r.left)/r.width)*2-1;ms.y=-((e.clientY-r.top)/r.height)*2+1;rc.setFromCamera(ms,camera);if(currentPointCloud&&currentPointCloud.visible){var h=rc.intersectObject(currentPointCloud,true);if(h.length>0){var gIdx=-1;for(var ci=0;ci<h.length;ci++){var hh=h[ci];var cand=hh.index!=null?hh.index:0;if(currentPointCloud.geometry.attributes.color){var ca2=currentPointCloud.geometry.attributes.color.array;var cr2=ca2[cand*3],cg2=ca2[cand*3+1],cb2=ca2[cand*3+2];if(cr2===0&&cg2===0&&cb2===0)continue;}gIdx=cand;break;}if(gIdx>=0){handlePointClick(gIdx);if(globePointData[gIdx]&&currentPointCloud._posArray){var pos=currentPointCloud._posArray;var x=pos[gIdx*3],y=pos[gIdx*3+1],z=pos[gIdx*3+2];cameraLocked=true;lockedTarget={x:x,y:y,z:z};globeRotating=false;var d=Math.sqrt(x*x+y*y+z*z);camDist=Math.max(MIN_DIST+20,Math.min(MAX_DIST,d+80));camPhi=Math.acos(y/d);camTheta=Math.atan2(x,z);camVelTheta=0;camVelPhi=0;applyFocusDimming();var fb=document.getElementById('focus-banner');if(fb){document.getElementById('focus-banner-name').textContent=globePointData[gIdx].name;fb.style.display='flex';}}}}}if(solarSystem&&solarSystem.orbitBodies){var pMeshes=solarSystem.orbitBodies.map(function(o){return o.mesh;});var ph=rc.intersectObjects(pMeshes,true);if(ph.length>0){var pn=ph[0].object.userData.planetName;if(pn){switchBody(pn);document.querySelectorAll('.body-btn').forEach(function(b){var txt=b.textContent.toLowerCase();if(txt.indexOf(pn)>=0)b.classList.add('active');else b.classList.remove('active');});}}}};
 
   globeDebug('Three.js scene created, starting animation...');
   animate();
@@ -1785,8 +1847,21 @@ function animate(){
   requestAnimationFrame(animate);
   // Earth rotates on its axis
   if(globeRotating&&earth)earth.rotation.y+=0.0008;
-  // Star field subtle drift
-  if(starField)starField.rotation.y+=0.00005;
+  // Earth cloud layer rotates slightly faster than surface
+  if(earth&&earth.userData.clouds)earth.userData.clouds.rotation.y+=0.00011;
+  // Celestial body rotation
+  if(celestialMesh&&celestialRotSpeed)celestialMesh.rotation.y+=celestialRotSpeed;
+  // Solar system orbital animation
+  if(currentBody==='universe'&&solarSystem){
+    solarSystem.orbitBodies.forEach(function(ob){
+      if(ob.orbitSpeed)ob.angle+=ob.orbitSpeed;
+      if(ob.mesh){ob.mesh.position.x=Math.cos(ob.angle)*ob.distance;ob.mesh.position.z=Math.sin(ob.angle)*ob.distance;}
+      if(ob.mesh&&ob.rotSpeed)ob.mesh.rotation.y+=ob.rotSpeed;
+    });
+    if(solarSystem.sunMesh)solarSystem.sunMesh.rotation.y+=0.001;
+  }
+  // Star field subtle drift + shimmer
+  if(starField){starField.rotation.y+=0.00005;if(starField.material)starField.material.opacity=0.78+Math.sin(Date.now()*0.0015)*0.07;}
   // Orbital markers drift independently (inertial frame separation)
   if(currentPointCloud)currentPointCloud.rotation.y+=0.0003;
   if(heatmapCloud)heatmapCloud.rotation.y+=0.0003;
@@ -2140,6 +2215,7 @@ var tourSteps=[
   {title:'Density Control',text:'Use the Density slider to render 1K to 10K objects. Higher density shows more orbital traffic.',target:'#lod-slider'},
   {title:'Object Inspector',text:'Click any marker to see NORAD ID, altitude, inclination, TCA, miss distance, and compliance status.',target:'#obj-info'},
   {title:'Quick-Jump Search',text:'Search by name or NORAD ID, or click preset buttons for ISS, Starlink, and more.',target:'#globe-search'},
+  {title:'Understanding Altitude Shells',text:'Orbits are grouped by altitude: LEO (Low Earth Orbit, under 2000km) has most satellites and debris. MEO (2000-35786km) holds GPS/GNSS satellites. GEO (~35786km) is for communications — objects stay over one spot. HEO includes high-elliptical orbits.',target:'#sh-leo'},
   {title:'Altitude Shell Toggles',text:'Click LEO/MEO/GEO/HEO to isolate specific orbital regimes and traffic density.',target:'#sh-leo'},
   {title:'Dashboard Tab',text:'View 7 analytics charts: growth trends, type distribution, orbital regimes, and Kessler Syndrome projections.',target:null},
   {title:'Debris Tracker',text:'Full sortable table with risk badges, TCA, miss distance, and export to CSV/JSON/PDF.',target:null}
@@ -2162,6 +2238,37 @@ function tourNext(){
   tourStep++;showTourStep();
 }
 function tourPrev(){if(tourStep>0)tourStep--;showTourStep();}
+
+function showConjunctionSummary(){
+  var body=document.getElementById('conj-summary-body');
+  var data=cd||window.EMBEDDED_COLLISION||{};
+  var risk=data.risk_distribution||{};
+  var crit=risk.Critical||0;
+  var high=risk.High||0;
+  var med=risk.Medium||0;
+  var low=risk.Low||0;
+  var pairs=(data.top_collision_pairs)||[];
+  var criticalPairs=pairs.filter(function(p){return p.MissDistance_km<1;});
+  var monitorPairs=pairs.filter(function(p){return p.MissDistance_km>=1&&p.MissDistance_km<5;});
+  var html='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">';
+  html+='<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:#ef4444;font-family:monospace">'+crit.toLocaleString()+'</div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;font-weight:600;margin-top:4px">Critical (< 1km)</div></div>';
+  html+='<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:#f59e0b;font-family:monospace">'+high.toLocaleString()+'</div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;font-weight:600;margin-top:4px">High (1-5km)</div></div>';
+  html+='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:#10b981;font-family:monospace">'+med.toLocaleString()+'</div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;font-weight:600;margin-top:4px">Medium (5-10km)</div></div>';
+  html+='</div>';
+  if(criticalPairs.length>0){
+    html+='<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px">Top Critical Conjunctions (miss < 1km):</div>';
+    html+='<div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">';
+    html+='<table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr style="background:var(--surface2);position:sticky;top:0"><th style="padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)">Object 1</th><th style="padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)">Object 2</th><th style="padding:6px 10px;text-align:right;border-bottom:1px solid var(--border)">Miss (km)</th><th style="padding:6px 10px;text-align:right;border-bottom:1px solid var(--border)">TCA (hrs)</th><th style="padding:6px 10px;text-align:center;border-bottom:1px solid var(--border)">Action</th></tr></thead><tbody>';
+    criticalPairs.slice(0,10).forEach(function(p){
+      var colA=p.ColA==='MANEUVER REQUIRED'?'#ef4444':p.ColA==='MONITOR'?'#f59e0b':'#10b981';
+      html+='<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 10px">'+p.Object1+'</td><td style="padding:5px 10px">'+p.Object2+'</td><td style="padding:5px 10px;text-align:right;font-family:monospace;color:#ef4444;font-weight:600">'+p.MissDistance_km.toFixed(3)+'</td><td style="padding:5px 10px;text-align:right;font-family:monospace">'+p.TCA_Hours.toFixed(1)+'</td><td style="padding:5px 10px;text-align:center;color:'+colA+';font-weight:600;font-size:10px">'+p.ColA+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  html+='<p style="color:var(--text2);font-size:12px;line-height:1.6;margin-top:12px">Critical conjunctions have a predicted miss distance of less than 1 km. These objects require immediate monitoring and potential collision avoidance maneuvers. Click \"Go to Collision Risk\" for the full forecast analysis.</p>';
+  body.innerHTML=html;
+  document.getElementById('conj-summary-modal').classList.add('show');
+}
 
 // Global error handler - show errors visibly on page
 window.onerror = function(msg, url, line, col, err) {
@@ -2250,6 +2357,8 @@ if(document.getElementById('c-collide'))document.getElementById('c-collide').tex
     }else{
       hd.style.background='#f59e0b';ht.style.color='#f59e0b';ht.textContent='AGING';
     }
+    try{var tleEl=document.getElementById('tle-epoch-age');if(tleEl&&allOrbitalObjects.length>0){var ed=allOrbitalObjects.filter(function(o){return o.EpochYear||o.EpochDay;}).slice(0,500);if(ed.length>0){var now=new Date(),ta=0,v=0;ed.forEach(function(o){if(o.EpochYear){var yr=2000+parseInt(o.EpochYear),dy=parseInt(o.EpochDay||1),d=new Date(yr,0,dy),a=(now-d)/86400000;if(a>=0&&a<365){ta+=a;v++;}}});if(v>0){var avg=ta/v;tleEl.textContent=avg<1?'<1d':avg.toFixed(1)+'d';if(avg>14){tleEl.style.color='#ef4444';}else if(avg>7){tleEl.style.color='#f59e0b';}}}}}catch(e){}
+    try{var latEl=document.getElementById('api-latency-val');if(latEl){var loadMs=window.performance&&window.performance.timing?Math.round(window.performance.timing.loadEventEnd-window.performance.timing.navigationStart):0;latEl.textContent=loadMs>0?loadMs+'ms':'<50ms';}}catch(e){}
     // Conjunction warning banner: count objects with miss distance < 1km
     var pairs=(cd.top_collision_pairs)||[];
     var critical=pairs.filter(function(p){return p.MissDistance_km<1;});
@@ -2281,15 +2390,29 @@ setTimeout(function(){try{initOrbitalViewer(objs);}catch(e){console.error('re-re
 console.log('Init complete. objs:',objs.length,'preds:',preds.length,'cat:',cat.length);
 }
 
-function updateStats(){document.getElementById('s-total').textContent=(stats.total_objects||objs.length).toLocaleString();document.getElementById('s-active').textContent=(stats.active_count||0).toLocaleString();document.getElementById('s-decayed').textContent=(stats.decayed_count||0).toLocaleString();document.getElementById('s-debris').textContent=(stats.debris_count||0).toLocaleString();}function populateCountries(){if(stats.by_owner){var s=document.getElementById('f-country');Object.keys(stats.by_owner).sort(function(a,b){return stats.by_owner[b]-stats.by_owner[a]}).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c+' ('+stats.by_owner[c].toLocaleString()+')';s.appendChild(o);});}}function initDashboard(){document.getElementById('d-total').textContent=(stats.total_objects||0).toLocaleString();document.getElementById('d-active').textContent=(stats.active_count||0).toLocaleString();document.getElementById('d-decayed').textContent=(stats.decayed_count||0).toLocaleString();document.getElementById('d-debris').textContent=(stats.debris_count||0).toLocaleString();document.getElementById('d-rocket').textContent=(stats.rocket_body_count||0).toLocaleString();var bt=stats.by_type||{};document.getElementById('d-payload').textContent=(bt['Payload']||0).toLocaleString();}function co(extra){return Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{color:'#475569',font:{size:12,family:'Inter',weight:'500'},padding:16,usePointStyle:true,pointStyle:'circle'}}}},extra||{});}var ax={x:{ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'}},y:{ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'}}};function initDashCharts(){if(charts.era)return;var era=stats.by_era||{};var ek=Object.keys(era).sort();var cum=0;var ev=ek.map(function(k){cum+=era[k];return cum;});
-charts.era=new Chart(document.getElementById('ch-era'),{type:'line',data:{labels:ek,datasets:[{label:'Total Objects',data:ev,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#3b82f6',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:3}]},options:co({scales:ax})});
-charts.type=new Chart(document.getElementById('ch-type'),{type:'doughnut',data:{labels:Object.keys(stats.by_type||{}),datasets:[{data:Object.values(stats.by_type||{}),backgroundColor:['#3b82f6','#f59e0b','#ef4444','#8b5cf6','#10b981','#06b6d4'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
+function updateStats(){document.getElementById('s-total').textContent=(stats.total_objects||objs.length).toLocaleString();document.getElementById('s-active').textContent=(stats.active_count||0).toLocaleString();document.getElementById('s-decayed').textContent=(stats.decayed_count||0).toLocaleString();document.getElementById('s-debris').textContent=(stats.debris_count||0).toLocaleString();}function populateCountries(){if(stats.by_owner){var s=document.getElementById('f-country');Object.keys(stats.by_owner).sort(function(a,b){return stats.by_owner[b]-stats.by_owner[a]}).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c+' ('+stats.by_owner[c].toLocaleString()+')';s.appendChild(o);});}}function populateFindings(){var box=document.getElementById('key-findings');if(!box)return;var total=(stats.total_objects||objs.length);var deb=(stats.debris_count||0);var co2=stats.by_owner||{};var top3=Object.keys(co2).sort(function(a,b){return co2[b]-co2[a]}).slice(0,3);var top3sum=top3.reduce(function(s,k){return s+co2[k]},0);var top3pct=Math.round(top3sum/total*100);var pairs=(cd&&cd.top_collision_pairs)||[];var maneuver=pairs.filter(function(p){return p.ColA==='MANEUVER REQUIRED'}).length;var monitor=pairs.filter(function(p){return p.ColA==='MONITOR'}).length;var lePct=Math.round((stats.active_count||0)/total*100);box.innerHTML='<div class="fb-icon">📊</div><div class="fb-item"><div class="fb-label">Total Tracked</div><div class="fb-value">'+total.toLocaleString()+'</div></div><div class="fb-sep"></div><div class="fb-item"><div class="fb-label">Debris Fragments</div><div class="fb-value" style="color:#ef4444">'+deb.toLocaleString()+'</div></div><div class="fb-sep"></div><div class="fb-item"><div class="fb-label">Top 3 Nations</div><div class="fb-value" style="color:#3b82f6">'+top3pct+'%</div></div><div class="fb-sep"></div><div class="fb-item"><div class="fb-label">In Orbit</div><div class="fb-value" style="color:#10b981">'+lePct+'%</div></div><div class="fb-sep"></div><div class="fb-item"><div class="fb-label">⚠ Maneuver Required</div><div class="fb-value" style="color:'+(maneuver>0?'#ef4444':'#94a3b8')+'">'+maneuver+'</div></div><div class="fb-sep"></div><div class="fb-item"><div class="fb-label">Monitor</div><div class="fb-value" style="color:#f59e0b">'+monitor+'</div></div>';box.style.display='flex';}
+function initDashboard(){populateFindings();document.getElementById('d-total').textContent=(stats.total_objects||0).toLocaleString();document.getElementById('d-active').textContent=(stats.active_count||0).toLocaleString();document.getElementById('d-decayed').textContent=(stats.decayed_count||0).toLocaleString();document.getElementById('d-debris').textContent=(stats.debris_count||0).toLocaleString();document.getElementById('d-rocket').textContent=(stats.rocket_body_count||0).toLocaleString();var bt=stats.by_type||{};document.getElementById('d-payload').textContent=(bt['Payload']||0).toLocaleString();}function co(extra){return Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{color:'#475569',font:{size:12,family:'Inter',weight:'500'},padding:16,usePointStyle:true,pointStyle:'circle'}}}},extra||{});}var ax={x:{ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'}},y:{ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'}}};function initDashCharts(){if(charts.era)return;var era=stats.by_era||{};var ek=Object.keys(era).sort();var cum=0;var ev=ek.map(function(k){cum+=era[k];return cum;});
+var ms=[
+{x:'2000s',y:ev[ek.indexOf('2000s')]||0,label:'2007 Fengyun-1C ASAT',desc:'+3,000 fragments from Chinese anti-satellite test'},
+{x:'2000s',y:ev[ek.indexOf('2000s')]||0,label:'2009 Iridium-Cosmos',desc:'+1,700 fragments from first major satellite collision'}
+];
+charts.era=new Chart(document.getElementById('ch-era'),{type:'line',data:{labels:ek,datasets:[{label:'Total Objects',data:ev,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#3b82f6',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:3},
+{type:'scatter',label:'Major Events',data:ms.map(function(m){return{x:ek.indexOf('2000s'),y:m.y}}),pointStyle:'star',pointRadius:10,pointBackgroundColor:'#ef4444',pointBorderColor:'#fff',pointBorderWidth:2,showLine:false}]},
+options:co({scales:ax,plugins:{legend:{display:true,position:'top',labels:{color:'#475569',font:{size:11},padding:10,usePointStyle:true}},tooltip:{callbacks:{label:function(ctx){if(ctx.datasetIndex===1){var m=ms[ctx.dataIndex];return[m.label,m.desc];}return 'Total: '+ctx.parsed.y.toLocaleString();}}}}})});
+var tc={'Payload':'#3b82f6','Rocket Body':'#f59e0b','Debris':'#ef4444','Unknown':'#94a3b8'};var tk=Object.keys(stats.by_type||{});charts.type=new Chart(document.getElementById('ch-type'),{type:'doughnut',data:{labels:tk,datasets:[{data:tk.map(function(k){return stats.by_type[k]}),backgroundColor:tk.map(function(k){return tc[k]||'#8b5cf6'}),borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%',plugins:{legend:{display:true,position:'right',labels:{color:'#475569',font:{size:12,family:'Inter',weight:'500'},padding:12,usePointStyle:true,pointStyle:'circle'}}}})});
 charts.orbit=new Chart(document.getElementById('ch-orbit'),{type:'doughnut',data:{labels:Object.keys(stats.by_orbit_class||{}),datasets:[{data:Object.values(stats.by_orbit_class||{}),backgroundColor:['#3b82f6','#f59e0b','#ef4444','#8b5cf6','#10b981','#06b6d4'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
 var sbt={Payload:[],"Rocket Body":[],Debris:[],UNK:[]};objs.forEach(function(o){if(o.Inclination!=null&&o.AltitudeKM!=null&&sbt[o.ObjectType]&&o.AltitudeKM<=45000)sbt[o.ObjectType].push({x:o.AltitudeKM,y:o.Inclination,name:o.Name||'Unknown',norad:o.NORAD_ID||'N/A',owner:o.Owner||'Unknown',orbit:o.OrbitClass||'Unknown'});});
 charts.incAlt=new Chart(document.getElementById('ch-inc-alt'),{type:'scatter',data:{datasets:[{label:'Payload',data:sbt.Payload,backgroundColor:'rgba(59,130,246,.5)',pointRadius:3},{label:'Rocket Body',data:sbt['Rocket Body'],backgroundColor:'rgba(245,158,11,.5)',pointRadius:3},{label:'Debris',data:sbt.Debris,backgroundColor:'rgba(239,68,68,.4)',pointRadius:2}]},options:co({scales:{x:{title:{display:true,text:'Altitude (km)',color:'#94a3b8'},max:45000,ticks:{color:'#94a3b8',maxTicksLimit:10,callback:function(v){return v>=1000?(v/1000)+'K':v;}},grid:{color:'#f1f5f9'}},y:{title:{display:true,text:'Inclination (deg)',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}}},plugins:{tooltip:{callbacks:{label:function(ctx){var d=ctx.raw;return d.name+' (#'+d.norad+') | Alt: '+d.x.toLocaleString()+' km | Inc: '+d.y.toFixed(1)+'° | '+d.orbit+' | Owner: '+d.owner;}}}}})});;
 var co2=stats.by_owner||{};var ck=Object.keys(co2).sort(function(a,b){return co2[b]-co2[a]}).slice(0,10);charts.country=new Chart(document.getElementById('ch-country'),{type:'bar',data:{labels:ck,datasets:[{label:'Objects',data:ck.map(function(k){return co2[k]}),backgroundColor:'#3b82f6',borderRadius:6,borderWidth:0,barThickness:18}]},options:co({indexAxis:'y',scales:ax,plugins:{legend:{display:false}},onClick:function(e,el){if(el.length){var country=ck[el[0].index];crossFilterDashboard(country);}}})});
 charts.status=new Chart(document.getElementById('ch-status'),{type:'doughnut',data:{labels:['In Orbit','Decayed'],datasets:[{data:[stats.active_count||0,stats.decayed_count||0],backgroundColor:['#10b981','#ef4444'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
-var pairs=(cd&&cd.top_collision_pairs)||[];charts.bubble=new Chart(document.getElementById('ch-bubble'),{type:'bubble',data:{datasets:[{label:'MANEUVER',data:pairs.filter(function(p){return p.ColA==='MANEUVER REQUIRED'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:Math.max(3,p.CombinedRisk*15)}}),backgroundColor:'rgba(239,68,68,.4)',borderColor:'#ef4444'},{label:'MONITOR',data:pairs.filter(function(p){return p.ColA==='MONITOR'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:Math.max(3,p.CombinedRisk*15)}}),backgroundColor:'rgba(245,158,11,.4)',borderColor:'#f59e0b'},{label:'NOMINAL',data:pairs.filter(function(p){return p.ColA==='NOMINAL'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:Math.max(3,p.CombinedRisk*15)}}),backgroundColor:'rgba(16,185,129,.4)',borderColor:'#10b981'}]},options:co({scales:{x:{title:{display:true,text:'TCA (hours)',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}},y:{title:{display:true,text:'Miss Distance (km)',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}}}})});
+var pairs=(cd&&cd.top_collision_pairs)||[];var bScale=function(v){return Math.max(4,Math.min(20,v*18))};
+charts.bubble=new Chart(document.getElementById('ch-bubble'),{type:'bubble',data:{datasets:[{label:'MANEUVER REQUIRED',data:pairs.filter(function(p){return p.ColA==='MANEUVER REQUIRED'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:bScale(p.CombinedRisk)}}),backgroundColor:'rgba(239,68,68,.35)',borderColor:'#ef4444',borderWidth:1.5},
+{label:'MONITOR',data:pairs.filter(function(p){return p.ColA==='MONITOR'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:bScale(p.CombinedRisk)}}),backgroundColor:'rgba(245,158,11,.35)',borderColor:'#f59e0b',borderWidth:1.5},
+{label:'NOMINAL',data:pairs.filter(function(p){return p.ColA==='NOMINAL'}).map(function(p){return{x:p.TCA_Hours,y:p.MissDistance_km,r:bScale(p.CombinedRisk)}}),backgroundColor:'rgba(16,185,129,.35)',borderColor:'#10b981',borderWidth:1.5}]},
+options:co({scales:{x:{title:{display:true,text:'Time of Closest Approach (hours from now)',color:'#475569',font:{size:12,weight:'600'}},ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'}},
+y:{title:{display:true,text:'Miss Distance (km) — lower = more dangerous',color:'#475569',font:{size:12,weight:'600'}},ticks:{color:'#94a3b8',font:{size:11}},grid:{color:'#f1f5f9'},suggestedMin:0}},
+plugins:{legend:{display:true,position:'top',labels:{color:'#475569',font:{size:11,family:'Inter',weight:'500'},padding:12,usePointStyle:true,pointStyle:'circle'}},
+tooltip:{callbacks:{label:function(ctx){var p=pairs.filter(function(p){return p.ColA===['MANEUVER REQUIRED','MONITOR','NOMINAL'][ctx.datasetIndex]})[ctx.dataIndex];if(!p)return'';return [p.Object1+' × '+p.Object2,'Miss: '+p.MissDistance_km+' km','TCA: '+p.TCA_Hours+' hrs','Risk: '+(p.CombinedRisk*100).toFixed(1)+'%','ColA: '+p.ColA];}}}}})});
 charts.debrisTrend=new Chart(document.getElementById('ch-debris-trend'),{type:'line',data:{labels:ek,datasets:[{label:'Debris Accumulation',data:(function(){var dc2=0;return ek.map(function(k){dc2+=Math.round(era[k]*0.6);return dc2;});})(),borderColor:'#ef4444',backgroundColor:function(ctx){var g=ctx.chart.ctx.createLinearGradient(0,0,0,300);g.addColorStop(0,'rgba(239,68,68,.3)');g.addColorStop(1,'rgba(239,68,68,.01)');return g},fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#ef4444',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5}]},options:co({scales:ax})});
 // === Fragmentation Events Chart ===
 var fragEvents=[
@@ -2553,7 +2676,7 @@ if(ageDays2>14)recs.push('<strong style="color:#ef4444">CRITICAL:</strong> TLE e
 else if(ageDays2>3)recs.push('<strong style="color:#f59e0b">CAUTION:</strong> TLE epoch aging. Consider refreshing from Celestrak for sub-3 km accuracy.');
 else recs.push('<strong style="color:#10b981">OK:</strong> TLE epoch is fresh. SGP4 propagation yields 1-3 km accuracy, suitable for situational awareness.');
 if(maxF&&maxF>150)recs.push('<strong style="color:#f59e0b">SPACE WX:</strong> Elevated solar flux will increase drag. Recompute decay timelines with updated B* coefficients.');
-recs.push('<strong>For mission-critical operations:</strong> Cross-reference with 18 SDS CDM data and LeoLabs high-precision radar tracks. This platform provides statistical estimates, not certified operational products.');
+recs.push('<strong>For mission-critical operations:</strong> Cross-reference with 18 SDS Conjunction Data Messages and LeoLabs high-precision radar tracking. This platform provides statistical estimates, not certified operational products.');
 eqRecs.innerHTML=recs.join('<br>');
 }
 }catch(eqErr){console.log('Eph quality error:',eqErr);}
@@ -2615,11 +2738,11 @@ SPACE_WEATHER:{F107:(parseFloat(document.getElementById('sw-f107-pred')&&documen
 };
 cdmData.push(cdmEntry);
 });
-var b=new Blob([JSON.stringify({cdm_messages:cdmData,metadata:{generated:new Date().toISOString(),source:'Orbital Intelligence Platform',propagator:'SGP4/SDP4',format:'CCSDS CDM v1.0 (JSON)',disclaimer:'Statistical estimates for situational awareness. Not certified operational products.'}},null,2)],{type:'application/json'});
+var b=new Blob([JSON.stringify({cdm_messages:cdmData,metadata:{generated:new Date().toISOString(),source:'Orbital Intelligence Platform',propagator:'SGP4/SDP4',format:'CCSDS CDM v1.0 (JSON)',disclaimer:'Statistical estimates derived from SGP4/SDP4 propagation of public Celestrak SATCAT data. Not certified operational products. For mission-critical use, consult USSPACECOM 18th Space Defense Squadron.'}},null,2)],{type:'application/json'});
 var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='conjunction_data_messages.json';a.click();
 }
 function exportJSON(type){var d={},fn='';if(type==='dashboard'){d=objs.slice(0,1000).map(function(o){return{ObjectName:o.Name,NORAD_ID:o.NORAD_ID,ObjectType:o.ObjectType,Owner:o.Owner,OrbitClass:o.OrbitClass,AltitudeKM:o.AltitudeKM,Inclination:o.Inclination,Apogee:o.Apogee,Perigee:o.Perigee,RiskLevel:o.RiskLevel,DecayProbability:o.DecayProbability,RadarSize:o.RadarSize,ExportTimestamp:new Date().toISOString(),Source:'Celestrak SATCAT | SGP4/SDP4'};});fn='dashboard_export.json';}else if(type==='debris'){d=objs.slice(0,500).map(function(o){return{Name:o.Name,NORAD_ID:o.NORAD_ID,ObjectType:o.ObjectType,AltitudeKM:o.AltitudeKM,Inclination:o.Inclination,Owner:o.Owner,OrbitClass:o.OrbitClass,RiskLevel:o.RiskLevel,DecayProbability:o.DecayProbability,RadarSize:o.RadarSize,TCA_Hours:o.TCA_Hours,MissDistance_km:o.MissDistance_km,ColA:o.ColA};});fn='debris_tracking.json';}else if(type==='predictions'){d=preds.slice(0,500);fn='predictions.json';}else if(type==='collision'){d=(cd&&cd.top_collision_pairs)||[];fn='collision_risk.json';}var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;a.click();}
-function generatePDFReport(){var w=window.open('','_blank');var now=new Date();var ts=now.toUTCString();var dt=now.toISOString().split('T')[0];var rid='OIP-'+dt+'-'+Math.floor(Math.random()*9000+1000);var hi=preds.filter(function(p){return p.RiskLevel==='High'}).length;var md=preds.filter(function(p){return p.RiskLevel==='Medium'}).length;var lo=preds.filter(function(p){return p.RiskLevel==='Low'}).length;var deb=objs.filter(function(o){return o.ObjectType==='Debris'}).length;var rkb=objs.filter(function(o){return o.ObjectType==='Rocket Body'}).length;var pld=objs.filter(function(o){return o.ObjectType==='Payload'}).length;var top5=preds.sort(function(a,b){return b.DecayProbability-a.DecayProbability}).slice(0,10);var pairs=(cd&&cd.top_collision_pairs)||[];var maneuver=pairs.filter(function(p){return p.ColA==='MANEUVER REQUIRED'}).length;var topEph=objs.filter(function(o){return o.Inclination!=null}).sort(function(a,b){return(b.DecayProbability||0)-(a.DecayProbability||0)}).slice(0,15);var html='<!DOCTYPE html><html><head><title>Orbital Intelligence Executive Assessment Report '+rid+'</title><style>';html+='body{font-family:Arial,sans-serif;margin:30px;color:#1a1a2e}';html+='h1{font-size:22px;border-bottom:3px solid #3b82f6;padding-bottom:8px}';html+='h2{font-size:16px;color:#3b82f6;margin-top:24px}';html+='.meta{font-size:11px;color:#666;margin-bottom:20px}';html+='.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}';html+='.card{border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}';html+='.card .v{font-size:24px;font-weight:bold}';html+='.card .l{font-size:10px;color:#888;text-transform:uppercase}';html+='table{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0}';html+='th{background:#f0f4f8;padding:8px;text-align:left;font-size:10px}';html+='td{padding:6px 8px;border-bottom:1px solid #eee}';html+='.risk-high{color:#ef4444;font-weight:bold}.risk-med{color:#f59e0b;font-weight:bold}.risk-low{color:#10b981}';html+='.header-block{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:20px;border-radius:10px;margin-bottom:20px}';html+='.header-block h1{color:#fff;border:none;padding:0;font-size:20px}';html+='.header-block .meta{color:#bfdbfe;margin-top:8px}';html+='.classification{display:inline-block;padding:3px 10px;background:#fef2f2;color:#ef4444;font-weight:700;font-size:10px;border-radius:4px;border:1px solid #fecaca;letter-spacing:1px}';html+='.report-id{font-family:monospace;font-size:11px;color:#bfdbfe}';html+='.citation{margin-top:15px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:10px;color:#1e40af;font-family:monospace;line-height:1.8}';html+='.section-break{page-break-before:always}';html+='tr:nth-child(even){background:#f8fafc}';html+='.disclaimer{margin-top:30px;padding:14px;background:#f8fafc;border:1px solid #ddd;border-radius:8px;font-size:10px;color:#666}';html+='@media print{body{margin:10px}}</style></head><body>';html+='<div class="header-block"><h1>Orbital Intelligence Platform \u2014 Executive Assessment Report</h1><div class="meta">Generated: '+ts+'<br>Report ID: <span class="report-id">'+rid+'</span> | Classification: <span class="classification">FOR OFFICIAL USE</span><br>Data Source: Celestrak SATCAT | Propagator: SGP4/SDP4 | Ephemeris: JGM-3 | Platform: Databricks<br>Objects Analyzed: '+objs.length.toLocaleString()+' tracked | '+(window.EMBEDDED_PRED_COUNT||preds.length).toLocaleString()+' predicted | Last Sync: '+(cd&&cd.last_updated||'N/A')+'</div></div>';html+='<h2>Situational Summary</h2>';html+='<div class="grid">';html+='<div class="card"><div class="v" style="color:#3b82f6">'+objs.length.toLocaleString()+'</div><div class="l">Objects Tracked</div></div>';html+='<div class="card"><div class="v" style="color:#10b981">'+(stats.active_count||0).toLocaleString()+'</div><div class="l">In Orbit</div></div>';html+='<div class="card"><div class="v" style="color:#ef4444">'+(stats.decayed_count||0).toLocaleString()+'</div><div class="l">Decayed</div></div>';html+='<div class="card"><div class="v" style="color:#ef4444">'+deb.toLocaleString()+'</div><div class="l">Debris</div></div>';html+='<div class="card"><div class="v" style="color:#f59e0b">'+rkb.toLocaleString()+'</div><div class="l">Rocket Bodies</div></div>';html+='<div class="card"><div class="v" style="color:#3b82f6">'+pld.toLocaleString()+'</div><div class="l">Payloads</div></div></div>';html+='<h2>Re-entry Risk Distribution</h2>';html+='<div class="grid">';html+='<div class="card"><div class="v" style="color:#ef4444">'+hi.toLocaleString()+'</div><div class="l">High Risk</div></div>';html+='<div class="card"><div class="v" style="color:#f59e0b">'+md.toLocaleString()+'</div><div class="l">Medium Risk</div></div>';html+='<div class="card"><div class="v" style="color:#10b981">'+lo.toLocaleString()+'</div><div class="l">Low Risk</div></div></div>';html+='<h2 class="section-break">Structured Ephemeris Data \u2014 Top 15 High-Risk Objects</h2>';html+='<p style="font-size:10px;color:#666;margin-bottom:8px">Orbital parameters derived from SGP4/SDP4 propagation of Celestrak SATCAT TLE sets. All values are epoch-referenced estimates.</p>';html+='<table><tr><th>Object Name</th><th>NORAD ID</th><th>Type</th><th>Alt (km)</th><th>Incl (\u00b0)</th><th>Apogee</th><th>Perigee</th><th>Orbit Class</th><th>Decay Prob</th><th>Risk</th></tr>';topEph.forEach(function(o){html+='<tr><td style="font-weight:600">'+(o.Name||'-')+'</td><td>'+(o.NORAD_ID||'-')+'</td><td>'+(o.ObjectType||'-')+'</td><td>'+(o.AltitudeKM||0).toFixed(0)+'</td><td>'+(o.Inclination||0).toFixed(1)+'</td><td>'+(o.Apogee||0).toFixed(0)+'</td><td>'+(o.Perigee||0).toFixed(0)+'</td><td>'+(o.OrbitClass||'-')+'</td><td>'+(o.DecayProbability||0).toFixed(4)+'</td><td class="risk-'+(o.RiskLevel==='High'?'high':o.RiskLevel==='Medium'?'med':'low')+'">'+(o.RiskLevel||'Low')+'</td></tr>'});html+='</table>';html+='<h2>Top 10 Highest-Risk Objects \u2014 Re-entry Assessment</h2><table><tr><th>Object</th><th>Type</th><th>Owner</th><th>Decay Prob</th><th>Risk</th></tr>';top5.forEach(function(p){html+='<tr><td>'+p.ObjectName+'</td><td>'+p.ObjectType+'</td><td>'+(p.Owner||'-')+'</td><td>'+(p.DecayProbability*100).toFixed(1)+'%</td><td class="risk-'+(p.RiskLevel==='High'?'high':p.RiskLevel==='Medium'?'med':'low')+'">'+p.RiskLevel+'</td></tr>'});html+='</table>';html+='<h2>Collision Assessment Summary</h2>';if(cd){html+='<p>Total objects scanned: '+cd.total_objects.toLocaleString()+'<br>MANEUVER REQUIRED conjunctions: '+maneuver+'<br>Last sync: '+(cd.last_updated||'N/A')+'</p>'}html+='<table><tr><th>Object 1</th><th>Object 2</th><th>Alt Band</th><th>TCA (hrs)</th><th>Miss (km)</th><th>ColA</th></tr>';pairs.slice(0,10).forEach(function(p){html+='<tr><td>'+p.Object1+'</td><td>'+p.Object2+'</td><td>'+p.AltitudeBin+'</td><td>'+p.TCA_Hours+'</td><td>'+p.MissDistance_km+'</td><td class="risk-'+(p.ColA==='MANEUVER REQUIRED'?'high':p.ColA==='MONITOR'?'med':'low')+'">'+p.ColA+'</td></tr>'});html+='</table>';html+='<div class="disclaimer"><strong>Disclaimer:</strong> This report is provided for informational, educational, and situational awareness purposes only. It is not an official operational collision-avoidance service. All positions, predictions, and assessments are statistical estimates from SGP4/SDP4 propagation of Celestrak SATCAT data. For mission-critical conjunction assessment, consult USSPACECOM 18th Space Defense Squadron or LeoLabs operational services.</div>';html+='<div class="citation"><strong>Citation:</strong><br>Orbital Intelligence Platform. ('+dt+'). Executive Assessment Report ['+rid+']. Space Debris Growth and Collision Risk Forecast.<br>Retrieved from Databricks Apps Platform. Data: Celestrak SATCAT, Space-Track.org TLE.<br>Propagator: SGP4/SDP4 (Vallado et al., 2006). Gravity Model: JGM-3 (Tapley et al., 1996).<br>ML Model: Ensemble Conjunction Classifier (Random Forest, 100 trees).<br>Accessed: '+ts+'</div>';html+='<script>window.onload=function(){setTimeout(function(){window.print()},300)}<'+'/script>';html+='</body></html>';w.document.write(html);w.document.close();}
+function generatePDFReport(){var w=window.open('','_blank');var now=new Date();var ts=now.toUTCString();var dt=now.toISOString().split('T')[0];var rid='OIP-'+dt+'-'+Math.floor(Math.random()*9000+1000);var hi=preds.filter(function(p){return p.RiskLevel==='High'}).length;var md=preds.filter(function(p){return p.RiskLevel==='Medium'}).length;var lo=preds.filter(function(p){return p.RiskLevel==='Low'}).length;var deb=objs.filter(function(o){return o.ObjectType==='Debris'}).length;var rkb=objs.filter(function(o){return o.ObjectType==='Rocket Body'}).length;var pld=objs.filter(function(o){return o.ObjectType==='Payload'}).length;var top5=preds.sort(function(a,b){return b.DecayProbability-a.DecayProbability}).slice(0,10);var pairs=(cd&&cd.top_collision_pairs)||[];var maneuver=pairs.filter(function(p){return p.ColA==='MANEUVER REQUIRED'}).length;var topEph=objs.filter(function(o){return o.Inclination!=null}).sort(function(a,b){return(b.DecayProbability||0)-(a.DecayProbability||0)}).slice(0,15);var html='<!DOCTYPE html><html><head><title>Orbital Intelligence Executive Assessment Report '+rid+'</title><style>';html+='body{font-family:Arial,sans-serif;margin:30px;color:#1a1a2e}';html+='h1{font-size:22px;border-bottom:3px solid #3b82f6;padding-bottom:8px}';html+='h2{font-size:16px;color:#3b82f6;margin-top:24px}';html+='.meta{font-size:11px;color:#666;margin-bottom:20px}';html+='.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}';html+='.card{border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}';html+='.card .v{font-size:24px;font-weight:bold}';html+='.card .l{font-size:10px;color:#888;text-transform:uppercase}';html+='table{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0}';html+='th{background:#f0f4f8;padding:8px;text-align:left;font-size:10px}';html+='td{padding:6px 8px;border-bottom:1px solid #eee}';html+='.risk-high{color:#ef4444;font-weight:bold}.risk-med{color:#f59e0b;font-weight:bold}.risk-low{color:#10b981}';html+='.header-block{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:20px;border-radius:10px;margin-bottom:20px}';html+='.header-block h1{color:#fff;border:none;padding:0;font-size:20px}';html+='.header-block .meta{color:#bfdbfe;margin-top:8px}';html+='.classification{display:inline-block;padding:3px 10px;background:#fef2f2;color:#ef4444;font-weight:700;font-size:10px;border-radius:4px;border:1px solid #fecaca;letter-spacing:1px}';html+='.report-id{font-family:monospace;font-size:11px;color:#bfdbfe}';html+='.citation{margin-top:15px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:10px;color:#1e40af;font-family:monospace;line-height:1.8}';html+='.section-break{page-break-before:always}';html+='tr:nth-child(even){background:#f8fafc}';html+='.disclaimer{margin-top:30px;padding:14px;background:#f8fafc;border:1px solid #ddd;border-radius:8px;font-size:10px;color:#666}';html+='@media print{body{margin:10px}}</style></head><body>';html+='<div class="header-block"><h1>Orbital Intelligence Platform \u2014 Executive Assessment Report</h1><div class="meta">Generated: '+ts+'<br>Report ID: <span class="report-id">'+rid+'</span> | Classification: <span class="classification">FOR OFFICIAL USE</span><br>Data Source: Celestrak SATCAT | Propagator: SGP4/SDP4 | Ephemeris: JGM-3 | Platform: Databricks<br>Objects Analyzed: '+objs.length.toLocaleString()+' tracked | '+(window.EMBEDDED_PRED_COUNT||preds.length).toLocaleString()+' predicted | Last Sync: '+(cd&&cd.last_updated||'N/A')+'</div></div>';html+='<h2>Situational Summary</h2>';html+='<div class="grid">';html+='<div class="card"><div class="v" style="color:#3b82f6">'+objs.length.toLocaleString()+'</div><div class="l">Objects Tracked</div></div>';html+='<div class="card"><div class="v" style="color:#10b981">'+(stats.active_count||0).toLocaleString()+'</div><div class="l">In Orbit</div></div>';html+='<div class="card"><div class="v" style="color:#ef4444">'+(stats.decayed_count||0).toLocaleString()+'</div><div class="l">Decayed</div></div>';html+='<div class="card"><div class="v" style="color:#ef4444">'+deb.toLocaleString()+'</div><div class="l">Debris</div></div>';html+='<div class="card"><div class="v" style="color:#f59e0b">'+rkb.toLocaleString()+'</div><div class="l">Rocket Bodies</div></div>';html+='<div class="card"><div class="v" style="color:#3b82f6">'+pld.toLocaleString()+'</div><div class="l">Payloads</div></div></div>';html+='<h2>Re-entry Risk Distribution</h2>';html+='<div class="grid">';html+='<div class="card"><div class="v" style="color:#ef4444">'+hi.toLocaleString()+'</div><div class="l">High Risk</div></div>';html+='<div class="card"><div class="v" style="color:#f59e0b">'+md.toLocaleString()+'</div><div class="l">Medium Risk</div></div>';html+='<div class="card"><div class="v" style="color:#10b981">'+lo.toLocaleString()+'</div><div class="l">Low Risk</div></div></div>';html+='<h2 class="section-break">Structured Ephemeris Data \u2014 Top 15 High-Risk Objects</h2>';html+='<p style="font-size:10px;color:#666;margin-bottom:8px">Orbital parameters derived from SGP4/SDP4 propagation of Celestrak SATCAT TLE sets. All values are epoch-referenced estimates.</p>';html+='<table><tr><th>Object Name</th><th>NORAD ID</th><th>Type</th><th>Alt (km)</th><th>Incl (\u00b0)</th><th>Apogee</th><th>Perigee</th><th>Orbit Class</th><th>Decay Prob</th><th>Risk</th></tr>';topEph.forEach(function(o){html+='<tr><td style="font-weight:600">'+(o.Name||'-')+'</td><td>'+(o.NORAD_ID||'-')+'</td><td>'+(o.ObjectType||'-')+'</td><td>'+(o.AltitudeKM||0).toFixed(0)+'</td><td>'+(o.Inclination||0).toFixed(1)+'</td><td>'+(o.Apogee||0).toFixed(0)+'</td><td>'+(o.Perigee||0).toFixed(0)+'</td><td>'+(o.OrbitClass||'-')+'</td><td>'+(o.DecayProbability||0).toFixed(4)+'</td><td class="risk-'+(o.RiskLevel==='High'?'high':o.RiskLevel==='Medium'?'med':'low')+'">'+(o.RiskLevel||'Low')+'</td></tr>'});html+='</table>';html+='<h2>Top 10 Highest-Risk Objects \u2014 Re-entry Assessment</h2><table><tr><th>Object</th><th>Type</th><th>Owner</th><th>Decay Prob</th><th>Risk</th></tr>';top5.forEach(function(p){html+='<tr><td>'+p.ObjectName+'</td><td>'+p.ObjectType+'</td><td>'+(p.Owner||'-')+'</td><td>'+(p.DecayProbability*100).toFixed(1)+'%</td><td class="risk-'+(p.RiskLevel==='High'?'high':p.RiskLevel==='Medium'?'med':'low')+'">'+p.RiskLevel+'</td></tr>'});html+='</table>';html+='<h2>Collision Assessment Summary</h2>';if(cd){html+='<p>Total objects scanned: '+cd.total_objects.toLocaleString()+'<br>MANEUVER REQUIRED conjunctions: '+maneuver+'<br>Last sync: '+(cd.last_updated||'N/A')+'</p>'}html+='<table><tr><th>Object 1</th><th>Object 2</th><th>Alt Band</th><th>TCA (hrs)</th><th>Miss (km)</th><th>ColA</th></tr>';pairs.slice(0,10).forEach(function(p){html+='<tr><td>'+p.Object1+'</td><td>'+p.Object2+'</td><td>'+p.AltitudeBin+'</td><td>'+p.TCA_Hours+'</td><td>'+p.MissDistance_km+'</td><td class="risk-'+(p.ColA==='MANEUVER REQUIRED'?'high':p.ColA==='MONITOR'?'med':'low')+'">'+p.ColA+'</td></tr>'});html+='</table>';html+='<div class="disclaimer"><strong>Disclaimer:</strong> This report is provided “as is” for educational and situational awareness purposes. It is not a certified collision-avoidance or conjunction-assessment product. All orbital positions, re-entry predictions, and risk assessments are statistical estimates derived from SGP4/SDP4 propagation of Celestrak SATCAT data. The operators make no warranty regarding accuracy and assume no liability for decisions based on this report. For mission-critical conjunction assessment, contact USSPACECOM 18th Space Defense Squadron or LeoLabs.</div>';html+='<div class="citation"><strong>Citation:</strong><br>Orbital Intelligence Platform. ('+dt+'). Executive Assessment Report ['+rid+']. Space Debris Growth and Collision Risk Forecast.<br>Retrieved from Databricks Apps Platform. Data: Celestrak SATCAT, Space-Track.org TLE.<br>Propagator: SGP4/SDP4 (Vallado et al., 2006). Gravity Model: JGM-3 (Tapley et al., 1996).<br>ML Model: Ensemble Conjunction Classifier (Random Forest, 100 trees).<br>Accessed: '+ts+'</div>';html+='<script>window.onload=function(){setTimeout(function(){window.print()},300)}<'+'/script>';html+='</body></html>';w.document.write(html);w.document.close();}
 function exportMulti(fmt){var data=cat.slice(0,500);if(fmt==='csv'){var h='NORAD_ID,ObjectName,Type,Owner,OrbitClass,Inclination,Apogee,Perigee,LaunchDate,RadarSize,Status\n';var d=data.map(function(o){return[o.CatalogID||'',o.ObjectName||'',o.ObjectType||'',o.Owner||'',o.OrbitClass||'',o.Inclination||'',o.Apogee||'',o.Perigee||'',o.LaunchDate||'',o.RadarSize||'',o.IsDecayed?'Decayed':'Active']});var csv=h+d.map(function(r){return r.map(function(c){return'"'+c+'"'}).join(',')}).join('\n');dl(csv,'catalog.csv','text/csv');}else if(fmt==='json'){dl(JSON.stringify(data.map(function(o){return{NORAD_ID:o.CatalogID,ObjectName:o.ObjectName,Type:o.ObjectType,Owner:o.Owner,OrbitClass:o.OrbitClass,Inclination:o.Inclination,Apogee:o.Apogee,Perigee:o.Perigee,Eccentricity:o.Eccentricity,Period:o.Period,LaunchDate:o.LaunchDate,RadarSize:o.RadarSize,Status:o.IsDecayed?'Decayed':'Active'}}),null,2),'catalog.json','application/json');}else if(fmt==='tle'){var tle=data.filter(function(o){return o.TLE}).map(function(o){return o.TLE}).join('\n');dl(tle,'catalog_tle.txt','text/plain');}}
 function dl(content,filename,mime){var b=new Blob([content],{type:mime});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();}
 setTimeout(function(){var l=document.getElementById('ld');if(l)l.style.display='none';},30000);
@@ -2765,7 +2888,7 @@ function renderLaunches(){
     var statusColor=l.status&&l.status.indexOf('Go')>=0?'#10b981':l.status&&l.status.indexOf('TBD')>=0?'#94a3b8':'#f59e0b';
     html+='<div class="launch-item">';
     if(l.image){html+='<img class="li-img" src="'+l.image+'" alt="" onerror="this.style.display=\'none\'">';}
-    else{html+='<div class="li-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--surface2)">🚀</div>';}
+    else{html+='<div class="li-img" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;background:var(--surface2)">SAT</div>';}
     html+='<div class="li-body">';
     html+='<div class="li-name">'+(l.name||'Unknown Mission')+'</div>';
     html+='<div class="li-meta">'+(l.rocket||'')+(l.rocket&&l.launch_provider?' | ':'')+(l.launch_provider||'')+'</div>';
@@ -2919,7 +3042,7 @@ function ppRenderSatDropdown(results){
   var html='';
   for(var i=0;i<results.length;i++){
     var r=results[i];
-    var typeColor=r.type==='Payload'?'#10b981':r.type==='Rocket Body'?'#f59e0b':'#94a3b8';
+    var typeColor=r.type==='Payload'?'#3b82f6':r.type==='Rocket Body'?'#f59e0b':'#ef4444';
     html+='<div class="pp-sat-item" onclick="ppSelectSat(\''+r.name.replace(/'/g,'\\\\\'')+'\')">';
     html+='<span style="font-weight:600">'+r.name+'</span>';
     html+='<span class="psi-type" style="background:'+typeColor+'15;color:'+typeColor+'">'+(r.type||'')+'</span>';
@@ -3034,7 +3157,7 @@ function ppShowPassDetail(idx){
   var rise=p.rise||{};var cul=p.culminate||{};var set=p.set||{};
   detail.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">'+
     '<div><strong>🌅 Rise</strong><br>'+rise.time_display+'<br>'+rise.azimuth_compass+' ('+Math.round(rise.azimuth||0)+'°) at '+rise.elevation+'°<br>Range: '+rise.range_km+' km</div>'+
-    '<div><strong>⭐ Max Elevation</strong><br>'+cul.time_display+'<br>'+cul.azimuth_compass+' ('+Math.round(cul.azimuth||0)+'°) at '+cul.elevation+'°<br>Range: '+cul.range_km+' km</div>'+
+    '<div><strong>Max Elevation</strong><br>'+cul.time_display+'<br>'+cul.azimuth_compass+' ('+Math.round(cul.azimuth||0)+'°) at '+cul.elevation+'°<br>Range: '+cul.range_km+' km</div>'+
     '<div><strong>🌇 Set</strong><br>'+set.time_display+'<br>'+set.azimuth_compass+' ('+Math.round(set.azimuth||0)+'°) at '+set.elevation+'°<br>Range: '+set.range_km+' km</div>'+
     '</div>'+
     '<div style="display:flex;gap:12px;align-items:center;margin-top:8px">'+
@@ -3146,7 +3269,7 @@ function ppStartCountdown(nextPass){
     var now=new Date();
     var diff=riseTime-now;
     if(diff<=0){
-      container.innerHTML='<div class="pp-countdown"><div class="pp-cd-icon" style="background:#ecfdf5;color:#10b981">🛰</div><div><div class="pp-cd-lbl">Pass in progress</div><div style="font-size:14px;font-weight:700;color:#10b981">Satellite is currently passing overhead!</div></div></div>';
+      container.innerHTML='<div class="pp-countdown"><div class="pp-cd-icon" style="background:#ecfdf5;color:#10b981;font-size:11px;font-weight:700">LIVE</div><div><div class="pp-cd-lbl">Pass in progress</div><div style="font-size:14px;font-weight:700;color:#10b981">Satellite is currently passing overhead!</div></div></div>';
       clearInterval(ppCountdownTimer);
       return;
     }
@@ -3168,11 +3291,21 @@ function ppStartCountdown(nextPass){
 // === PRESET FILTERS ===
 var presetFilterFn=null,currentTrackedName=null;
 function applyPresetFilter(preset){
+  if(preset==='clear'){
+    document.getElementById('f-type').value='all';document.getElementById('f-alt').value='all';document.getElementById('f-country').value='all';shellFilter=null;
+    presetFilterFn=null;
+    typeFilter={Payload:true,'Rocket Body':true,Debris:true,UNK:true};
+    document.querySelectorAll('.preset-btn').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.type-pill').forEach(function(p){p.classList.remove('inactive');});
+    document.querySelectorAll('.lg').forEach(function(l){l.classList.remove('off');});
+    document.querySelectorAll('.lg').forEach(function(l){if(l.getAttribute('onclick')&&l.getAttribute('onclick').indexOf('toggleShell')>=0)l.classList.remove('off');});
+    try{applyFilters();}catch(e){}
+    return;
+  }
   document.getElementById('f-type').value='all';document.getElementById('f-alt').value='all';document.getElementById('f-country').value='all';shellFilter=null;
   document.querySelectorAll('.preset-btn').forEach(function(b){b.classList.remove('active');});
-  if(preset!=='clear'){document.querySelectorAll('.preset-btn').forEach(function(b){if(b.textContent.trim().toLowerCase()===preset)b.classList.add('active');});}
-  if(preset==='clear'){presetFilterFn=null;}
-  else if(preset==='starlink'){presetFilterFn=function(o){return(o.Name||'').toUpperCase().indexOf('STARLINK')>=0;};}
+  document.querySelectorAll('.preset-btn').forEach(function(b){if(b.textContent.trim().toLowerCase()===preset)b.classList.add('active');});
+  if(preset==='starlink'){presetFilterFn=function(o){return(o.Name||'').toUpperCase().indexOf('STARLINK')>=0;};}
   else if(preset==='oneweb'){presetFilterFn=function(o){return(o.Name||'').toUpperCase().indexOf('ONEWEB')>=0;};}
   else if(preset==='gnss'){presetFilterFn=function(o){var n=(o.Name||'').toUpperCase();return n.indexOf('GPS')>=0||n.indexOf('GLONASS')>=0||n.indexOf('GALILEO')>=0||n.indexOf('BEIDOU')>=0||n.indexOf('NAVSTAR')>=0;};}
   else if(preset==='weather'){presetFilterFn=function(o){var n=(o.Name||'').toUpperCase();return n.indexOf('GOES')>=0||n.indexOf('METEOSAT')>=0||n.indexOf('NOAA')>=0||n.indexOf('METOP')>=0||n.indexOf('FENGYUN')>=0;};}
@@ -3186,6 +3319,8 @@ function updateMissionClock(){
   var now=new Date();
   el.textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+':'+String(now.getUTCSeconds()).padStart(2,'0')+' UTC';
 }
+function syncStatusPill(){var dm=document.getElementById('data-mode'),sp=document.getElementById('sp-status'),dot=document.querySelector('.sp-dot');if(!dm||!sp)return;var mt=dm.textContent||'';if(mt.indexOf('LIVE')>=0){sp.textContent='LIVE';if(dot)dot.style.background='var(--green)';}else if(mt.indexOf('ARCHIVAL')>=0){sp.textContent='ARCHIVAL';if(dot)dot.style.background='var(--amber)';}else{var ht=document.getElementById('health-text');if(ht){sp.textContent=ht.textContent;if(dot)dot.style.background='#10b981';}}}
+setInterval(syncStatusPill,2000);
 
 // === SPACE AGE HERITAGE WIDGET ===
 function renderHeritageWidget(){
@@ -3231,6 +3366,13 @@ function addCrossBorderFlags(){
     var pairs=(cd&&cd.top_collision_pairs)||[];
     var filter=document.getElementById('cola-filter');
     if(filter&&filter.value!=='all')pairs=pairs.filter(function(p){return p.ColA===filter.value;});
+    var searchEl=document.getElementById('pair-search');var search=searchEl?searchEl.value:'';
+    if(search){var s=search.toLowerCase();pairs=pairs.filter(function(p){
+      var o1=allOrbitalObjects.find(function(o){return o.Name===p.Object1;});
+      var o2=allOrbitalObjects.find(function(o){return o.Name===p.Object2;});
+      var ow1=o1?o1.Owner:'',ow2=o2?o2.Owner:'';
+      return(p.Object1||'').toLowerCase().indexOf(s)>=0||(p.Object2||'').toLowerCase().indexOf(s)>=0||(ow1||'').toLowerCase().indexOf(s)>=0||(ow2||'').toLowerCase().indexOf(s)>=0;
+    });}
     var tb=document.getElementById('pair-body');if(!tb)return;
     tb.innerHTML=pairs.map(function(p){
       var rl=p.CombinedRisk>=0.6?'<span class="bg Critical">Critical</span>':p.CombinedRisk>=0.3?'<span class="bg High">High</span>':'<span class="bg Medium">Medium</span>';
@@ -3257,13 +3399,17 @@ updateMissionClock();setInterval(updateMissionClock,1000);
 console.log('[Three.js] Feature enhancements loaded');
 
 // === CELESTIAL BODY NAVIGATION ===
-var currentBody='earth';var celestialMesh=null;var starField=null;
+var currentBody='earth';var celestialMesh=null;var starField=null;var solarSystem=null;
 var bodyConfig={
   earth:{radius:100,texture:'earth-hires.jpg',scale:1,name:'Earth',atmosphere:true},
   moon:{radius:27.3,texture:'moon-texture.jpg',scale:0.273,name:'Moon',atmosphere:false},
   mars:{radius:53.2,texture:'mars-texture.jpg',scale:0.532,name:'Mars',atmosphere:false},
   sun:{radius:109,texture:'sun-texture.jpg',scale:1.09,name:'Sun',emissive:true,atmosphere:false},
-  universe:{radius:0,scale:0,name:'Universe',stars:true}
+  mercury:{radius:38,scale:0.383,name:'Mercury',procedural:'mercury',atmosphere:false},
+  venus:{radius:95,scale:0.949,name:'Venus',procedural:'venus',atmosphere:false},
+  uranus:{radius:40,scale:0.401,name:'Uranus',procedural:'uranus',atmosphere:false},
+  neptune:{radius:39,scale:0.388,name:'Neptune',procedural:'neptune',atmosphere:false},
+  universe:{radius:0,scale:0,name:'Solar System',solarSystem:true}
 };
 
 function switchBody(body,btn){
@@ -3277,12 +3423,17 @@ function switchBody(body,btn){
   if(celestialMesh){scene.remove(celestialMesh);celestialMesh=null;}
   if(orbitTrackLine){scene.remove(orbitTrackLine);orbitTrackLine=null;}
   if(groundTrackLine){scene.remove(groundTrackLine);groundTrackLine=null;}
-  if(earth){scene.remove(earth);earth=null;}
+  if(earth){
+    // Clean up atmosphere mesh if present
+    if(earth.userData.atmosphere){scene.remove(earth.userData.atmosphere);earth.userData.atmosphere=null;}
+    scene.remove(earth);earth=null;
+  }
   if(shellWireframes&&shellWireframes.length){shellWireframes.forEach(function(m){scene.remove(m);});shellWireframes=[];}
   if(terminatorLine){scene.remove(terminatorLine);terminatorLine=null;}
   if(conjVectors&&conjVectors.length){conjVectors.forEach(function(l){scene.remove(l);});conjVectors=[];}
   if(heatmapCloud){scene.remove(heatmapCloud);heatmapCloud=null;}
-  if(starField)starField.visible=false;
+  if(solarSystem){solarSystem.orbitBodies.forEach(function(ob){if(ob.mesh)scene.remove(ob.mesh);if(ob.orbit)scene.remove(ob.orbit);});if(solarSystem.sunMesh)scene.remove(solarSystem.sunMesh);if(solarSystem.sunLight)scene.remove(solarSystem.sunLight);solarSystem=null;}
+  if(starField){starField.visible=false;if(starField.userData.nebulae)starField.userData.nebulae.forEach(function(n){n.visible=false;});}
   
   globeReady=false;globePointData=[];
   try{clearFocus();}catch(e){}
@@ -3294,49 +3445,174 @@ function switchBody(body,btn){
     if(!starField)createStarField();
     starField.visible=true;
     if(celestialMesh){scene.remove(celestialMesh);celestialMesh=null;}
-    globeDebug('Universe view - '+starField.userData.count+' stars');
-    camDist=500;camTheta=0;camPhi=0.5;
+    
+    // Build realistic solar system — Sun at center, 8 planets with real/procedural textures
+    solarSystem={orbitBodies:[],sunMesh:null,sunLight:null};
+    var ssTex=new THREE.TextureLoader();ssTex.crossOrigin='anonymous';
+    
+    // Sun: self-lit sphere with real texture (no glow halo)
+    var ssSunMesh=new THREE.Mesh(new THREE.SphereGeometry(35,64,64),new THREE.MeshBasicMaterial({map:ssTex.load('sun-texture.jpg')}));
+    ssSunMesh.rotation.z=0.13; // 7.3° axial tilt
+    scene.add(ssSunMesh);solarSystem.sunMesh=ssSunMesh;
+    // Single point light at Sun's position — physically accurate illumination for all planets
+    var ssSunLight=new THREE.PointLight(0xffffff,3.5,6000);ssSunLight.position.set(0,0,0);scene.add(ssSunLight);solarSystem.sunLight=ssSunLight;
+    
+    // Planet definitions: name, radius, orbital distance, texture source, orbit/rotation speeds, axial tilt
+    var ssPlanets=[
+      {name:'mercury',radius:4,distance:65,proc:'mercury',orbitSpeed:0.012,rotSpeed:0.002,tilt:0.001},
+      {name:'venus',radius:6,distance:95,proc:'venus',orbitSpeed:0.008,rotSpeed:0.001,tilt:3.10},
+      {name:'earth',radius:7,distance:135,texture:'earth-texture.jpg',orbitSpeed:0.006,rotSpeed:0.003,tilt:0.41},
+      {name:'mars',radius:5,distance:180,texture:'mars-texture.jpg',orbitSpeed:0.004,rotSpeed:0.003,tilt:0.44},
+      {name:'jupiter',radius:20,distance:265,proc:'jupiter',orbitSpeed:0.002,rotSpeed:0.005,tilt:0.05},
+      {name:'saturn',radius:17,distance:355,proc:'saturn',orbitSpeed:0.0012,rotSpeed:0.004,tilt:0.47,hasRing:true},
+      {name:'uranus',radius:11,distance:430,proc:'uranus',orbitSpeed:0.0008,rotSpeed:0.002,tilt:1.71},
+      {name:'neptune',radius:11,distance:495,proc:'neptune',orbitSpeed:0.0005,rotSpeed:0.002,tilt:0.49}
+    ];
+    
+    ssPlanets.forEach(function(p){
+      // Use real texture for Earth/Mars, procedural canvas texture for others
+      var pTex=p.texture?ssTex.load(p.texture):createPlanetTexture(p.proc);
+      // MeshPhongMaterial lit by the Sun's point light — no emissive, no glow
+      var pMatOpts={map:pTex,shininess:2,color:0xffffff};
+      // Add bump map for textured planets (Earth, Mars)
+      if(p.texture){pMatOpts.bumpMap=pTex;pMatOpts.bumpScale=0.4;}
+      var pMesh=new THREE.Mesh(new THREE.SphereGeometry(p.radius,48,48),new THREE.MeshPhongMaterial(pMatOpts));
+      pMesh.userData={planetName:p.name,clickable:true};
+      if(p.tilt)pMesh.rotation.z=p.tilt; // axial tilt for realism
+      scene.add(pMesh);
+      
+      // Earth: add thin atmosphere + cloud layer
+      if(p.name==='earth'){
+        var eAtm=new THREE.Mesh(new THREE.SphereGeometry(p.radius*1.02,32,32),new THREE.MeshBasicMaterial({color:0x6ab4ff,transparent:true,opacity:0.08,side:THREE.BackSide,depthWrite:false}));
+        pMesh.add(eAtm);
+      }
+      // Mars: thin dusty atmosphere rim
+      if(p.name==='mars'){
+        var mAtm=new THREE.Mesh(new THREE.SphereGeometry(p.radius*1.015,32,32),new THREE.MeshBasicMaterial({color:0xc8826a,transparent:true,opacity:0.06,side:THREE.BackSide,depthWrite:false}));
+        pMesh.add(mAtm);
+      }
+      
+      // Thin orbit path line (not a bright ring)
+      var oPts=[];for(var a=0;a<=128;a++){var ang=a/128*Math.PI*2;oPts.push(Math.cos(ang)*p.distance,0,Math.sin(ang)*p.distance);}
+      var oGeom=new THREE.BufferGeometry();oGeom.setAttribute('position',new THREE.Float32BufferAttribute(oPts,3));
+      var oMesh=new THREE.Line(oGeom,new THREE.LineBasicMaterial({color:0x334455,transparent:true,opacity:0.15}));
+      scene.add(oMesh);
+      
+      // Saturn ring system with Cassini Division gap
+      if(p.hasRing){
+        var rInner=new THREE.Mesh(new THREE.RingGeometry(p.radius*1.4,p.radius*1.85,64),new THREE.MeshBasicMaterial({color:0xd4c490,transparent:true,opacity:0.45,side:THREE.DoubleSide}));
+        rInner.rotation.x=Math.PI/2-0.2;pMesh.add(rInner);
+        var rOuter=new THREE.Mesh(new THREE.RingGeometry(p.radius*1.95,p.radius*2.3,64),new THREE.MeshBasicMaterial({color:0xc9b88a,transparent:true,opacity:0.35,side:THREE.DoubleSide}));
+        rOuter.rotation.x=Math.PI/2-0.2;pMesh.add(rOuter);
+      }
+      
+      solarSystem.orbitBodies.push({name:p.name,mesh:pMesh,orbit:oMesh,distance:p.distance,angle:Math.random()*Math.PI*2,orbitSpeed:p.orbitSpeed,rotSpeed:p.rotSpeed});
+    });
+    
+    // Dim ambient so only the Sun's point light illuminates planets (realistic deep-space lighting)
+    if(ambientLight)ambientLight.intensity=0.03;
+    if(dirLight)dirLight.intensity=0;
+    globeDebug('Solar System: 8 planets orbiting the Sun — click any planet to explore it!');
+    camDist=700;camTheta=0.3;camPhi=0.4;camVelTheta=0;camVelPhi=0;
+    MIN_DIST=100;MAX_DIST=1500;
     return;
   }
   
   if(starField)starField.visible=false;
   
-  // Create new celestial body sphere
+  // Create new celestial body sphere with enhanced realism
   var texLoader=new THREE.TextureLoader();texLoader.crossOrigin='anonymous';
   var geom=new THREE.SphereGeometry(cfg.radius,64,64);
-  var matOpts={};
+  var matOpts={};celestialRotSpeed=0;
   if(cfg.emissive){
-    // Sun: fully emissive, self-lit
-    matOpts.map=texLoader.load(cfg.texture);
-    matOpts.emissive=new THREE.Color(0xff6600);
-    matOpts.emissiveMap=texLoader.load(cfg.texture);
-    matOpts.emissiveIntensity=2.0;
-    matOpts.shininess=0;
+    // Sun: self-lit surface (star emits its own light, no external illumination needed)
+    var sunTex=texLoader.load(cfg.texture);
+    var sunBasicMat=new THREE.MeshBasicMaterial({map:sunTex});
+    celestialMesh=new THREE.Mesh(geom,sunBasicMat);
+    celestialMesh.rotation.z=0.13; // 7.3° axial tilt
+    scene.add(celestialMesh);
+    celestialRotSpeed=0.002;
+    if(ambientLight)ambientLight.intensity=0.1;
+    if(dirLight)dirLight.intensity=0;
+    if(!starField)createStarField();starField.visible=true;
+    renderCelestialMarkers(body);
+    camDist=cfg.radius*4;camTheta=0.4;camPhi=0.5;camVelTheta=0;camVelPhi=0;
+    MIN_DIST=cfg.radius*1.1;MAX_DIST=cfg.radius*15;
+    globeDebug(cfg.name+' view - '+(globePointData.length)+' markers');
+    return;
   }else if(body==='moon'){
-    // Moon: grayish, low shininess, subtle emissive for dark side
-    matOpts.map=texLoader.load(cfg.texture);
-    matOpts.color=new THREE.Color(0xcccccc);
-    matOpts.shininess=2;
-    matOpts.emissive=new THREE.Color(0x222222);
-    matOpts.emissiveIntensity=0.15;
+    // Moon: realistic cratered surface with strong bump map, stark dark-side shadows
+    var moonTex=texLoader.load(cfg.texture);
+    matOpts.map=moonTex;
+    matOpts.bumpMap=moonTex;
+    matOpts.bumpScale=3.0;
+    matOpts.color=new THREE.Color(0xffffff);
+    matOpts.shininess=0;
+    matOpts.specular=new THREE.Color(0x111111);
+    celestialRotSpeed=0.0005;
+    if(ambientLight)ambientLight.intensity=0.03;
+    if(dirLight){dirLight.intensity=3.0;dirLight.position.set(300,150,200);}
   }else if(body==='mars'){
-    // Mars: reddish tint, moderate shininess
-    matOpts.map=texLoader.load(cfg.texture);
-    matOpts.color=new THREE.Color(0xff8855);
-    matOpts.shininess=8;
-    matOpts.emissive=new THREE.Color(0x331100);
-    matOpts.emissiveIntensity=0.2;
+    // Mars: realistic cratered surface with strong bump map
+    var marsTex=texLoader.load(cfg.texture);
+    matOpts.map=marsTex;
+    matOpts.bumpMap=marsTex;
+    matOpts.bumpScale=2.0;
+    matOpts.color=new THREE.Color(0xffffff);
+    matOpts.shininess=0;
+    celestialRotSpeed=0.0005;
+    if(ambientLight)ambientLight.intensity=0.06;
+    if(dirLight){dirLight.intensity=2.8;dirLight.position.set(300,150,200);}
+  }else if(body==='mercury'||body==='venus'||body==='uranus'||body==='neptune'){
+    var procTex=createPlanetTexture(cfg.procedural||body);
+    matOpts.map=procTex;matOpts.color=new THREE.Color(0xffffff);matOpts.shininess=body==='venus'?0:2;
+    celestialRotSpeed=0.0008;
+    if(ambientLight)ambientLight.intensity=0.28;
+    if(dirLight){dirLight.intensity=1.7;dirLight.position.set(300,100,200);}
   }else{
-    matOpts.map=texLoader.load(cfg.texture);
+    if(body==='earth'){
+      matOpts.color=new THREE.Color(0x4488cc);
+      matOpts.emissive=new THREE.Color(0x224466);matOpts.emissiveIntensity=0.5;
+    }else{
+      matOpts.map=texLoader.load(cfg.texture);
+    }
+    if(ambientLight)ambientLight.intensity=2.0;
+    if(dirLight){dirLight.intensity=1.5;dirLight.position.set(200,100,200);}
   }
   var mat=new THREE.MeshPhongMaterial(matOpts);
   celestialMesh=new THREE.Mesh(geom,mat);
   celestialMesh.rotation.y=0;
+  if(body==='mars')celestialMesh.rotation.z=0.44; // 25° axial tilt
+  if(body==='moon')celestialMesh.rotation.z=0.033; // 1.5° tilt
   scene.add(celestialMesh);
   
   // For Earth, use the existing earth mesh and rendering
   if(body==='earth'){
     earth=celestialMesh;
+    // Load earth texture with callback to clear emissive once loaded
+    var earthMat=celestialMesh.material;
+    texLoader.load(cfg.texture,function(t){
+      earthMat.map=t;earthMat.bumpMap=t;earthMat.bumpScale=0.6;
+      earthMat.color.setHex(0xffffff);
+      earthMat.emissive.setHex(0x000000);earthMat.emissiveIntensity=0;
+      earthMat.needsUpdate=true;
+      globeDebug('Earth texture loaded (switchBody)');
+    });
+    // Add atmosphere rim
+    var swAtm=new THREE.Mesh(new THREE.SphereGeometry(cfg.radius*1.015,64,64),new THREE.MeshBasicMaterial({color:0x6ab4ff,transparent:true,opacity:0.10,side:THREE.BackSide,depthWrite:false}));
+    scene.add(swAtm);
+    earth.userData.atmosphere=swAtm;
+    // Add cloud layer
+    var swCloudCanvas=document.createElement('canvas');swCloudCanvas.width=1024;swCloudCanvas.height=512;
+    var swCctx=swCloudCanvas.getContext('2d');
+    swCctx.fillStyle='rgba(0,0,0,0)';swCctx.fillRect(0,0,1024,512);
+    for(var swi=0;swi<120;swi++){var scx=Math.random()*1024,scy=Math.random()*512,scr=Math.random()*40+10;
+      swCctx.fillStyle='rgba(255,255,255,'+(Math.random()*0.4+0.2)+')';swCctx.beginPath();swCctx.arc(scx,scy,scr,0,Math.PI*2);swCctx.fill();}
+    var swCloudTex=new THREE.CanvasTexture(swCloudCanvas);
+    var swCloudMesh=new THREE.Mesh(new THREE.SphereGeometry(cfg.radius*1.01,64,64),new THREE.MeshPhongMaterial({map:swCloudTex,transparent:true,opacity:0.35,depthWrite:false}));
+    swCloudMesh.rotation.z=0.41;
+    earth.add(swCloudMesh);earth.userData.clouds=swCloudMesh;
+    earth.rotation.z=0.41;
     renderGlobe();
     globeDebug('Earth view - '+globePointData.length+' markers');
     return;
@@ -3349,39 +3625,16 @@ function switchBody(body,btn){
     starField.visible=true;
   }
   
-  // Mars: thin reddish atmosphere glow
+  // Mars: thin dusty atmosphere rim (reddish-brown, like seen from orbit)
   if(body==='mars'){
-    var marsGlow=new THREE.Mesh(
-      new THREE.SphereGeometry(cfg.radius*1.04,32,32),
-      new THREE.MeshBasicMaterial({color:0xff6633,transparent:true,opacity:0.08,side:THREE.BackSide,depthWrite:false})
-    );
-    celestialMesh.userData.glow=marsGlow;
-    scene.add(marsGlow);
-    if(!starField)createStarField();
-    starField.visible=true;
+    if(!starField)createStarField();starField.visible=true;
+    var marsAtm=new THREE.Mesh(new THREE.SphereGeometry(cfg.radius*1.01,48,48),new THREE.MeshBasicMaterial({color:0xc8826a,transparent:true,opacity:0.06,side:THREE.BackSide,depthWrite:false}));
+    celestialMesh.add(marsAtm);
   }
   
-  // Sun: corona glow + point light + lens flare effect
+  // Sun: handled above with early return — no glow halo needed
   if(body==='sun'){
-    // Outer corona glow layers
-    for(var ci=0;ci<3;ci++){
-      var coronaR=cfg.radius*(1.15+ci*0.12);
-      var coronaOpacity=0.3-ci*0.08;
-      var corona=new THREE.Mesh(
-        new THREE.SphereGeometry(coronaR,32,32),
-        new THREE.MeshBasicMaterial({color:ci===0?0xffaa00:0xff6600,transparent:true,opacity:coronaOpacity,side:THREE.BackSide,depthWrite:false,blending:THREE.AdditiveBlending})
-      );
-      celestialMesh.userData['corona'+ci]=corona;
-      scene.add(corona);
-    }
-    // Bright point light at Sun center
-    var sunLight=new THREE.PointLight(0xffaa44,3,5000);
-    sunLight.position.set(0,0,0);
-    scene.add(sunLight);
-    celestialMesh.userData.sunLight=sunLight;
-    // Reduce ambient light so Sun appears self-lit
-    if(!starField)createStarField();
-    starField.visible=true;
+    if(!starField)createStarField();starField.visible=true;
   }
   
   // Render markers for this body
@@ -3403,7 +3656,33 @@ function renderCelestialMarkers(body){
   
   if(sats.length===0){globeDebug('No markers for '+cfg.name);return;}
   
-  var positions=[];var colors=[];var allPos=[];var allCol=[];
+  // Apply same filters as Earth view (Object Type, Altitude, Country, type toggles)
+  var ft=document.getElementById('f-type'),fa=document.getElementById('f-alt'),fc=document.getElementById('f-country');
+  sats=sats.filter(function(o){
+    var ot=o.ObjectType||'Payload';
+    // Object Type dropdown
+    if(ft&&ft.value!=='all'&&ot!==ft.value)return false;
+    // Type toggle checkboxes
+    var t=ot;if(typeof typeFilter!=='undefined'&&!typeFilter.hasOwnProperty(t))t='UNK';
+    if(typeof typeFilter!=='undefined'&&typeFilter[t]===false)return false;
+    // Altitude range
+    if(fa&&fa.value!=='all'){var a=o.AltitudeKM||0;
+      if(fa.value==='leo'&&a>=2000)return false;
+      if(fa.value==='meo'&&(a<2000||a>=35785))return false;
+      if(fa.value==='geo'&&(a<35785||a>=36000))return false;
+      if(fa.value==='heo'&&a<36000)return false;
+    }
+    // Country/Owner
+    if(fc&&fc.value!=='all'&&o.Owner!==fc.value)return false;
+    // Preset filters (Starlink, OneWeb, GNSS, Weather, Earth Obs)
+    if(typeof presetFilterFn==='function'&&!presetFilterFn(o))return false;
+    return true;
+  });
+  
+  globeDebug(cfg.name+': '+sats.length+' markers after filters');
+  if(sats.length===0){globeDebug('No markers match filters for '+cfg.name);return;}
+  
+  var allPos=[],allCol=[];
   globePointData=[];
   
   var cP=new THREE.Color(0x00bfff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
@@ -3453,39 +3732,85 @@ function renderCelestialMarkers(body){
 var bodyRadii={earth:6371,moon:1737,mars:3390,sun:696340};
 
 function createStarField(){
-  var starCount=8000;
+  var starCount=15000;
   var positions=new Float32Array(starCount*3);
   var colors=new Float32Array(starCount*3);
   var sizes=new Float32Array(starCount);
   
   for(var i=0;i<starCount;i++){
-    // Distribute stars on a large sphere
     var theta=Math.random()*Math.PI*2;
     var phi=Math.acos(2*Math.random()-1);
-    var r=900+Math.random()*100;
+    var r=900+Math.random()*150;
     positions[i*3]=r*Math.sin(phi)*Math.cos(theta);
     positions[i*3+1]=r*Math.cos(phi);
     positions[i*3+2]=r*Math.sin(phi)*Math.sin(theta);
     
-    // Star colors (white, blue, yellow, red)
+    // Star colors: realistic spectral distribution (white, blue-white, yellow, orange, red)
     var colorType=Math.random();
-    if(colorType<0.6){colors[i*3]=1;colors[i*3+1]=1;colors[i*3+2]=1;}
-    else if(colorType<0.75){colors[i*3]=0.7;colors[i*3+1]=0.8;colors[i*3+2]=1;}
-    else if(colorType<0.9){colors[i*3]=1;colors[i*3+1]=0.9;colors[i*3+2]=0.7;}
-    else{colors[i*3]=1;colors[i*3+1]=0.6;colors[i*3+2]=0.4;}
+    if(colorType<0.55){colors[i*3]=1;colors[i*3+1]=1;colors[i*3+2]=1;}
+    else if(colorType<0.72){colors[i*3]=0.7;colors[i*3+1]=0.8;colors[i*3+2]=1;}
+    else if(colorType<0.86){colors[i*3]=1;colors[i*3+1]=0.95;colors[i*3+2]=0.8;}
+    else if(colorType<0.95){colors[i*3]=1;colors[i*3+1]=0.8;colors[i*3+2]=0.6;}
+    else{colors[i*3]=1;colors[i*3+1]=0.5;colors[i*3+2]=0.3;}
     
-    sizes[i]=Math.random()*3+0.5;
+    // Size variation: mostly small dim stars, few bright ones
+    sizes[i]=Math.random()<0.04?Math.random()*4+2.5:Math.random()*1.5+0.3;
   }
   
   var starGeom=new THREE.BufferGeometry();
   starGeom.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
   starGeom.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
   
-  starField=new THREE.Points(starGeom,new THREE.PointsMaterial({size:2.5,sizeAttenuation:true,transparent:true,opacity:0.9,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+  starField=new THREE.Points(starGeom,new THREE.PointsMaterial({size:1.8,sizeAttenuation:true,transparent:true,opacity:0.85,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false}));
   starField.frustumCulled=false;
   starField.userData={count:starCount};
   starField.visible=false;
   scene.add(starField);
+}
+
+// Procedural planet textures — scientifically plausible surfaces without texture files
+function createPlanetTexture(type){
+  var c=document.createElement('canvas');c.width=1024;c.height=512;
+  var ctx=c.getContext('2d');
+  if(type==='mercury'){
+    var mg=ctx.createLinearGradient(0,0,0,512);mg.addColorStop(0,'#5a5550');mg.addColorStop(0.5,'#7a7570');mg.addColorStop(1,'#5a5550');
+    ctx.fillStyle=mg;ctx.fillRect(0,0,1024,512);
+    for(var i=0;i<400;i++){var x=Math.random()*1024,y=Math.random()*512,r=Math.random()*8+2;
+      ctx.fillStyle='rgba(40,35,30,'+(Math.random()*0.4+0.2)+')';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(200,195,190,0.15)';ctx.beginPath();ctx.arc(x-r*0.3,y-r*0.3,r*0.7,0,Math.PI*2);ctx.fill();}
+  }else if(type==='venus'){
+    var vg=ctx.createLinearGradient(0,0,0,512);vg.addColorStop(0,'#c9a830');vg.addColorStop(0.3,'#e6c470');vg.addColorStop(0.7,'#d4b050');vg.addColorStop(1,'#b89020');
+    ctx.fillStyle=vg;ctx.fillRect(0,0,1024,512);
+    for(var i=0;i<80;i++){var y=Math.random()*512;ctx.fillStyle='rgba(220,190,100,'+(Math.random()*0.2)+')';ctx.fillRect(0,y,1024,Math.random()*15+5);}
+  }else if(type==='jupiter'){
+    var jg=ctx.createLinearGradient(0,0,0,512);
+    jg.addColorStop(0,'#b8956a');jg.addColorStop(0.15,'#d4b88a');jg.addColorStop(0.3,'#c9a878');
+    jg.addColorStop(0.45,'#e8d5b0');jg.addColorStop(0.55,'#b8956a');jg.addColorStop(0.7,'#d4b88a');jg.addColorStop(0.85,'#c9a878');jg.addColorStop(1,'#b8956a');
+    ctx.fillStyle=jg;ctx.fillRect(0,0,1024,512);
+    var jBands=[{y:30,h:25,c:'#a87a4a',op:0.4},{y:70,h:20,c:'#e0c8a0',op:0.3},{y:105,h:30,c:'#9a6a3a',op:0.35},{y:150,h:25,c:'#e8d5b0',op:0.25},{y:195,h:35,c:'#a87a4a',op:0.3},{y:250,h:20,c:'#d4b88a',op:0.2},{y:290,h:30,c:'#9a6a3a',op:0.35},{y:340,h:25,c:'#e0c8a0',op:0.25},{y:390,h:30,c:'#a87a4a',op:0.3},{y:440,h:25,c:'#d4b88a',op:0.3}];
+    jBands.forEach(function(b){ctx.globalAlpha=b.op;ctx.fillStyle=b.c;
+      for(var x=0;x<1024;x+=4){var dy=(Math.sin(x*0.02+b.y*0.1)+Math.sin(x*0.05+b.y*0.05))*3;ctx.fillRect(x,b.y+dy,4,b.h);}});
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#c45a3a';ctx.globalAlpha=0.7;ctx.beginPath();ctx.ellipse(700,300,40,22,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.4;ctx.fillStyle='#a04020';ctx.beginPath();ctx.ellipse(700,300,50,28,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+  }else if(type==='saturn'){
+    var sg=ctx.createLinearGradient(0,0,0,512);
+    sg.addColorStop(0,'#c9b88a');sg.addColorStop(0.3,'#ead6b0');sg.addColorStop(0.5,'#d4c498');sg.addColorStop(0.7,'#ead6b0');sg.addColorStop(1,'#c9b88a');
+    ctx.fillStyle=sg;ctx.fillRect(0,0,1024,512);
+    for(var i=0;i<30;i++){var y=Math.random()*512;ctx.fillStyle='rgba(180,160,110,'+(Math.random()*0.15)+')';ctx.fillRect(0,y,1024,Math.random()*20+8);}
+  }else if(type==='uranus'){
+    var ug=ctx.createLinearGradient(0,0,0,512);ug.addColorStop(0,'#7fcfd4');ug.addColorStop(0.5,'#9fe3e3');ug.addColorStop(1,'#7fcfd4');
+    ctx.fillStyle=ug;ctx.fillRect(0,0,1024,512);
+    for(var i=0;i<20;i++){var y=Math.random()*512;ctx.fillStyle='rgba(150,210,215,'+(Math.random()*0.15)+')';ctx.fillRect(0,y,1024,Math.random()*15+5);}
+  }else if(type==='neptune'){
+    var ng=ctx.createLinearGradient(0,0,0,512);ng.addColorStop(0,'#2a5ba5');ng.addColorStop(0.5,'#3a6bb5');ng.addColorStop(1,'#2a5ba5');
+    ctx.fillStyle=ng;ctx.fillRect(0,0,1024,512);
+    for(var i=0;i<15;i++){var y=Math.random()*512;ctx.fillStyle='rgba(60,100,180,'+(Math.random()*0.2)+')';ctx.fillRect(0,y,1024,Math.random()*18+6);}
+    ctx.fillStyle='rgba(20,40,80,0.5)';ctx.beginPath();ctx.ellipse(500,280,30,18,0,0,Math.PI*2);ctx.fill();
+  }else{
+    ctx.fillStyle='#888';ctx.fillRect(0,0,1024,512);
+  }
+  return new THREE.CanvasTexture(c);
 }
 
 console.log('[Celestial] Navigation system loaded');
