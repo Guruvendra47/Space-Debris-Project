@@ -2,5 +2,7 @@ entrypoint: python app.py
 
 dependencies:
   - flask
+  - flask-compress
+  - gunicorn
   - skyfield
   - numpy
