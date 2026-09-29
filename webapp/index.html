@@ -1261,19 +1261,20 @@ function applyFocusDimming(){
   if(!currentPointCloud||!lockedTarget)return;
   var posArray=currentPointCloud._posArray,colArray=currentPointCloud._colArray;
   if(!posArray||!colArray)return;
-  var colorAttr=currentPointCloud.geometry.attributes.color;
-  if(!colorAttr)return;
   var fx=lockedTarget.x,fy=lockedTarget.y,fz=lockedTarget.z;
-  for(var i=0;i<globePointData.length;i++){
-    var px=posArray[i*3],py=posArray[i*3+1],pz=posArray[i*3+2];
-    var dx=px-fx,dy=py-fy,dz=pz-fz;
-    if(Math.sqrt(dx*dx+dy*dy+dz*dz)>2){
-      colorAttr.setXYZ(i,0,0,0);
-    }else{
-      colorAttr.setXYZ(i,colArray[i*3],colArray[i*3+1],colArray[i*3+2]);
-    }
+  if(currentPointCloud.children&&currentPointCloud.children.length>0){
+    currentPointCloud.children.forEach(function(child){
+      if(!child.geometry||!child.geometry.attributes.color)return;
+      var colorAttr=child.geometry.attributes.color;
+      var idxMap=child._idxMap;if(!idxMap)return;
+      for(var li=0;li<idxMap.length;li++){var gi=idxMap[li];var px=posArray[gi*3],py=posArray[gi*3+1],pz=posArray[gi*3+2];var dx=px-fx,dy=py-fy,dz=pz-fz;if(Math.sqrt(dx*dx+dy*dy+dz*dz)>2){colorAttr.setXYZ(li,0,0,0);}else{colorAttr.setXYZ(li,colArray[gi*3],colArray[gi*3+1],colArray[gi*3+2]);}}
+      colorAttr.needsUpdate=true;
+    });
+  }else if(currentPointCloud.geometry&&currentPointCloud.geometry.attributes.color){
+    var colorAttr=currentPointCloud.geometry.attributes.color;
+    for(var i=0;i<globePointData.length;i++){var px=posArray[i*3],py=posArray[i*3+1],pz=posArray[i*3+2];var dx=px-fx,dy=py-fy,dz=pz-fz;if(Math.sqrt(dx*dx+dy*dy+dz*dz)>2){colorAttr.setXYZ(i,0,0,0);}else{colorAttr.setXYZ(i,colArray[i*3],colArray[i*3+1],colArray[i*3+2]);}}
+    colorAttr.needsUpdate=true;
   }
-  colorAttr.needsUpdate=true;
 }
 
 function quickJump(name,btnId){
@@ -1640,8 +1641,8 @@ function renderGlobe(){
 
   if(data.length===0){globeDebug('No data to render — globe cleared');return;}
 
-  // Color per type: blue=cyan payloads, amber=rocket, red=debris, grey=unknown
-  var cP=new THREE.Color(0x00bfff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
+  // Color per type: blue payloads, amber=rocket, red=debris, grey=unknown
+  var cP=new THREE.Color(0xbfdbfe),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xdddddd);
   var allPos=[],allCol=[];
   var typePos=[[],[],[],[]],typeCol=[[],[],[],[]],typeIdx=[[],[],[],[]];
   var counts={Payload:0,Debris:0,'Rocket Body':0,Other:0};
@@ -1677,19 +1678,76 @@ function renderGlobe(){
 
   if(allPos.length===0){globeDebug('No valid positions!');return;}
 
-  // Circle dot markers — flat 2D points with circular sprite, color-coded by type
-  var dotCanvas=document.createElement('canvas');dotCanvas.width=64;dotCanvas.height=64;
-  var dotCtx=dotCanvas.getContext('2d');
-  dotCtx.beginPath();dotCtx.arc(32,32,28,0,Math.PI*2);dotCtx.fillStyle='#fff';dotCtx.fill();
-  var dotTexture=new THREE.CanvasTexture(dotCanvas);
-  var dotGeom=new THREE.BufferGeometry();
-  dotGeom.setAttribute('position',new THREE.Float32BufferAttribute(allPos,3));
-  dotGeom.setAttribute('color',new THREE.Float32BufferAttribute(allCol,3));
-  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:8,sizeAttenuation:false,transparent:true,opacity:0.9,vertexColors:true,map:dotTexture,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.5}));
-  currentPointCloud.frustumCulled=false;
+  // 3D-looking shape markers — satellite, rocket body, debris sprites, color-coded by type
+  var satCanvas=document.createElement('canvas');satCanvas.width=128;satCanvas.height=128;
+  var sx=satCanvas.getContext('2d');
+  var pL=sx.createLinearGradient(2,56,50,56);pL.addColorStop(0,'#1a1a1a');pL.addColorStop(.4,'#666');pL.addColorStop(.6,'#777');pL.addColorStop(1,'#1a1a1a');
+  sx.fillStyle=pL;sx.fillRect(2,50,50,16);sx.strokeStyle='#aaa';sx.lineWidth=.8;
+  for(var si=0;si<7;si++){sx.beginPath();sx.moveTo(2+si*8,50);sx.lineTo(2+si*8,66);sx.stroke();}
+  for(var sj=0;sj<3;sj++){sx.beginPath();sx.moveTo(2,50+sj*8);sx.lineTo(52,50+sj*8);sx.stroke();}
+  var pR=sx.createLinearGradient(76,56,126,56);pR.addColorStop(0,'#1a1a1a');pR.addColorStop(.4,'#666');pR.addColorStop(.6,'#777');pR.addColorStop(1,'#1a1a1a');
+  sx.fillStyle=pR;sx.fillRect(76,50,50,16);
+  for(var si2=0;si2<7;si2++){sx.beginPath();sx.moveTo(76+si2*8,50);sx.lineTo(76+si2*8,66);sx.stroke();}
+  for(var sj2=0;sj2<3;sj2++){sx.beginPath();sx.moveTo(76,50+sj2*8);sx.lineTo(126,50+sj2*8);sx.stroke();}
+  sx.fillStyle='#444';sx.fillRect(52,55,6,6);sx.fillRect(70,55,6,6);
+  var bG=sx.createLinearGradient(58,32,70,32);bG.addColorStop(0,'#555');bG.addColorStop(.3,'#ddd');bG.addColorStop(.5,'#fff');bG.addColorStop(.7,'#bbb');bG.addColorStop(1,'#555');
+  sx.fillStyle=bG;sx.fillRect(58,32,12,50);sx.strokeStyle='#777';sx.lineWidth=.6;
+  sx.beginPath();sx.moveTo(58,45);sx.lineTo(70,45);sx.stroke();
+  sx.beginPath();sx.moveTo(58,58);sx.lineTo(70,58);sx.stroke();
+  sx.beginPath();sx.moveTo(58,71);sx.lineTo(70,71);sx.stroke();
+  sx.fillStyle='#999';sx.fillRect(62,20,4,12);
+  sx.beginPath();sx.arc(64,16,6,0,Math.PI*2);sx.fillStyle='#ccc';sx.fill();sx.strokeStyle='#777';sx.lineWidth=.6;sx.stroke();
+  sx.fillStyle='rgba(255,255,255,.6)';sx.fillRect(59,34,1.5,46);
+  var satTexture=new THREE.CanvasTexture(satCanvas);
+  var rktCanvas=document.createElement('canvas');rktCanvas.width=128;rktCanvas.height=128;
+  var rx2=rktCanvas.getContext('2d');
+  var rG=rx2.createLinearGradient(48,20,80,20);rG.addColorStop(0,'#555');rG.addColorStop(.25,'#ddd');rG.addColorStop(.5,'#fff');rG.addColorStop(.75,'#aaa');rG.addColorStop(1,'#444');
+  rx2.fillStyle=rG;rx2.fillRect(48,20,32,72);
+  var nG=rx2.createLinearGradient(48,4,80,4);nG.addColorStop(0,'#555');nG.addColorStop(.5,'#eee');nG.addColorStop(1,'#555');
+  rx2.fillStyle=nG;rx2.beginPath();rx2.moveTo(48,20);rx2.lineTo(64,4);rx2.lineTo(80,20);rx2.closePath();rx2.fill();
+  rx2.strokeStyle='#888';rx2.lineWidth=.5;
+  rx2.beginPath();rx2.moveTo(48,36);rx2.lineTo(80,36);rx2.stroke();
+  rx2.beginPath();rx2.moveTo(48,52);rx2.lineTo(80,52);rx2.stroke();
+  rx2.beginPath();rx2.moveTo(48,68);rx2.lineTo(80,68);rx2.stroke();
+  rx2.beginPath();rx2.moveTo(48,84);rx2.lineTo(80,84);rx2.stroke();
+  rx2.fillStyle='#999';
+  rx2.beginPath();rx2.moveTo(48,80);rx2.lineTo(32,96);rx2.lineTo(48,96);rx2.closePath();rx2.fill();
+  rx2.beginPath();rx2.moveTo(80,80);rx2.lineTo(96,96);rx2.lineTo(80,96);rx2.closePath();rx2.fill();
+  rx2.fillStyle='#333';rx2.fillRect(58,92,12,12);rx2.fillStyle='#555';rx2.fillRect(60,94,8,8);
+  rx2.fillStyle='rgba(255,255,255,.4)';rx2.fillRect(50,22,2,68);
+  var rocketTexture=new THREE.CanvasTexture(rktCanvas);
+  var debCanvas=document.createElement('canvas');debCanvas.width=128;debCanvas.height=128;
+  var dx2=debCanvas.getContext('2d');
+  dx2.fillStyle='#eee';
+  dx2.beginPath();dx2.moveTo(20,50);dx2.lineTo(35,20);dx2.lineTo(55,15);dx2.lineTo(50,35);dx2.lineTo(75,25);dx2.lineTo(95,40);dx2.lineTo(85,55);dx2.lineTo(108,65);dx2.lineTo(90,90);dx2.lineTo(65,85);dx2.lineTo(70,105);dx2.lineTo(40,95);dx2.lineTo(45,70);dx2.lineTo(15,75);dx2.closePath();dx2.fill();
+  dx2.fillStyle='#999';
+  dx2.beginPath();dx2.moveTo(35,20);dx2.lineTo(55,15);dx2.lineTo(50,35);dx2.closePath();dx2.fill();
+  dx2.beginPath();dx2.moveTo(95,40);dx2.lineTo(85,55);dx2.lineTo(108,65);dx2.closePath();dx2.fill();
+  dx2.beginPath();dx2.moveTo(65,85);dx2.lineTo(70,105);dx2.lineTo(40,95);dx2.closePath();dx2.fill();
+  dx2.strokeStyle='#666';dx2.lineWidth=1;
+  dx2.beginPath();dx2.moveTo(30,45);dx2.lineTo(50,55);dx2.lineTo(45,75);dx2.lineTo(70,80);dx2.stroke();
+  dx2.beginPath();dx2.moveTo(80,50);dx2.lineTo(70,70);dx2.lineTo(85,85);dx2.stroke();
+  dx2.fillStyle='#777';
+  dx2.fillRect(40,40,5,5);dx2.fillRect(65,55,4,4);dx2.fillRect(55,75,3,3);
+  var debTexture=new THREE.CanvasTexture(debCanvas);
+  var unkCanvas=document.createElement('canvas');unkCanvas.width=128;unkCanvas.height=128;
+  var ux=unkCanvas.getContext('2d');
+  ux.fillStyle='#ccc';
+  ux.beginPath();ux.moveTo(64,12);ux.lineTo(100,40);ux.lineTo(100,88);ux.lineTo(64,116);ux.lineTo(28,88);ux.lineTo(28,40);ux.closePath();ux.fill();
+  ux.strokeStyle='#888';ux.lineWidth=1;
+  ux.beginPath();ux.moveTo(64,12);ux.lineTo(100,40);ux.lineTo(100,88);ux.lineTo(64,116);ux.lineTo(28,88);ux.lineTo(28,40);ux.closePath();ux.stroke();
+  ux.beginPath();ux.moveTo(64,12);ux.lineTo(64,116);ux.stroke();
+  ux.beginPath();ux.moveTo(28,40);ux.lineTo(100,88);ux.stroke();
+  ux.beginPath();ux.moveTo(100,40);ux.lineTo(28,88);ux.stroke();
+  ux.fillStyle='#666';ux.font='bold 40px sans-serif';ux.textAlign='center';ux.textBaseline='middle';ux.fillText('?',64,64);
+  var unkTexture=new THREE.CanvasTexture(unkCanvas);
+  var typeTextures=[satTexture,rocketTexture,debTexture,unkTexture];
+  var typeSizes=[20,18,16,16];
+  currentPointCloud=new THREE.Group();
   currentPointCloud._posArray=new Float32Array(allPos);
   currentPointCloud._colArray=new Float32Array(allCol);
   currentPointCloud._meshMaps=typeIdx;
+  for(var ti=0;ti<4;ti++){if(typePos[ti].length===0)continue;var tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.Float32BufferAttribute(typePos[ti],3));tg.setAttribute('color',new THREE.Float32BufferAttribute(typeCol[ti],3));var tp=new THREE.Points(tg,new THREE.PointsMaterial({size:typeSizes[ti],sizeAttenuation:false,transparent:true,opacity:0.9,vertexColors:true,map:typeTextures[ti],blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));tp.frustumCulled=false;tp._ti=ti;tp._idxMap=typeIdx[ti];currentPointCloud.add(tp);}
   scene.add(currentPointCloud);
 
   // Heatmap cloud: separate Points for density visualization
@@ -1808,11 +1866,11 @@ function initThreeJS(){
           var visibleHits=[];
           for(var hi=0;hi<hits.length&&visibleHits.length<5;hi++){
             var h=hits[hi];
-            var gIdx=h.index!=null?h.index:0;
-            // Check if point is dimmed (black) via geometry color attribute
-            if(currentPointCloud.geometry.attributes.color){
-              var ca=currentPointCloud.geometry.attributes.color.array;
-              var cr=ca[gIdx*3],cg=ca[gIdx*3+1],cb=ca[gIdx*3+2];
+            var li=h.index!=null?h.index:0;
+            var gIdx=h.object._idxMap?h.object._idxMap[li]:li;
+            if(h.object.geometry.attributes.color){
+              var ca=h.object.geometry.attributes.color.array;
+              var cr=ca[li*3],cg=ca[li*3+1],cb=ca[li*3+2];
               if(cr===0&&cg===0&&cb===0)continue;
             }
             var pp=globePointData[gIdx];if(pp)visibleHits.push(pp);
@@ -1883,7 +1941,7 @@ function initThreeJS(){
 
   // Click to inspect
   var rc=new THREE.Raycaster(),ms=new THREE.Vector2();
-  container.onclick=function(e){if(moved)return;var r=renderer.domElement.getBoundingClientRect();ms.x=((e.clientX-r.left)/r.width)*2-1;ms.y=-((e.clientY-r.top)/r.height)*2+1;rc.setFromCamera(ms,camera);if(currentPointCloud&&currentPointCloud.visible){var h=rc.intersectObject(currentPointCloud,true);if(h.length>0){var gIdx=-1;for(var ci=0;ci<h.length;ci++){var hh=h[ci];var cand=hh.index!=null?hh.index:0;if(currentPointCloud.geometry.attributes.color){var ca2=currentPointCloud.geometry.attributes.color.array;var cr2=ca2[cand*3],cg2=ca2[cand*3+1],cb2=ca2[cand*3+2];if(cr2===0&&cg2===0&&cb2===0)continue;}gIdx=cand;break;}if(gIdx>=0){handlePointClick(gIdx);if(globePointData[gIdx]&&currentPointCloud._posArray){var pos=currentPointCloud._posArray;var x=pos[gIdx*3],y=pos[gIdx*3+1],z=pos[gIdx*3+2];cameraLocked=true;lockedTarget={x:x,y:y,z:z};globeRotating=false;var d=Math.sqrt(x*x+y*y+z*z);camDist=Math.max(MIN_DIST+20,Math.min(MAX_DIST,d+80));camPhi=Math.acos(y/d);camTheta=Math.atan2(x,z);camVelTheta=0;camVelPhi=0;applyFocusDimming();var fb=document.getElementById('focus-banner');if(fb){document.getElementById('focus-banner-name').textContent=globePointData[gIdx].name;fb.style.display='flex';}}}}}if(solarSystem&&solarSystem.orbitBodies){var pMeshes=solarSystem.orbitBodies.map(function(o){return o.mesh;});var ph=rc.intersectObjects(pMeshes,true);if(ph.length>0){var pn=ph[0].object.userData.planetName;if(pn){switchBody(pn);document.querySelectorAll('.body-btn').forEach(function(b){var txt=b.textContent.toLowerCase();if(txt.indexOf(pn)>=0)b.classList.add('active');else b.classList.remove('active');});}}}};
+  container.onclick=function(e){if(moved)return;var r=renderer.domElement.getBoundingClientRect();ms.x=((e.clientX-r.left)/r.width)*2-1;ms.y=-((e.clientY-r.top)/r.height)*2+1;rc.setFromCamera(ms,camera);if(currentPointCloud&&currentPointCloud.visible){var h=rc.intersectObject(currentPointCloud,true);if(h.length>0){var gIdx=-1;for(var ci=0;ci<h.length;ci++){var hh=h[ci];var li=hh.index!=null?hh.index:0;if(hh.object.geometry.attributes.color){var ca2=hh.object.geometry.attributes.color.array;var cr2=ca2[li*3],cg2=ca2[li*3+1],cb2=ca2[li*3+2];if(cr2===0&&cg2===0&&cb2===0)continue;}gIdx=hh.object._idxMap?hh.object._idxMap[li]:li;break;}if(gIdx>=0){handlePointClick(gIdx);if(globePointData[gIdx]&&currentPointCloud._posArray){var pos=currentPointCloud._posArray;var x=pos[gIdx*3],y=pos[gIdx*3+1],z=pos[gIdx*3+2];cameraLocked=true;lockedTarget={x:x,y:y,z:z};globeRotating=false;var d=Math.sqrt(x*x+y*y+z*z);camDist=Math.max(MIN_DIST+20,Math.min(MAX_DIST,d+80));camPhi=Math.acos(y/d);camTheta=Math.atan2(x,z);camVelTheta=0;camVelPhi=0;applyFocusDimming();var fb=document.getElementById('focus-banner');if(fb){document.getElementById('focus-banner-name').textContent=globePointData[gIdx].name;fb.style.display='flex';}}}}}if(solarSystem&&solarSystem.orbitBodies){var pMeshes=solarSystem.orbitBodies.map(function(o){return o.mesh;});var ph=rc.intersectObjects(pMeshes,true);if(ph.length>0){var pn=ph[0].object.userData.planetName;if(pn){switchBody(pn);document.querySelectorAll('.body-btn').forEach(function(b){var txt=b.textContent.toLowerCase();if(txt.indexOf(pn)>=0)b.classList.add('active');else b.classList.remove('active');});}}}};
 
   globeDebug('Three.js scene created, starting animation...');
   animate();
@@ -3718,7 +3776,7 @@ function renderCelestialMarkers(body){
   var allPos=[],allCol=[];
   globePointData=[];
   
-  var cP=new THREE.Color(0x00bfff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
+  var cP=new THREE.Color(0xbfdbfe),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xdddddd);
   
   for(var i=0;i<sats.length;i++){
     var o=sats[i];
@@ -3744,15 +3802,30 @@ function renderCelestialMarkers(body){
   
   if(allPos.length===0)return;
   
-  // Circle dot markers
-  var dotCanvas=document.createElement('canvas');dotCanvas.width=64;dotCanvas.height=64;
-  var dotCtx=dotCanvas.getContext('2d');
-  dotCtx.beginPath();dotCtx.arc(32,32,28,0,Math.PI*2);dotCtx.fillStyle='#fff';dotCtx.fill();
-  var dotTexture=new THREE.CanvasTexture(dotCanvas);
+  // Satellite-shape markers for celestial body
+  var satCanvas2=document.createElement('canvas');satCanvas2.width=128;satCanvas2.height=128;
+  var sx2=satCanvas2.getContext('2d');
+  var pL2=sx2.createLinearGradient(2,56,50,56);pL2.addColorStop(0,'#1a1a1a');pL2.addColorStop(.4,'#666');pL2.addColorStop(.6,'#777');pL2.addColorStop(1,'#1a1a1a');
+  sx2.fillStyle=pL2;sx2.fillRect(2,50,50,16);sx2.strokeStyle='#aaa';sx2.lineWidth=.8;
+  for(var si5=0;si5<7;si5++){sx2.beginPath();sx2.moveTo(2+si5*8,50);sx2.lineTo(2+si5*8,66);sx2.stroke();}
+  for(var sj3=0;sj3<3;sj3++){sx2.beginPath();sx2.moveTo(2,50+sj3*8);sx2.lineTo(52,50+sj3*8);sx2.stroke();}
+  var pR2=sx2.createLinearGradient(76,56,126,56);pR2.addColorStop(0,'#1a1a1a');pR2.addColorStop(.4,'#666');pR2.addColorStop(.6,'#777');pR2.addColorStop(1,'#1a1a1a');
+  sx2.fillStyle=pR2;sx2.fillRect(76,50,50,16);
+  for(var si6=0;si6<7;si6++){sx2.beginPath();sx2.moveTo(76+si6*8,50);sx2.lineTo(76+si6*8,66);sx2.stroke();}
+  for(var sj4=0;sj4<3;sj4++){sx2.beginPath();sx2.moveTo(76,50+sj4*8);sx2.lineTo(126,50+sj4*8);sx2.stroke();}
+  sx2.fillStyle='#444';sx2.fillRect(52,55,6,6);sx2.fillRect(70,55,6,6);
+  var bG2=sx2.createLinearGradient(58,32,70,32);bG2.addColorStop(0,'#555');bG2.addColorStop(.3,'#ddd');bG2.addColorStop(.5,'#fff');bG2.addColorStop(.7,'#bbb');bG2.addColorStop(1,'#555');
+  sx2.fillStyle=bG2;sx2.fillRect(58,32,12,50);sx2.strokeStyle='#777';sx2.lineWidth=.6;
+  sx2.beginPath();sx2.moveTo(58,45);sx2.lineTo(70,45);sx2.stroke();
+  sx2.beginPath();sx2.moveTo(58,58);sx2.lineTo(70,58);sx2.stroke();
+  sx2.fillStyle='#999';sx2.fillRect(62,20,4,12);
+  sx2.beginPath();sx2.arc(64,16,6,0,Math.PI*2);sx2.fillStyle='#ccc';sx2.fill();
+  sx2.fillStyle='rgba(255,255,255,.6)';sx2.fillRect(59,34,1.5,46);
+  var satTexture2=new THREE.CanvasTexture(satCanvas2);
   var dotGeom=new THREE.BufferGeometry();
   dotGeom.setAttribute('position',new THREE.Float32BufferAttribute(allPos,3));
   dotGeom.setAttribute('color',new THREE.Float32BufferAttribute(allCol,3));
-  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:12,sizeAttenuation:false,transparent:true,opacity:0.95,vertexColors:true,map:dotTexture,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.5}));
+  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:20,sizeAttenuation:false,transparent:true,opacity:0.95,vertexColors:true,map:satTexture2,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));
   currentPointCloud.frustumCulled=false;
   currentPointCloud._posArray=new Float32Array(allPos);
   currentPointCloud._colArray=new Float32Array(allCol);
