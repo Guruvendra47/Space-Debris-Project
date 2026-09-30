@@ -112,7 +112,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #gc{will-change:transform;-webkit-transform:translateZ(0);transform:translateZ(0)}
   
   .kr{grid-template-columns:repeat(2,1fr)!important}.k .vl{font-size:20px}.k .ic{width:32px;height:32px;font-size:11px}.k{padding:12px}
-  #gw{flex-direction:column;height:auto}#gc{height:60vh}
+  #gw{flex-direction:column;height:auto}#gc{height:calc(100vh - 160px)}
   .pn{width:100%;max-height:40vh;border-left:none;border-top:1px solid rgba(59,130,246,.15)}
   .nav{display:none!important}.mobile-tabbar{display:flex!important}#hr-actions .ab{display:none!important}#hr-actions .sb{display:none!important}#hr-actions .gp-badge{display:none!important}#mobile-warn{display:none!important}.sh>div[style*="display:flex"]{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;flex-wrap:nowrap}.sh select{flex-shrink:0}.sh button{flex-shrink:0}
   .sc{padding:10px}.sh{flex-direction:column;align-items:flex-start}.sh h2{font-size:17px}
@@ -166,10 +166,8 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Conjunction banner: push below body-nav, not overlapping */
   #conjunction-banner{position:relative!important;top:auto!important;padding:6px 12px!important;font-size:11px!important;margin:0!important}
   
-  /* Globe controls: compact on mobile — hide zoom in/out (use pinch-to-zoom) */
-  .gctl{bottom:60px!important;left:8px!important;right:auto!important;flex-direction:column}
-  .gctl button{width:36px!important;height:36px!important;font-size:14px!important}
-  .gctl button:nth-child(2),.gctl button:nth-child(3),.gctl button:nth-child(4){display:none!important}
+  /* Globe controls: HIDDEN on mobile — use pinch-to-zoom + double-tap to reset */
+  .gctl{display:none!important}
   
   /* Burger menu (panel-toggle): move to BOTTOM-right, NO overlap with body-nav */
   .panel-toggle{top:auto!important;bottom:16px!important;right:16px!important;position:absolute!important}
@@ -253,7 +251,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .metrics-banner .mb-badge .mb-v{font-size:16px}
   .pi .pc{font-size:16px}.pi .mt{font-size:9px}
   .tbd table{min-width:500px;font-size:10px}
-  #gw{height:auto}#gc{height:50vh}
+  #gw{height:auto}#gc{height:calc(100vh - 170px)}
   .pn{max-height:35vh}
   .ft2{font-size:10px}
   /* Mobile table optimization */
@@ -444,18 +442,16 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Fix sidebar: full-width toggle panel, not fixed 220px */
   .pn{width:100%!important;max-height:45vh;border-left:none;border-top:1px solid rgba(59,130,246,.15);position:absolute;bottom:0;left:0;right:0;z-index:50;transform:translateY(100%);transition:transform .3s ease}
   .pn.open{transform:translateY(0)}
-  #gw{height:100vh!important;flex-direction:column!important}
-  #gc{height:100vh!important;flex:1}
+  #gw{height:calc(100vh - 160px)!important;flex-direction:column!important}
+  #gc{height:calc(100vh - 160px)!important;flex:1}
   .panel-toggle{display:flex!important;position:absolute;top:auto;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
   
   /* Body navigation: static flow, no overlap */
   .body-nav{position:relative;top:auto;left:auto;transform:none;gap:4px;padding:4px;border-radius:0;max-width:100%;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid rgba(59,130,246,.2)}
   .body-btn{padding:5px 10px;font-size:11px;white-space:nowrap}
   
-  /* Globe controls: larger touch targets — hide zoom in/out (pinch-to-zoom) */
-  .gctl button{width:44px!important;height:44px!important;font-size:18px!important;display:flex!important;align-items:center;justify-content:center}
-  .gctl button:nth-child(2),.gctl button:nth-child(3),.gctl button:nth-child(4){display:none!important}
-  .gctl{bottom:80px!important;left:8px!important;right:auto!important;flex-direction:column}
+  /* Globe controls: HIDDEN on mobile — use pinch-to-zoom + double-tap to reset */
+  .gctl{display:none!important}
   
   /* Density slider & visual layers: compact */
   #lod-slider{width:70px!important;height:32px!important}
