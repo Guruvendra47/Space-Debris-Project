@@ -147,7 +147,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .nt{padding:8px 8px;font-size:11px;white-space:nowrap}
   .ac{padding:10px}.ac img{max-width:100%;height:auto}
   .ft2{flex-direction:column;align-items:center;text-align:center;gap:4px;font-size:11px}
-  .cr{grid-template-columns:1fr!important}.cd canvas{max-height:240px}.pi{min-width:0}.tbd table{font-size:11px}
+  .cr{display:block!important;grid-template-columns:none!important}.cd canvas{max-height:240px}.pi{min-width:0}.tbd table{font-size:11px}
   .sw-grid{grid-template-columns:1fr!important}.sw-hero{grid-template-columns:1fr!important}
   
   /* === GLOBE TAB: Clean up overlapping elements === */
@@ -166,9 +166,10 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Conjunction banner: push below body-nav, not overlapping */
   #conjunction-banner{position:relative!important;top:auto!important;padding:6px 12px!important;font-size:11px!important;margin:0!important}
   
-  /* Globe controls: compact on mobile */
-  .gctl{bottom:60px!important;left:8px!important;right:auto!important}
+  /* Globe controls: compact on mobile — hide zoom in/out (use pinch-to-zoom) */
+  .gctl{bottom:60px!important;left:8px!important;right:auto!important;flex-direction:column}
   .gctl button{width:36px!important;height:36px!important;font-size:14px!important}
+  .gctl button:nth-child(2),.gctl button:nth-child(3){display:none!important}
   
   /* Burger menu (panel-toggle): move to BOTTOM-right, NO overlap with body-nav */
   .panel-toggle{top:auto!important;bottom:16px!important;right:16px!important;position:absolute!important}
@@ -186,11 +187,11 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #t-globe [style*="bottom:72px;right:20px"].vl-open{max-height:280px;overflow:visible}
   #t-globe [style*="bottom:72px;right:20px"].vl-open > button{opacity:1;max-height:40px;margin-top:4px}
   
-  /* KP banner: truncate to single line, very compact */
-  .kp-banner{font-size:8px!important;padding:2px 8px!important;margin:0!important;line-height:1.4!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
+  /* KP banner: small but readable, max 2 lines */
+  .kp-banner{font-size:9px!important;padding:3px 10px!important;margin:0!important;line-height:1.3!important;max-height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
   
-  /* Conjunction banner: truncate, very compact */
-  #conjunction-banner{font-size:8px!important;padding:2px 8px!important;line-height:1.4!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
+  /* Conjunction banner: small but readable, max 2 lines */
+  #conjunction-banner{font-size:9px!important;padding:3px 10px!important;line-height:1.3!important;max-height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
   
   /* Density control: compact on mobile */
   #density-control{bottom:60px!important;left:50px!important;padding:6px 8px!important}
@@ -207,9 +208,12 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #t-pred #eph-quality-grid{grid-template-columns:1fr!important;gap:8px!important}
   
   /* === DEBRIS TRACKER: Stack charts vertically, one below another === */
-  #t-debris .cr{display:block!important;grid-template-columns:none!important;gap:0!important;padding:8px!important}
-  #t-debris .cr > .cd{display:block!important;width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important}
+  #t-debris .cr{display:block!important;grid-template-columns:none!important;gap:0!important;padding:8px!important;width:100%!important}
+  #t-debris .cr > .cd{display:block!important;width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important;float:none!important;clear:both!important}
   #t-debris .cd canvas{max-height:260px!important;width:100%!important}
+  /* Override ALL .cr grids on mobile to stack vertically */
+  .cr{display:block!important;grid-template-columns:none!important}
+  .cr > .cd{display:block!important;width:100%!important;float:none!important;margin-bottom:12px!important}
   #t-debris .sh{flex-direction:column!important;align-items:flex-start!important}
   #t-debris .sh > div[style*="display:flex"]{flex-wrap:wrap!important;gap:6px!important}
   #t-debris .eb{font-size:10px!important;padding:5px 10px!important}
@@ -448,9 +452,10 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .body-nav{position:relative;top:auto;left:auto;transform:none;gap:4px;padding:4px;border-radius:0;max-width:100%;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid rgba(59,130,246,.2)}
   .body-btn{padding:5px 10px;font-size:11px;white-space:nowrap}
   
-  /* Globe controls: larger touch targets */
+  /* Globe controls: larger touch targets — hide zoom in/out (pinch-to-zoom) */
   .gctl button{width:44px!important;height:44px!important;font-size:18px!important;display:flex!important;align-items:center;justify-content:center}
-  .gctl{bottom:80px!important;left:8px!important;right:auto!important}
+  .gctl button:nth-child(2),.gctl button:nth-child(3){display:none!important}
+  .gctl{bottom:80px!important;left:8px!important;right:auto!important;flex-direction:column}
   
   /* Density slider & visual layers: compact */
   #lod-slider{width:70px!important;height:32px!important}
@@ -491,7 +496,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Focus banner: mobile-friendly */
   #focus-banner{top:100px!important;font-size:11px!important;padding:4px 10px!important;max-width:80vw}
-  #conjunction-banner{flex-wrap:wrap!important;font-size:8px!important;padding:2px 8px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
+  #conjunction-banner{flex-wrap:wrap!important;font-size:9px!important;padding:3px 10px!important;line-height:1.3!important;max-height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
   
   /* Tooltip: larger text for touch */
   #globe-tooltip{font-size:13px!important;padding:8px 14px!important}
