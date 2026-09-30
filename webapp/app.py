@@ -212,10 +212,26 @@ def _get_space_weather():
     if _space_weather_cache['data'] and (now - _space_weather_cache['ts']) < 300:
         return _space_weather_cache['data']
     
-    kp_data = _fetch_noaa_kp()
-    solar_wind = _fetch_noaa_solar_wind()
-    f107_data = _fetch_noaa_flare_flux()
-    forecast_3day = _fetch_noaa_3day_forecast()
+    try:
+        kp_data = _fetch_noaa_kp()
+    except Exception as e:
+        logger.warning(f'NOAA Kp fetch error: {e}')
+        kp_data = None
+    try:
+        solar_wind = _fetch_noaa_solar_wind()
+    except Exception as e:
+        logger.warning(f'NOAA solar wind fetch error: {e}')
+        solar_wind = None
+    try:
+        f107_data = _fetch_noaa_flare_flux()
+    except Exception as e:
+        logger.warning(f'NOAA F10.7 fetch error: {e}')
+        f107_data = None
+    try:
+        forecast_3day = _fetch_noaa_3day_forecast()
+    except Exception as e:
+        logger.warning(f'NOAA 3-day forecast fetch error: {e}')
+        forecast_3day = None
     
     # Fallback: serve stale cache if all external fetches failed (item 6)
     if not kp_data and not solar_wind and not f107_data and _space_weather_cache['data']:
