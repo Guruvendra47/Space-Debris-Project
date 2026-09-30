@@ -2972,6 +2972,10 @@ var gs=document.getElementById('globe-search');if(gs)gs.onkeyup=function(){_debG
 ['cat-type','cat-status','cat-regime'].forEach(function(id){var el=document.getElementById(id);if(el)el.onchange=function(){_debSearchCat();};});
 },500);
 init();
+// Auto-start guided tour on first visit (localStorage check)
+if(!localStorage.getItem('tourShown')){
+  setTimeout(function(){try{startGuidedTour();localStorage.setItem('tourShown','1');}catch(e){}},1500);
+}
 
 // === Space Weather Tab Functions ===
 var swData=null;var launchData=null;var threatData=null;var kpChart=null;
