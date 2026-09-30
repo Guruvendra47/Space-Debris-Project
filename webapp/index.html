@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Orbital Intelligence - Space Debris Growth and Collision Risk Forecast</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="three.min.js"></script>
@@ -16,7 +16,7 @@
 <script src="embedded_celestial.js"></script>
 <style>
 :root{--bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--border:#e2e8f0;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--accent:#3b82f6;--accent3:#8b5cf6;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;--cyan:#06b6d4;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-lg:0 4px 24px rgba(0,0,0,.06);--r:12px;--rs:8px}
-*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;font-size:14px}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;font-size:14px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent}
 .m{font-family:'JetBrains Mono',monospace}
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000;box-shadow:var(--shadow)}
 .brand{display:flex;align-items:center;gap:10px}.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}.brand h1{font-size:15px;font-weight:700}.brand p{font-size:10px;color:var(--text3);font-weight:500}
@@ -92,12 +92,29 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* Collapsible timeline */
 @media(max-width:1200px){.kr{grid-template-columns:repeat(3,1fr)}.cr,.pr{grid-template-columns:1fr}}
 @media(max-width:900px){.kr{grid-template-columns:repeat(2,1fr)}.cr,.pr{grid-template-columns:1fr}.pn{width:280px}.nav{padding:0 12px}.sc{padding:14px}.hr{gap:6px}.mi{display:none}.gl{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.metrics-banner{flex-wrap:wrap}.metrics-banner .mb-sep{display:none}}
-.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:1000;justify-content:space-around;align-items:center;box-shadow:0 -2px 12px rgba(0,0,0,.08)}.mtb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text3);padding:6px 10px;flex:1;transition:.15s;font-family:inherit}.mtb span{font-size:9px;font-weight:600}.mtb.active{color:var(--accent)}.mobile-more-menu{display:none;position:fixed;bottom:56px;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:999;padding:8px 16px;flex-direction:column;gap:4px;box-shadow:0 -4px 16px rgba(0,0,0,.1)}.mobile-more-menu.open{display:flex}.mobile-more-menu button{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;text-align:left;transition:.15s}.mobile-more-menu button:active{background:var(--accent);color:#fff}
+.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:1000;justify-content:space-around;align-items:center;box-shadow:0 -2px 12px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}.mtb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text3);padding:6px 10px;flex:1;transition:.15s;font-family:inherit}.mtb span{font-size:9px;font-weight:600}.mtb.active{color:var(--accent)}.mobile-more-menu{display:none;position:fixed;bottom:56px;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:999;padding:8px 16px;flex-direction:column;gap:4px;box-shadow:0 -4px 16px rgba(0,0,0,.1)}.mobile-more-menu.open{display:flex}.mobile-more-menu button{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;text-align:left;transition:.15s}.mobile-more-menu button:active{background:var(--accent);color:#fff}
 @media(max-width:768px){
+  /* Safe area for iPhone notch/home indicator */
+  body{padding-top:env(safe-area-inset-top);padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+  .header{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
+  
+  /* Improved touch targets - minimum 44x44px */
+  .ab,.gctl button,.mtb{min-width:44px;min-height:44px}
+  .nt{min-height:44px;padding:12px 16px}
+  .type-pill{min-height:44px;padding:8px 16px}
+  
+  /* Better font sizes for readability */
+  body{font-size:15px}
+  .k .vl{font-size:22px}
+  .tbd table{font-size:12px}
+  
+  /* Mobile performance - reduce globe complexity */
+  #gc{will-change:transform;-webkit-transform:translateZ(0);transform:translateZ(0)}
+  
   .kr{grid-template-columns:repeat(2,1fr)!important}.k .vl{font-size:20px}.k .ic{width:32px;height:32px;font-size:11px}.k{padding:12px}
   #gw{flex-direction:column;height:auto}#gc{height:60vh}
   .pn{width:100%;max-height:40vh;border-left:none;border-top:1px solid rgba(59,130,246,.15)}
-  .nav{display:none!important}.mobile-tabbar{display:flex!important}body{padding-bottom:56px}#hr-actions .ab{display:none!important}#hr-actions .sb{display:none!important}#hr-actions .gp-badge{display:none!important}#mobile-warn{display:none!important}.sh>div[style*="display:flex"]{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;flex-wrap:nowrap}.sh select{flex-shrink:0}.sh button{flex-shrink:0}
+  .nav{display:none!important}.mobile-tabbar{display:flex!important}#hr-actions .ab{display:none!important}#hr-actions .sb{display:none!important}#hr-actions .gp-badge{display:none!important}#mobile-warn{display:none!important}.sh>div[style*="display:flex"]{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;flex-wrap:nowrap}.sh select{flex-shrink:0}.sh button{flex-shrink:0}
   .sc{padding:10px}.sh{flex-direction:column;align-items:flex-start}.sh h2{font-size:17px}
   .tb{padding:10px 12px}.sr{min-width:120px;font-size:12px}.sl{font-size:11px;padding:6px 10px}
   .cr{padding:8px 10px}.cd{padding:14px}.cd canvas{max-height:200px}
@@ -154,6 +171,17 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #gw{height:auto}#gc{height:50vh}
   .pn{max-height:35vh}
   .ft2{font-size:10px}
+  /* Mobile table optimization */
+  .tbd{border-radius:8px;margin:0 -8px}
+  .tbd th,.tbd td{padding:8px 6px;white-space:nowrap}
+  .tbd thead{position:sticky;top:0;background:var(--surface);z-index:10;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+}
+/* Landscape mode optimization for mobile */
+@media(max-width:768px) and (orientation:landscape){
+  #gc{height:calc(100vh - 120px)!important}
+  .pn{max-height:none;display:none}
+  .mobile-tabbar{height:48px}
+  body{padding-bottom:calc(48px + env(safe-area-inset-bottom))}
 }
 #mobile-warn{display:none;align-items:center;gap:6px;padding:6px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;margin:0 10px 8px;font-size:11px;color:#1e40af;font-weight:600}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -430,7 +458,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   <button class="nt" onclick="showTab(this,'t-academy')" style="color:#10b981" aria-label="Educational Academy">Academy</button>
 </div>
 <div class="api-fallback" id="api-fallback-banner" role="alert"><div class="dot"></div><span class="fb-text">External data feed unavailable — running on cached embedded data.</span></div>
-<div id="mobile-warn" role="alert">📱 Best viewed on desktop — some features may be limited on mobile.</div>
+<div id="mobile-warn" role="alert">📱 Mobile Optimized! 👉 Double-tap globe to reset • Pinch to zoom • Swipe to rotate</div>
 <div id="t-globe" class="tab active">
 <div class="body-nav">
 <button class="body-btn active" onclick="switchBody('earth',this)">🌍 Earth</button>
@@ -472,7 +500,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="collap open" onclick="toggleCollap(this)">Filter Objects <span class="arrow">▼</span></div>
 <div class="collap-body">
 <div style="padding:14px 18px">
-<div class="ft"><label>Object Type <span style="font-size:9px;color:var(--text3);font-weight:400">(click to toggle multiple)</span></label><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:2px"><button class="type-pill active" data-type="Payload" onclick="toggleTypePill(this,'Payload')" style="background:#00bfff;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Payload</button><button class="type-pill active" data-type="Rocket Body" onclick="toggleTypePill(this,'Rocket Body')" style="background:#ffaa00;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Rocket</button><button class="type-pill active" data-type="Debris" onclick="toggleTypePill(this,'Debris')" style="background:#ff2222;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Debris</button><button class="type-pill" data-type="UNK" onclick="toggleTypePill(this,'UNK')" style="background:#64748b;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Other</button><button onclick="resetTypePills()" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text3);transition:.15s">Reset All</button></div><select id="f-type" style="display:none" onchange="applyFilters()"><option value="all">All Types</option></select></div>
+<div class="ft"><label>Object Type <span style="font-size:9px;color:var(--text3);font-weight:400">(click to toggle multiple)</span></label><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:2px"><button class="type-pill active" data-type="Payload" onclick="toggleTypePill(this,'Payload')" style="background:#00ffff;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Payload</button><button class="type-pill active" data-type="Rocket Body" onclick="toggleTypePill(this,'Rocket Body')" style="background:#ffaa00;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Rocket</button><button class="type-pill active" data-type="Debris" onclick="toggleTypePill(this,'Debris')" style="background:#ff2222;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Debris</button><button class="type-pill" data-type="UNK" onclick="toggleTypePill(this,'UNK')" style="background:#64748b;color:#fff"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px;opacity:.8"></span>Other</button><button onclick="resetTypePills()" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text3);transition:.15s">Reset All</button></div><select id="f-type" style="display:none" onchange="applyFilters()"><option value="all">All Types</option></select></div>
 <div class="ft"><label>Altitude Range</label><select id="f-alt" onchange="applyFilters()"><option value="all">All Altitudes</option><option value="leo">LEO (under 2000 km)</option><option value="meo">MEO (2000-35785)</option><option value="geo">GEO (35785-36000)</option><option value="heo">HEO (over 36000)</option></select></div>
 <div class="ft" style="margin-bottom:0"><label>Owner / Country</label><select id="f-country" onchange="applyFilters()"><option value="all">All Countries</option></select></div>
 <div style="padding:10px 0 0"><label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500">Preset Filters</label><div class="preset-filters" style="padding:0"><button class="preset-btn" onclick="applyPresetFilter('starlink')">Starlink</button><button class="preset-btn" onclick="applyPresetFilter('oneweb')">OneWeb</button><button class="preset-btn" onclick="applyPresetFilter('gnss')">GNSS</button><button class="preset-btn" onclick="applyPresetFilter('weather')">Weather</button><button class="preset-btn" onclick="applyPresetFilter('earthobs')">Earth Obs</button><button class="preset-btn" onclick="applyPresetFilter('clear')" style="color:#ef4444;border-color:#fecaca">✕ Clear</button></div></div>
@@ -537,7 +565,7 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div style="font-size:10px;color:var(--text3);margin-top:8px;text-align:center">Click any marker on the globe for live data</div>
 </div></div>
 <div class="pb" id="panel-cl"><h3 style="display:flex;justify-content:space-between;align-items:center">Color Legend <span onclick="toggleSection('panel-cl')" style="cursor:pointer;font-size:14px;color:var(--text3);padding:0 4px" title="Collapse panel">▼</span></h3>
-<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00bfff" id="lg-payload"></div>Payload (Active Satellite)</div>
+<div class="lg" onclick="toggleType('Payload')"><div class="d" style="background:#00ffff" id="lg-payload"></div>Payload (Active Satellite)</div>
 <div class="lg" onclick="toggleType('Rocket Body')"><div class="d" style="background:#ffaa00" id="lg-rocket"></div>Rocket Body</div>
 <div class="lg" onclick="toggleType('Debris')"><div class="d" style="background:#ff2222" id="lg-debris"></div>Debris Fragment</div>
 <div class="lg" onclick="toggleType('UNK')"><div class="d" style="background:#aaaaaa" id="lg-unk"></div>Unclassified / Other</div>
@@ -1201,7 +1229,9 @@ var camTheta=0.4,camPhi=0.5,camDist=400;
 var camVelTheta=0,camVelPhi=0;
 var MIN_DIST=108,MAX_DIST=1500;
 var globeReady=false;
-var globeLOD=5000,shellFilter=null;
+// Mobile detection and performance optimization
+var isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||window.innerWidth<768;
+var globeLOD=isMobile?1500:5000,shellFilter=null;
 var cameraLocked=false,lockedTarget=null,orbitTrackLine=null;
 var activeQuickJump=null;
 var drag=false;
@@ -1641,8 +1671,8 @@ function renderGlobe(){
 
   if(data.length===0){globeDebug('No data to render — globe cleared');return;}
 
-  // Color per type: blue payloads, amber=rocket, red=debris, grey=unknown
-  var cP=new THREE.Color(0xbfdbfe),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xdddddd);
+  // Color per type: blue=cyan payloads, amber=rocket, red=debris, grey=unknown
+  var cP=new THREE.Color(0x00ffff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
   var allPos=[],allCol=[];
   var typePos=[[],[],[],[]],typeCol=[[],[],[],[]],typeIdx=[[],[],[],[]];
   var counts={Payload:0,Debris:0,'Rocket Body':0,Other:0};
@@ -1934,10 +1964,45 @@ function initThreeJS(){
     camDist*=f;
     camDist=Math.max(MIN_DIST,Math.min(MAX_DIST,camDist));
   };
-  // Touch support for mobile
-  container.ontouchstart=function(e){if(e.touches.length===1){drag=true;moved=false;px=e.touches[0].clientX;py=e.touches[0].clientY;camVelTheta=0;camVelPhi=0;}else if(e.touches.length===2){drag=false;var dxp=e.touches[0].clientX-e.touches[1].clientX;var dyp=e.touches[0].clientY-e.touches[1].clientY;pinchDist=Math.sqrt(dxp*dxp+dyp*dyp);}};
+  // Touch support for mobile with double-tap reset
+  var lastTap=0,doubleTapDelay=300;
+  container.ontouchstart=function(e){
+    var now=Date.now();
+    if(e.touches.length===1){
+      // Double-tap to reset camera
+      if(now-lastTap<doubleTapDelay){
+        e.preventDefault();
+        camTheta=0;camPhi=Math.PI/2;camDist=INIT_DIST;
+        if(cameraLocked){toggleCameraLock();}
+        lastTap=0;
+        return;
+      }
+      lastTap=now;
+      drag=true;moved=false;px=e.touches[0].clientX;py=e.touches[0].clientY;camVelTheta=0;camVelPhi=0;
+    }else if(e.touches.length===2){
+      drag=false;var dxp=e.touches[0].clientX-e.touches[1].clientX;var dyp=e.touches[0].clientY-e.touches[1].clientY;pinchDist=Math.sqrt(dxp*dxp+dyp*dyp);
+    }
+  };
   container.ontouchend=function(){drag=false;pinchDist=null;};
-  container.ontouchmove=function(e){if(e.touches.length===1&&drag){e.preventDefault();var dx=e.touches[0].clientX-px,dy=e.touches[0].clientY-py;camVelTheta=dx*0.005;camVelPhi=dy*0.005;camTheta+=camVelTheta;camPhi+=camVelPhi;camPhi=Math.max(0.05,Math.min(Math.PI-0.05,camPhi));px=e.touches[0].clientX;py=e.touches[0].clientY;moved=true;}else if(e.touches.length===2&&pinchDist){e.preventDefault();var dx2=e.touches[0].clientX-e.touches[1].clientX;var dy2=e.touches[0].clientY-e.touches[1].clientY;var newDist=Math.sqrt(dx2*dx2+dy2*dy2);var scale=newDist/pinchDist;camDist=Math.max(MIN_DIST,Math.min(MAX_DIST,camDist/scale));pinchDist=newDist;moved=true;}};
+  container.ontouchmove=function(e){
+    if(e.touches.length===1&&drag){
+      e.preventDefault();
+      var dx=e.touches[0].clientX-px,dy=e.touches[0].clientY-py;
+      // Improved sensitivity for mobile
+      var sensitivity=isMobile?0.007:0.005;
+      camVelTheta=dx*sensitivity;camVelPhi=dy*sensitivity;
+      camTheta+=camVelTheta;camPhi+=camVelPhi;
+      camPhi=Math.max(0.05,Math.min(Math.PI-0.05,camPhi));
+      px=e.touches[0].clientX;py=e.touches[0].clientY;moved=true;
+    }else if(e.touches.length===2&&pinchDist){
+      e.preventDefault();
+      var dx2=e.touches[0].clientX-e.touches[1].clientX;var dy2=e.touches[0].clientY-e.touches[1].clientY;
+      var newDist=Math.sqrt(dx2*dx2+dy2*dy2);
+      var scale=newDist/pinchDist;
+      camDist=Math.max(MIN_DIST,Math.min(MAX_DIST,camDist/scale));
+      pinchDist=newDist;moved=true;
+    }
+  };
 
   // Click to inspect
   var rc=new THREE.Raycaster(),ms=new THREE.Vector2();
@@ -2010,7 +2075,7 @@ function getRefImage(name,type){
   ];
   for(var i=0;i<known.length;i++){if(n.indexOf(known[i].m)>=0)return known[i];}
   // Type-based SVG schematic fallback (no network dependency)
-  var svgP="<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><rect width='320' height='110' fill='#0d1117'/><rect x='28' y='48' width='92' height='14' fill='#0a1628' stroke='#00bfff' stroke-width='1'/><line x1='58' y1='48' x2='58' y2='62' stroke='#00bfff' stroke-width='0.5' opacity='.5'/><line x1='90' y1='48' x2='90' y2='62' stroke='#00bfff' stroke-width='0.5' opacity='.5'/><rect x='130' y='35' width='60' height='40' rx='2' fill='#1a2a3f' stroke='#00bfff' stroke-width='1.5'/><rect x='140' y='42' width='40' height='8' fill='#0d1117'/><rect x='140' y='54' width='40' height='6' fill='#0d1117'/><rect x='200' y='48' width='92' height='14' fill='#0a1628' stroke='#00bfff' stroke-width='1'/><line x1='230' y1='48' x2='230' y2='62' stroke='#00bfff' stroke-width='0.5' opacity='.5'/><line x1='262' y1='48' x2='262' y2='62' stroke='#00bfff' stroke-width='0.5' opacity='.5'/><line x1='160' y1='35' x2='160' y2='20' stroke='#00bfff' stroke-width='1.5'/><circle cx='160' cy='18' r='3' fill='#00bfff'/><text x='160' y='96' text-anchor='middle' fill='#94a3b8' font-size='9' font-family='sans-serif'>Payload \u2014 Satellite Bus with Solar Panels</text></svg>";
+  var svgP="<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><rect width='320' height='110' fill='#0d1117'/><rect x='28' y='48' width='92' height='14' fill='#0a1628' stroke='#00ffff' stroke-width='1'/><line x1='58' y1='48' x2='58' y2='62' stroke='#00ffff' stroke-width='0.5' opacity='.5'/><line x1='90' y1='48' x2='90' y2='62' stroke='#00ffff' stroke-width='0.5' opacity='.5'/><rect x='130' y='35' width='60' height='40' rx='2' fill='#1a2a3f' stroke='#00ffff' stroke-width='1.5'/><rect x='140' y='42' width='40' height='8' fill='#0d1117'/><rect x='140' y='54' width='40' height='6' fill='#0d1117'/><rect x='200' y='48' width='92' height='14' fill='#0a1628' stroke='#00ffff' stroke-width='1'/><line x1='230' y1='48' x2='230' y2='62' stroke='#00ffff' stroke-width='0.5' opacity='.5'/><line x1='262' y1='48' x2='262' y2='62' stroke='#00ffff' stroke-width='0.5' opacity='.5'/><line x1='160' y1='35' x2='160' y2='20' stroke='#00ffff' stroke-width='1.5'/><circle cx='160' cy='18' r='3' fill='#00ffff'/><text x='160' y='96' text-anchor='middle' fill='#94a3b8' font-size='9' font-family='sans-serif'>Payload \u2014 Satellite Bus with Solar Panels</text></svg>";
   var svgR="<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><rect width='320' height='110' fill='#0d1117'/><rect x='145' y='12' width='30' height='8' fill='#1a2a3f' stroke='#ffaa00' stroke-width='1'/><rect x='142' y='20' width='36' height='65' rx='2' fill='#1a2a3f' stroke='#ffaa00' stroke-width='1.5'/><line x1='160' y1='20' x2='160' y2='85' stroke='#ffaa00' stroke-width='0.5' opacity='.4'/><line x1='150' y1='35' x2='170' y2='35' stroke='#ffaa00' stroke-width='0.5' opacity='.4'/><line x1='150' y1='55' x2='170' y2='55' stroke='#ffaa00' stroke-width='0.5' opacity='.4'/><line x1='150' y1='75' x2='170' y2='75' stroke='#ffaa00' stroke-width='0.5' opacity='.4'/><polygon points='142,85 178,85 168,100 152,100' fill='#1a1a2e' stroke='#ffaa00' stroke-width='1.5'/><text x='160' y='108' text-anchor='middle' fill='#94a3b8' font-size='9' font-family='sans-serif'>Rocket Body \u2014 Upper Stage with Nozzle</text></svg>";
   var svgD="<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><rect width='320' height='110' fill='#0d1117'/><polygon points='130,30 190,25 210,50 195,80 150,85 120,60' fill='#2a1515' stroke='#ff2222' stroke-width='1.5'/><polygon points='195,80 225,75 210,95 190,90' fill='#1a1515' stroke='#ff2222' stroke-width='1'/><polygon points='120,60 105,75 120,80' fill='#1a1515' stroke='#ff2222' stroke-width='1'/><line x1='150' y1='30' x2='170' y2='55' stroke='#ff2222' stroke-width='0.5' opacity='.3'/><line x1='180' y1='50' x2='160' y2='75' stroke='#ff2222' stroke-width='0.5' opacity='.3'/><text x='160' y='108' text-anchor='middle' fill='#94a3b8' font-size='9' font-family='sans-serif'>Debris \u2014 Irregular Fragment</text></svg>";
   var svgU="<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><rect width='320' height='110' fill='#0d1117'/><polygon points='160,15 210,55 160,95 110,55' fill='#2a2a2a' stroke='#aaaaaa' stroke-width='1.5'/><line x1='160' y1='15' x2='160' y2='95' stroke='#aaaaaa' stroke-width='0.5' opacity='.3'/><line x1='110' y1='55' x2='210' y2='55' stroke='#aaaaaa' stroke-width='0.5' opacity='.3'/><text x='160' y='108' text-anchor='middle' fill='#94a3b8' font-size='9' font-family='sans-serif'>Unclassified \u2014 Unknown Object</text></svg>";
@@ -3776,7 +3841,7 @@ function renderCelestialMarkers(body){
   var allPos=[],allCol=[];
   globePointData=[];
   
-  var cP=new THREE.Color(0xbfdbfe),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xdddddd);
+  var cP=new THREE.Color(0x00ffff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
   
   for(var i=0;i<sats.length;i++){
     var o=sats[i];
