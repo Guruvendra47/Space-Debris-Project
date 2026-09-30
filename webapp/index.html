@@ -195,6 +195,13 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #density-control{bottom:60px!important;left:50px!important;padding:6px 8px!important}
   #density-control input[type=range]{width:80px!important}
   
+  /* === OPERATIONS TAB: Split-pane → stacked on mobile === */
+  .ops-split{grid-template-columns:1fr!important;gap:8px!important;padding:0 12px!important}
+  .ops-sidebar{position:relative!important;top:auto!important;max-height:none!important;overflow:visible!important}
+  .ops-status-bar{display:flex!important}
+  .ops-toggle{margin:8px 12px!important;max-width:calc(100% - 24px)!important}
+  .ops-weather-more{padding:0 12px!important}
+  
   /* === RE-ENTRY TAB: Fix weather tiles overflow === */
   /* 4-column weather grid → 2 columns on mobile */
   #t-pred [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important;gap:8px!important;padding:8px 12px!important}
@@ -329,6 +336,21 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .const-bar-row .cbr-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:11px;font-weight:700;color:#fff;transition:width .5s ease}
 .const-bar-row .cbr-count{font-size:12px;font-weight:700;width:60px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
 /* Pass Predictions Tab Styles */
+/* Operations split-pane layout */
+.ops-split{display:grid;grid-template-columns:2fr 1fr;gap:16px;padding:0 20px}
+.ops-main{min-width:0}
+.ops-sidebar{display:flex;flex-direction:column;gap:12px;position:sticky;top:10px;max-height:calc(100vh - 120px);overflow-y:auto;overflow-x:hidden;padding-right:4px}
+.ops-sidebar::-webkit-scrollbar{width:4px}
+.ops-sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+.ops-sidebar .sw-card{min-height:auto;padding:14px}
+.ops-sidebar .threat-meter{padding:12px;border-radius:10px}
+.ops-status-bar{display:none;padding:6px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin:8px 20px;gap:12px;font-size:12px;align-items:center;justify-content:center}
+.ops-status-bar span{display:flex;align-items:center;gap:4px;color:var(--text3)}
+.ops-status-bar strong{color:var(--text2);font-family:monospace}
+.ops-toggle{display:block;width:100%;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;margin:8px 20px;max-width:calc(100% - 40px);transition:.15s}
+.ops-toggle:hover{background:var(--surface2)}
+.ops-weather-more{display:none;padding:0 20px}
+.ops-weather-more.open{display:block}
 .pp-container{padding:20px}
 .pp-controls{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr auto auto auto;gap:12px;align-items:end}
 .pp-controls .pp-field{display:flex;flex-direction:column;gap:4px}
@@ -542,8 +564,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <button class="nt" onclick="showTab(this,'t-pred')" aria-label="Re-entry Predictions">Re-entry Predictions</button>
 <button class="nt" onclick="showTab(this,'t-collide')" aria-label="Collision Risk Forecast">Collision Risk</button>
 <button class="nt" onclick="showTab(this,'t-cat')" aria-label="Satellite Catalog">Catalog</button>
-<button class="nt" onclick="showTab(this,'t-passpred')" style="color:#06b6d4" aria-label="Satellite Pass Predictions">Pass Predictions</button>
-  <button class="nt" onclick="showTab(this,'t-spaceweather')" style="color:#f59e0b" aria-label="Space Weather and Events">Space Weather</button>
+<button class="nt" onclick="showTab(this,'t-passpred')" style="color:#06b6d4" aria-label="Satellite Pass Predictions and Space Weather">Operations</button>
   <button class="nt" onclick="showTab(this,'t-academy')" style="color:#10b981" aria-label="Educational Academy">Academy</button>
 </div>
 <div class="api-fallback" id="api-fallback-banner" role="alert"><div class="dot"></div><span class="fb-text">External data feed unavailable — running on cached embedded data.</span></div>
@@ -999,8 +1020,17 @@ print(f'Velocity (km/s): {v}')</pre>
 </div>
 </div>
 <div id="t-passpred" class="tab">
-  <div class="ct-tip"><strong>What This Means:</strong> Predict when satellites will be visible from your location. Enter your coordinates (or auto-detect), search for a satellite, and get pass times with rise/culminate/set events, azimuth direction, elevation angle, and a polar sky chart showing the satellite's path across your sky.</div>
+  <div class="ct-tip"><strong>Operations:</strong> Predict satellite passes from your location while monitoring live space weather. Atmospheric drag and geomagnetic storms directly impact orbit predictions — see both side by side.</div>
   
+  <!-- Mobile compact status bar -->
+  <div class="ops-status-bar" id="ops-status-bar">
+    <span>Kp: <strong id="ops-kp-mini">--</strong></span>
+    <span>F10.7: <strong id="ops-f107-mini">--</strong></span>
+    <span>Drag: <strong id="ops-drag-mini">--</strong></span>
+  </div>
+  
+  <div class="ops-split">
+  <div class="ops-main">
   <div class="pp-container">
     <div class="pp-controls">
       <div class="pp-field">
@@ -1036,8 +1066,8 @@ print(f'Velocity (km/s): {v}')</pre>
           <option value="30">30°</option>
         </select>
       </div>
-      <button class="pp-geo-btn" onclick="ppDetectGeolocation()" title="Use my current location">📍 My Location</button>
-      <button class="pp-btn" onclick="ppComputePasses()">🔍 Predict Passes</button>
+      <button class="pp-geo-btn" onclick="ppDetectGeolocation()" title="Use my current location">My Location</button>
+      <button class="pp-btn" onclick="ppComputePasses()">Predict Passes</button>
     </div>
     
     <div id="pp-countdown-container" style="display:none"></div>
@@ -1062,132 +1092,32 @@ print(f'Velocity (km/s): {v}')</pre>
       <div class="pp-pass-detail" id="pp-pass-detail"></div>
     </div>
   </div>
-</div>
-<div id="t-spaceweather" class="tab">
-  <div class="ct-tip"><strong>What This Means:</strong> Live space weather data from NOAA SWPC feeds, upcoming rocket launches from Launch Library 2, a DEFCON-style orbital threat assessment, and mega-constellation population breakdown — mirroring features from platforms like Orbital Radar.</div>
+  </div><!-- close ops-main -->
   
-  <!-- DEFCON-Style Threat Level Meter -->
-  <div class="threat-meter">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:15px;font-weight:700">Orbital Threat Assessment</div>
-      <div style="font-size:11px;color:var(--text3);font-weight:600">Source: Collision Risk Data + NOAA Space Weather</div>
-    </div>
-    <div class="threat-bar">
-      <div class="threat-indicator" id="threat-indicator" style="left:20%"></div>
-    </div>
-    <div class="threat-levels">
-      <span>Nominal</span>
-      <span>Elevated</span>
-      <span>Guarded</span>
-      <span>Critical</span>
-    </div>
-    <div class="threat-current">
-      <div class="tl-badge" id="threat-badge" style="background:#d1fae5;color:#059669">NOMINAL</div>
-      <div style="font-size:13px;color:var(--text2);font-weight:500" id="threat-desc">Loading threat assessment...</div>
-    </div>
-    <div class="threat-factors" id="threat-factors"></div>
-  </div>
-
-  <!-- Space Weather Hero Cards -->
-  <div class="sw-hero">
-    <div class="sw-card">
-      <h3>Kp Geomagnetic Index</h3>
-      <div class="kp-gauge">
-        <svg width="140" height="140" viewBox="0 0 140 140">
-          <circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/>
-          <circle id="kp-arc" cx="70" cy="70" r="60" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 377"/>
-        </svg>
-        <div class="kp-val" id="sw-kp-live">--</div>
-        <div class="kp-lbl">Kp Index (0-9)</div>
+  <!-- Space Weather Sidebar -->
+  <div class="ops-sidebar">
+    <div class="threat-meter">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:13px;font-weight:700">Threat Assessment</div>
       </div>
-      <div class="g-badge g-quiet" id="sw-gscale">Quiet</div>
-      <div id="sw-storm-alert" style="display:none;margin-top:6px;padding:4px 10px;border-radius:6px;background:#fef2f2;border:1px solid #ef4444;color:#ef4444;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Storm Alert - Kp >= 5</div>
-      <div style="font-size:10px;color:var(--text3);margin-top:6px" id="sw-kp-time">NOAA SWPC</div>
-      <div style="font-size:9px;color:var(--text3);margin-top:2px" id="sw-last-updated"></div>
+      <div class="threat-bar"><div class="threat-indicator" id="threat-indicator" style="left:20%"></div></div>
+      <div class="threat-levels"><span>Nominal</span><span>Elevated</span><span>Guarded</span><span>Critical</span></div>
+      <div class="threat-current"><div class="tl-badge" id="threat-badge" style="background:#d1fae5;color:#059669">NOMINAL</div><div style="font-size:12px;color:var(--text2);font-weight:500" id="threat-desc">Loading...</div></div>
+      <div class="threat-factors" id="threat-factors"></div>
     </div>
-    <div class="sw-card">
-      <h3>Solar Activity</h3>
-      <div class="sw-metric">
-        <svg width="40" height="24" id="spark-f107-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div class="sw-info"><div class="sw-val" style="color:#f59e0b" id="sw-f107-live">--</div><div class="sw-name">F10.7 Solar Flux (sfu)</div></div>
-      </div>
-      <div class="sw-metric">
-        <svg width="40" height="24" id="spark-bt-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div class="sw-info"><div class="sw-val" style="color:#3b82f6" id="sw-bt-live">--</div><div class="sw-name">Solar Wind Bt (nT)</div></div>
-      </div>
-      <div class="sw-metric">
-        <svg width="40" height="24" id="spark-bz-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div class="sw-info"><div class="sw-val" style="color:#8b5cf6" id="sw-bz-live">--</div><div class="sw-name">Solar Wind Bz (nT)</div></div>
-      </div>
-    </div>
-    <div class="sw-card">
-      <h3>Atmospheric Drag Status</h3>
-      <div style="width:140px;height:140px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:6px">
-        <svg width="140" height="140" viewBox="0 0 140 140">
-          <circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/>
-          <circle id="drag-arc" cx="70" cy="70" r="60" fill="none" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 377"/>
-        </svg>
-        <div style="position:absolute;text-align:center"><div style="font-size:24px;font-weight:800;font-family:monospace;color:#10b981" id="sw-drag-level">--</div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-top:2px">Drag Level</div></div>
-      </div>
-      <div style="font-size:14px;font-weight:700;text-align:center;padding:0 8px" id="sw-drag-live">Loading...</div>
-      <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5;text-align:center;padding:0 4px" id="sw-drag-impact">F10.7 > 150: increased atmospheric drag at LEO altitudes, accelerating decay. Kp > 5: geomagnetic storm expands atmosphere, increases drag on low-perigee objects.</div>
-      <div style="font-size:11px;color:var(--accent);font-weight:600;margin-top:6px;text-align:center" id="sw-drag-count"></div>
-    </div>
-  </div>
-
-  <!-- 3-Day NOAA Forecast -->
-  <div class="sw-section">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div class="sw-section-title">NOAA SWPC 3-Day Geomagnetic Forecast</div>
-        <div class="sw-section-desc">3-day forecast of planetary Kp index from NOAA Space Weather Prediction Center</div>
-      </div>
-    </div>
-    <div class="sw-panel">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="sw-forecast-live-grid">
-        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
-        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
-        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Launch Timeline + Constellation Breakdown -->
-  <div class="sw-section">
-    <div class="sw-grid">
-      <div>
-        <div class="sw-section-title">Upcoming Launches</div>
-        <div class="sw-section-desc">Live launch schedule from Launch Library 2 (The Space Devs)</div>
-        <div class="sw-panel">
-          <div class="launch-feed" id="launch-feed">
-            <div style="padding:14px"><div class="skeleton-bar" style="width:80%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:50%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:65%;height:10px"></div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="sw-section-title">Mega-Constellation Intelligence</div>
-        <div class="sw-section-desc">Object counts by constellation from Celestrak SATCAT catalog</div>
-        <div class="sw-panel">
-          <div class="const-bar-container" id="const-bar-container">
-            <div style="padding:14px"><div class="skeleton-bar" style="width:90%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:80%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:55%;height:10px"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Kp History Chart -->
-  <div class="sw-section">
-    <div class="sw-section-title">Kp Index History (24-Hour)</div>
-    <div class="sw-section-desc">Recent geomagnetic activity readings from NOAA SWPC</div>
-    <div class="sw-panel">
-      <canvas id="ch-kp-history" style="max-height:200px"></canvas>
-    </div>
-  </div>
-
-  <div style="padding:0 20px 20px;font-size:11px;color:var(--text3);line-height:1.5">
-    <strong>Note:</strong> Space weather data is provided by NOAA SWPC public APIs and cached server-side for up to 5 minutes. Launch data is provided by Launch Library 2 and cached for 10 minutes. These feeds are for general awareness. Do not use this information for operational space weather decisions—refer to official NOAA SWPC alerts and bulletins.
-  </div>
+    <div class="sw-card"><h3>Kp Geomagnetic Index</h3><div class="kp-gauge"><svg width="120" height="120" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/><circle id="kp-arc" cx="70" cy="70" r="60" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 377"/></svg><div class="kp-val" id="sw-kp-live">--</div><div class="kp-lbl">Kp Index (0-9)</div></div><div class="g-badge g-quiet" id="sw-gscale">Quiet</div><div id="sw-storm-alert" style="display:none;margin-top:6px;padding:4px 10px;border-radius:6px;background:#fef2f2;border:1px solid #ef4444;color:#ef4444;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Storm Alert - Kp >= 5</div><div style="font-size:10px;color:var(--text3);margin-top:6px" id="sw-kp-time">NOAA SWPC</div><div style="font-size:9px;color:var(--text3);margin-top:2px" id="sw-last-updated"></div></div>
+    <div class="sw-card"><h3>Solar Activity</h3><div class="sw-metric"><svg width="40" height="24" id="spark-f107-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg><div class="sw-info"><div class="sw-val" style="color:#f59e0b" id="sw-f107-live">--</div><div class="sw-name">F10.7 Solar Flux (sfu)</div></div></div><div class="sw-metric"><svg width="40" height="24" id="spark-bt-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg><div class="sw-info"><div class="sw-val" style="color:#3b82f6" id="sw-bt-live">--</div><div class="sw-name">Solar Wind Bt (nT)</div></div></div><div class="sw-metric"><svg width="40" height="24" id="spark-bz-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/></svg><div class="sw-info"><div class="sw-val" style="color:#8b5cf6" id="sw-bz-live">--</div><div class="sw-name">Solar Wind Bz (nT)</div></div></div></div>
+    <div class="sw-card"><h3>Atmospheric Drag Status</h3><div style="width:120px;height:120px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:6px"><svg width="120" height="120" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/><circle id="drag-arc" cx="70" cy="70" r="60" fill="none" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 377"/></svg><div style="position:absolute;text-align:center"><div style="font-size:22px;font-weight:800;font-family:monospace;color:#10b981" id="sw-drag-level">--</div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-top:2px">Drag Level</div></div></div><div style="font-size:13px;font-weight:700;text-align:center;padding:0 8px" id="sw-drag-live">Loading...</div><div style="font-size:10px;color:var(--text3);margin-top:6px;line-height:1.4;text-align:center;padding:0 4px" id="sw-drag-impact">F10.7 > 150: increased drag at LEO altitudes. Kp > 5: geomagnetic storm expands atmosphere.</div><div style="font-size:10px;color:var(--accent);font-weight:600;margin-top:4px;text-align:center" id="sw-drag-count"></div></div>
+  </div><!-- close ops-sidebar -->
+  </div><!-- close ops-split -->
+  
+  <button class="ops-toggle" onclick="var m=document.getElementById('ops-weather-more');m.classList.toggle('open');this.textContent=m.classList.contains('open')?'Hide Details \u25b4':'Show Space Weather Details \u25be'">Show Space Weather Details \u25be</button>
+  <div class="ops-weather-more" id="ops-weather-more">
+    <div class="sw-section"><div class="sw-section-title">NOAA SWPC 3-Day Geomagnetic Forecast</div><div class="sw-section-desc">3-day forecast of planetary Kp index from NOAA Space Weather Prediction Center</div><div class="sw-panel"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="sw-forecast-live-grid"><div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div><div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div><div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div></div></div></div>
+    <div class="sw-section"><div class="sw-grid"><div><div class="sw-section-title">Upcoming Launches</div><div class="sw-section-desc">Live launch schedule from Launch Library 2 (The Space Devs)</div><div class="sw-panel"><div class="launch-feed" id="launch-feed"><div style="padding:14px"><div class="skeleton-bar" style="width:80%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:50%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:65%;height:10px"></div></div></div></div></div><div><div class="sw-section-title">Mega-Constellation Intelligence</div><div class="sw-section-desc">Object counts by constellation from Celestrak SATCAT catalog</div><div class="sw-panel"><div class="const-bar-container" id="const-bar-container"><div style="padding:14px"><div class="skeleton-bar" style="width:90%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:80%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:55%;height:10px"></div></div></div></div></div></div></div>
+    <div class="sw-section"><div class="sw-section-title">Kp Index History (24-Hour)</div><div class="sw-section-desc">Recent geomagnetic activity readings from NOAA SWPC</div><div class="sw-panel"><canvas id="ch-kp-history" style="max-height:200px"></canvas></div></div>
+    <div style="padding:0 20px 20px;font-size:11px;color:var(--text3);line-height:1.5"><strong>Note:</strong> Space weather data from NOAA SWPC public APIs, cached 5 min. Launch data from Launch Library 2, cached 10 min. For general awareness only — refer to official NOAA SWPC alerts for operational decisions.</div>
+  </div><!-- close ops-weather-more -->
 </div>
 <div class="mo" id="info-modal" onclick="if(event.target===this)this.classList.remove('show')"><div class="md" style="max-width:480px"><div class="mh"><h2 id="info-modal-title">Info</h2><button class="mc" onclick="document.getElementById('info-modal').classList.remove('show')">X</button></div><div class="mb" id="info-modal-body" style="font-size:13px;line-height:1.7;color:var(--text2)"></div></div></div>
 <div class="ft2"><div>Engineered by Guruvendra | Celestrak SATCAT | SGP4/SDP4 Propagator | JGM-3 Gravity Model | Databricks Platform</div><div>For educational and situational awareness use only. Not a certified collision-avoidance or conjunction-assessment service. | <a href="#" onclick="document.getElementById('modal').classList.add('show');return false" style="color:var(--accent)">Legal Notice & Data Sources</a></div></div>
@@ -3077,6 +3007,11 @@ function renderSpaceWeather(){
   var stormAlert=document.getElementById('sw-storm-alert');
   if(stormAlert)stormAlert.style.display=kp>=5?'block':'none';
   
+  // Update mobile compact status bar
+  var kpMini=document.getElementById('ops-kp-mini');if(kpMini)kpMini.textContent=kp.toFixed(1);
+  var f107Mini=document.getElementById('ops-f107-mini');if(f107Mini)f107Mini.textContent=f107.toFixed(1);
+  var dragMini=document.getElementById('ops-drag-mini');if(dragMini)dragMini.textContent=swData.drag_status?swData.drag_status.split(' - ')[0]:'Nominal';
+  
   var kpTime=document.getElementById('sw-kp-time');
   if(kpTime)kpTime.textContent=swData.kp_timestamp||'NOAA SWPC';
   
@@ -3276,8 +3211,7 @@ function renderConstellations(){
 var _origShowTab=showTab;
 showTab=function(btn,id){
   _origShowTab(btn,id);
-  if(id==='t-spaceweather')initSpaceWeatherTab();
-  if(id==='t-passpred')initPassPredTab();
+  if(id==='t-passpred'){initPassPredTab();initSpaceWeatherTab();}
 };
 
 // === Pass Predictions Tab ===
@@ -4124,6 +4058,6 @@ function createPlanetTexture(type){
 console.log('[Celestial] Navigation system loaded');
 
 </script>
-<div class="mobile-tabbar" id="mobileTabBar"><button class="mtb active" onclick="mobileShowTab(this,'t-globe')" aria-label="Globe"><span>Globe</span></button><button class="mtb" onclick="mobileShowTab(this,'t-dash')" aria-label="Dashboard"><span>Dash</span></button><button class="mtb" onclick="mobileShowTab(this,'t-pred')" aria-label="Re-entry Predictions"><span>Re-entry</span></button><button class="mtb" onclick="mobileShowTab(this,'t-collide')" aria-label="Collision Risk"><span>Collide</span></button><button class="mtb" onclick="toggleMoreTabs()" aria-label="More tabs"><span>More</span></button></div><div class="mobile-more-menu" id="mobileMoreMenu"><button onclick="mobileShowTab(null,'t-debris')">Debris Tracker</button><button onclick="mobileShowTab(null,'t-cat')">Catalog</button><button onclick="mobileShowTab(null,'t-passpred')">Pass Predictions</button><button onclick="mobileShowTab(null,'t-spaceweather')">Space Weather</button><button onclick="mobileShowTab(null,'t-academy')">Academy</button></div>
+<div class="mobile-tabbar" id="mobileTabBar"><button class="mtb active" onclick="mobileShowTab(this,'t-globe')" aria-label="Globe"><span>Globe</span></button><button class="mtb" onclick="mobileShowTab(this,'t-dash')" aria-label="Dashboard"><span>Dash</span></button><button class="mtb" onclick="mobileShowTab(this,'t-pred')" aria-label="Re-entry Predictions"><span>Re-entry</span></button><button class="mtb" onclick="mobileShowTab(this,'t-collide')" aria-label="Collision Risk"><span>Collide</span></button><button class="mtb" onclick="toggleMoreTabs()" aria-label="More tabs"><span>More</span></button></div><div class="mobile-more-menu" id="mobileMoreMenu"><button onclick="mobileShowTab(null,'t-debris')">Debris Tracker</button><button onclick="mobileShowTab(null,'t-cat')">Catalog</button><button onclick="mobileShowTab(null,'t-passpred')">Operations</button><button onclick="mobileShowTab(null,'t-academy')">Academy</button></div>
 </body>
 </html>
