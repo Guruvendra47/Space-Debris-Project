@@ -167,8 +167,20 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #conjunction-banner{position:relative!important;top:auto!important;padding:6px 12px!important;font-size:11px!important;margin:0!important}
   
   /* Globe controls: compact on mobile */
-  .gctl{bottom:60px!important;left:8px!important}
+  .gctl{bottom:60px!important;left:8px!important;right:auto!important}
   .gctl button{width:36px!important;height:36px!important;font-size:14px!important}
+  
+  /* Burger menu (panel-toggle): move to BOTTOM-right, NO overlap with body-nav */
+  .panel-toggle{top:auto!important;bottom:16px!important;right:16px!important;position:absolute!important}
+  
+  /* Mobile header: hide Expert toggle to prevent overflow */
+  #hr-actions .tw{display:none!important}
+  #hr-actions{padding-left:4px!important;border-left:none!important}
+  /* Status pill: compact, show only SYNCED + time */
+  .status-pill{padding:3px 6px!important;font-size:9px!important;max-width:110px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .status-pill .sp-sep{display:none!important}
+  .status-pill .sp-tle{display:none!important}
+  .status-pill .sp-time{font-size:9px!important}
   
   /* Visual layers: move to LEFT side, collapsible dropdown on mobile */
   #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:110px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:6px 10px!important}
@@ -192,9 +204,9 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #t-pred #eph-quality-grid{grid-template-columns:1fr!important;gap:8px!important}
   
   /* === DEBRIS TRACKER: Stack charts vertically, one below another === */
-  #t-debris .cr{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;gap:12px!important}
-  #t-debris .cr .cd{width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box}
-  #t-debris .cd canvas{max-height:240px!important;width:100%!important}
+  #t-debris .cr{display:block!important;grid-template-columns:none!important;gap:0!important;padding:8px!important}
+  #t-debris .cr > .cd{display:block!important;width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important}
+  #t-debris .cd canvas{max-height:260px!important;width:100%!important}
   #t-debris .sh{flex-direction:column!important;align-items:flex-start!important}
   #t-debris .sh > div[style*="display:flex"]{flex-wrap:wrap!important;gap:6px!important}
   #t-debris .eb{font-size:10px!important;padding:5px 10px!important}
@@ -427,15 +439,15 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .pn.open{transform:translateY(0)}
   #gw{height:100vh!important;flex-direction:column!important}
   #gc{height:100vh!important;flex:1}
-  .panel-toggle{display:flex!important;position:absolute;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
+  .panel-toggle{display:flex!important;position:absolute;top:auto;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
   
-  /* Body navigation: compact, top, no overlap */
-  .body-nav{top:56px;gap:4px;padding:4px;border-radius:8px;max-width:95vw;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Body navigation: static flow, no overlap */
+  .body-nav{position:relative;top:auto;left:auto;transform:none;gap:4px;padding:4px;border-radius:0;max-width:100%;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid rgba(59,130,246,.2)}
   .body-btn{padding:5px 10px;font-size:11px;white-space:nowrap}
   
   /* Globe controls: larger touch targets */
   .gctl button{width:44px!important;height:44px!important;font-size:18px!important;display:flex!important;align-items:center;justify-content:center}
-  .gctl{bottom:80px!important;right:12px!important}
+  .gctl{bottom:80px!important;left:8px!important;right:auto!important}
   
   /* Density slider & visual layers: compact */
   #lod-slider{width:70px!important;height:32px!important}
