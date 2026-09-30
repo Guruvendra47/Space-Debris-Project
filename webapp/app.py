@@ -120,6 +120,136 @@ def api_catalog():
     resp.headers['X-Data-Source'] = 'server-cache'
     return resp
 
+# --- Full SATCAT Export (fetches all 70K from Celestrak, cached 24h) ---
+_satcat_full_cache = {'data': None, 'ts': 0}
+
+def _fetch_full_satcat():
+    """Fetch full SATCAT from Celestrak, cache for 24 hours."""
+    now = time.time()
+    if _satcat_full_cache['data'] and (now - _satcat_full_cache['ts']) < 86400:
+        return _satcat_full_cache['data']
+    try:
+        url = 'https://celestrak.org/satcat/records.php?format=json'
+        req = urllib.request.Request(url, headers={'User-Agent': 'OrbitalIntelligence/1.0'})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            raw = json.loads(resp.read().decode('utf-8'))
+        _satcat_full_cache['data'] = raw
+        _satcat_full_cache['ts'] = now
+        logger.info(f'Fetched full SATCAT: {len(raw)} records')
+        return raw
+    except Exception as e:
+        logger.warning(f'Celestrak SATCAT fetch error: {e}')
+        # Fallback to local 1000-record file
+        local = _load_data('catalog', 'satcat_catalog.json')
+        return local or []
+
+@app.route('/api/export')
+@rate_limit(max_per_minute=30)
+def api_export():
+    """Export full SATCAT as CSV/JSON/TLE with server-side filtering."""
+    fmt = request.args.get('format', 'csv').lower()
+    obj_type = request.args.get('type', 'all')
+    status = request.args.get('status', 'all')
+    regime = request.args.get('regime', 'all')
+    search = request.args.get('search', '').lower()
+    
+    records = _fetch_full_satcat()
+    
+    # Apply filters
+    filtered = []
+    for o in records:
+        # Type filter
+        if obj_type != 'all' and o.get('OBJECT_TYPE', o.get('ObjectType', '')) != obj_type:
+            continue
+        # Status filter
+        is_decayed = o.get('DECAYED', o.get('IsDecayed', 0))
+        if isinstance(is_decayed, str):
+            is_decayed = 1 if is_decayed.lower() in ('1','true','yes') else 0
+        if status == 'active' and is_decayed:
+            continue
+        if status == 'decayed' and not is_decayed:
+            continue
+        # Regime filter
+        if regime != 'all':
+            apo = o.get('APOGEE', o.get('Apogee', 0)) or 0
+            per = o.get('PERIGEE', o.get('Perigee', 0)) or 0
+            avg_alt = (apo + per) / 2
+            if regime == 'leo' and avg_alt > 2000:
+                continue
+            elif regime == 'meo' and (avg_alt < 2000 or avg_alt > 35000):
+                continue
+            elif regime == 'geo' and not (34000 <= avg_alt <= 37000):
+                continue
+            elif regime == 'heo' and avg_alt < 37000:
+                continue
+        # Search filter
+        if search:
+            name = (o.get('OBJECT_NAME', o.get('ObjectName', '')) or '').lower()
+            norad = str(o.get('NORAD_CAT_ID', o.get('CatalogID', '')) or '').lower()
+            owner = (o.get('OWNER', o.get('Owner', '')) or '').lower()
+            if search not in name and search not in norad and search not in owner:
+                continue
+        filtered.append(o)
+    
+    if fmt == 'json':
+        def generate_json():
+            yield '['
+            for i, o in enumerate(filtered):
+                row = {
+                    'NORAD_ID': o.get('NORAD_CAT_ID', o.get('CatalogID', '')),
+                    'ObjectName': o.get('OBJECT_NAME', o.get('ObjectName', '')),
+                    'ObjectType': o.get('OBJECT_TYPE', o.get('ObjectType', '')),
+                    'Owner': o.get('OWNER', o.get('Owner', '')),
+                    'OrbitClass': o.get('ORBIT_CLASS', o.get('OrbitClass', '')),
+                    'Inclination': o.get('INCLINATION', o.get('Inclination', 0)),
+                    'Apogee': o.get('APOGEE', o.get('Apogee', 0)),
+                    'Perigee': o.get('PERIGEE', o.get('Perigee', 0)),
+                    'LaunchDate': o.get('LAUNCH_DATE', o.get('LaunchDate', '')),
+                    'RadarSize': o.get('RADAR_SIZE', o.get('RadarSize', '')),
+                    'Status': 'Decayed' if o.get('DECAYED', o.get('IsDecayed', 0)) else 'Active'
+                }
+                yield json.dumps(row)
+                if i < len(filtered) - 1:
+                    yield ', '
+            yield ']'
+        resp = Response(stream_with_context(generate_json()), mimetype='application/json')
+        resp.headers['Content-Disposition'] = f'attachment; filename=catalog_{len(filtered)}_records.json'
+        return resp
+    
+    elif fmt == 'tle':
+        def generate_tle():
+            for o in filtered:
+                name = o.get('OBJECT_NAME', o.get('ObjectName', 'UNKNOWN'))
+                tle1 = o.get('TLE_LINE1', '')
+                tle2 = o.get('TLE_LINE2', '')
+                if tle1 and tle2:
+                    yield f'{name}\n{tle1}\n{tle2}\n'
+        resp = Response(stream_with_context(generate_tle()), mimetype='text/plain')
+        resp.headers['Content-Disposition'] = f'attachment; filename=catalog_{len(filtered)}_objects.tle'
+        return resp
+    
+    else:  # CSV
+        def generate_csv():
+            yield 'NORAD_ID,ObjectName,Type,Owner,OrbitClass,Inclination,Apogee,Perigee,LaunchDate,RadarSize,Status\n'
+            for o in filtered:
+                row = [
+                    str(o.get('NORAD_CAT_ID', o.get('CatalogID', '')) or ''),
+                    str(o.get('OBJECT_NAME', o.get('ObjectName', '')) or ''),
+                    str(o.get('OBJECT_TYPE', o.get('ObjectType', '')) or ''),
+                    str(o.get('OWNER', o.get('Owner', '')) or ''),
+                    str(o.get('ORBIT_CLASS', o.get('OrbitClass', '')) or ''),
+                    str(o.get('INCLINATION', o.get('Inclination', 0)) or ''),
+                    str(o.get('APOGEE', o.get('Apogee', 0)) or ''),
+                    str(o.get('PERIGEE', o.get('Perigee', 0)) or ''),
+                    str(o.get('LAUNCH_DATE', o.get('LaunchDate', '')) or ''),
+                    str(o.get('RADAR_SIZE', o.get('RadarSize', '')) or ''),
+                    'Decayed' if o.get('DECAYED', o.get('IsDecayed', 0)) else 'Active'
+                ]
+                yield '"' + '","'.join(row) + '"\n'
+        resp = Response(stream_with_context(generate_csv()), mimetype='text/csv')
+        resp.headers['Content-Disposition'] = f'attachment; filename=catalog_{len(filtered)}_records.csv'
+        return resp
+
 @app.route('/api/predictions')
 @rate_limit(max_per_minute=120)
 def api_predictions():
