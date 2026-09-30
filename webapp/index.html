@@ -357,7 +357,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .cdi span{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
 .cdi strong{font-size:13px;color:var(--text2);font-family:monospace}
 .pp-container{padding:20px}
-.pp-controls{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:16px;display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr auto auto;gap:12px;align-items:end}
+.pp-controls{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:16px;display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr;gap:12px;align-items:end}.pp-btn-wrap{display:flex;flex-direction:column;gap:4px;grid-column:span 2}.pp-btn-wrap label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;visibility:hidden}.pp-btn-wrap>div{display:flex;gap:10px}
 .pp-controls .pp-field{display:flex;flex-direction:column;gap:4px}
 .pp-btn-wrap{display:flex;flex-direction:column;gap:4px}
 .pp-btn-wrap label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;visibility:hidden}
@@ -1073,8 +1073,7 @@ print(f'Velocity (km/s): {v}')</pre>
           <option value="30">30°</option>
         </select>
       </div>
-      <button class="pp-geo-btn" onclick="ppDetectGeolocation()" title="Use my current location">My Location</button>
-      <button class="pp-btn" onclick="ppComputePasses()">Predict Passes</button>
+      <div class="pp-btn-wrap"><label>Actions</label><div><button class="pp-geo-btn" onclick="ppDetectGeolocation()" title="Use my current location">My Location</button><button class="pp-btn" onclick="ppComputePasses()">Predict Passes</button></div></div>
     </div>
     
     <div id="pp-countdown-container" style="display:none"></div>
