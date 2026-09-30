@@ -257,7 +257,8 @@ def _get_space_weather():
         'drag_color': drag_color,
         'forecast_3day': forecast_3day or [],
         'source': 'NOAA SWPC (Live)' if kp_data else 'Simulated (NOAA unavailable)',
-        'timestamp': now
+        'timestamp': now,
+        'fetched_at': now
     }
     _space_weather_cache['data'] = data
     _space_weather_cache['ts'] = now

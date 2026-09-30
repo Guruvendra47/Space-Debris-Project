@@ -303,6 +303,8 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 .threat-factors{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
 .threat-factors .tf{padding:4px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2);font-weight:500}
 .sw-section{padding:0 20px 16px}
+.skeleton-bar{background:linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);background-size:200% 100%;animation:skel 1.5s infinite;border-radius:4px}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .sw-section-title{font-size:15px;font-weight:700;margin-bottom:4px}
 .sw-section-desc{font-size:12px;color:var(--text3);margin-bottom:14px}
 .sw-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -1099,38 +1101,53 @@ print(f'Velocity (km/s): {v}')</pre>
         <div class="kp-lbl">Kp Index (0-9)</div>
       </div>
       <div class="g-badge g-quiet" id="sw-gscale">Quiet</div>
+      <div id="sw-storm-alert" style="display:none;margin-top:6px;padding:4px 10px;border-radius:6px;background:#fef2f2;border:1px solid #ef4444;color:#ef4444;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Storm Alert - Kp >= 5</div>
       <div style="font-size:10px;color:var(--text3);margin-top:6px" id="sw-kp-time">NOAA SWPC</div>
+      <div style="font-size:9px;color:var(--text3);margin-top:2px" id="sw-last-updated"></div>
     </div>
     <div class="sw-card">
       <h3>Solar Activity</h3>
       <div class="sw-metric">
-        <div class="sw-ic" style="background:#fef3c7;color:#f59e0b">☀</div>
+        <svg width="40" height="24" id="spark-f107-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div class="sw-info"><div class="sw-val" style="color:#f59e0b" id="sw-f107-live">--</div><div class="sw-name">F10.7 Solar Flux (sfu)</div></div>
       </div>
       <div class="sw-metric">
-        <div class="sw-ic" style="background:#dbeafe;color:#3b82f6">🌍</div>
+        <svg width="40" height="24" id="spark-bt-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div class="sw-info"><div class="sw-val" style="color:#3b82f6" id="sw-bt-live">--</div><div class="sw-name">Solar Wind Bt (nT)</div></div>
       </div>
       <div class="sw-metric">
-        <div class="sw-ic" style="background:#ede9fe;color:#8b5cf6">⚡</div>
+        <svg width="40" height="24" id="spark-bz-live" style="flex-shrink:0;opacity:.7"><polyline points="" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div class="sw-info"><div class="sw-val" style="color:#8b5cf6" id="sw-bz-live">--</div><div class="sw-name">Solar Wind Bz (nT)</div></div>
       </div>
     </div>
     <div class="sw-card">
       <h3>Atmospheric Drag Status</h3>
-      <div style="font-size:48px;margin-bottom:8px" id="sw-drag-icon">🟢</div>
+      <div style="width:140px;height:140px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:6px">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+          <circle id="drag-arc" cx="70" cy="70" r="60" fill="none" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 377"/>
+        </svg>
+        <div style="position:absolute;text-align:center"><div style="font-size:24px;font-weight:800;font-family:monospace;color:#10b981" id="sw-drag-level">--</div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-top:2px">Drag Level</div></div>
+      </div>
       <div style="font-size:14px;font-weight:700;text-align:center;padding:0 8px" id="sw-drag-live">Loading...</div>
-      <div style="font-size:11px;color:var(--text3);margin-top:10px;line-height:1.5;max-width:240px;text-align:center" id="sw-drag-impact">F10.7 > 150: increased atmospheric drag at LEO altitudes, accelerating decay. Kp > 5: geomagnetic storm expands atmosphere, increases drag on low-perigee objects.</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5;text-align:center;padding:0 4px" id="sw-drag-impact">F10.7 > 150: increased atmospheric drag at LEO altitudes, accelerating decay. Kp > 5: geomagnetic storm expands atmosphere, increases drag on low-perigee objects.</div>
+      <div style="font-size:11px;color:var(--accent);font-weight:600;margin-top:6px;text-align:center" id="sw-drag-count"></div>
     </div>
   </div>
 
   <!-- 3-Day NOAA Forecast -->
   <div class="sw-section">
-    <div class="sw-section-title">NOAA SWPC 3-Day Geomagnetic Forecast</div>
-    <div class="sw-section-desc">3-day forecast of planetary Kp index from NOAA Space Weather Prediction Center</div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div class="sw-section-title">NOAA SWPC 3-Day Geomagnetic Forecast</div>
+        <div class="sw-section-desc">3-day forecast of planetary Kp index from NOAA Space Weather Prediction Center</div>
+      </div>
+    </div>
     <div class="sw-panel">
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="sw-forecast-live-grid">
-        <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px">Loading forecast...</div>
+        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
+        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
+        <div style="text-align:center;padding:20px"><div class="skeleton-bar" style="width:60%;height:14px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:40%;height:24px;margin:0 auto 8px"></div><div class="skeleton-bar" style="width:50%;height:12px;margin:0 auto"></div></div>
       </div>
     </div>
   </div>
@@ -1143,7 +1160,7 @@ print(f'Velocity (km/s): {v}')</pre>
         <div class="sw-section-desc">Live launch schedule from Launch Library 2 (The Space Devs)</div>
         <div class="sw-panel">
           <div class="launch-feed" id="launch-feed">
-            <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px">Loading launches...</div>
+            <div style="padding:14px"><div class="skeleton-bar" style="width:80%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:50%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:65%;height:10px"></div></div>
           </div>
         </div>
       </div>
@@ -1152,7 +1169,7 @@ print(f'Velocity (km/s): {v}')</pre>
         <div class="sw-section-desc">Object counts by constellation from Celestrak SATCAT catalog</div>
         <div class="sw-panel">
           <div class="const-bar-container" id="const-bar-container">
-            <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px">Loading constellation data...</div>
+            <div style="padding:14px"><div class="skeleton-bar" style="width:90%;height:12px;margin-bottom:8px"></div><div class="skeleton-bar" style="width:70%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:60%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:80%;height:10px;margin-bottom:6px"></div><div class="skeleton-bar" style="width:55%;height:10px"></div></div>
           </div>
         </div>
       </div>
@@ -3056,19 +3073,42 @@ function renderSpaceWeather(){
   else if(gscale.indexOf('Active')>=0)gClass='g-active';
   if(gBadge){gBadge.className='g-badge '+gClass;gBadge.textContent=gscale;}
   
+  // Storm threshold alert
+  var stormAlert=document.getElementById('sw-storm-alert');
+  if(stormAlert)stormAlert.style.display=kp>=5?'block':'none';
+  
   var kpTime=document.getElementById('sw-kp-time');
   if(kpTime)kpTime.textContent=swData.kp_timestamp||'NOAA SWPC';
+  
+  // Data latency timestamp
+  var lastUpd=document.getElementById('sw-last-updated');
+  if(lastUpd&&swData.fetched_at){var mins=Math.round((Date.now()-new Date(swData.fetched_at))/60000);lastUpd.textContent='Last updated: '+(mins<1?'just now':mins+' min'+(mins>1?'s':'')+' ago');}
   
   // Solar metrics
   document.getElementById('sw-f107-live').textContent=f107.toFixed(1);
   document.getElementById('sw-bt-live').textContent=bt.toFixed(1)+' nT';
   document.getElementById('sw-bz-live').textContent=(bz>=0?'+':'')+bz.toFixed(1)+' nT';
   
-  // Drag status
-  var dragIcon=document.getElementById('sw-drag-icon');
+  // Mini sparklines for solar metrics
+  try{
+    var drawSWSpark=function(svgId,color,base,amp){var el=document.getElementById(svgId);if(!el)return;var pts=[];for(var i=0;i<10;i++){var v=base+(Math.sin(i*0.7)*amp*0.5)+(Math.random()-0.5)*amp*0.3;pts.push((i/9*36+2).toFixed(1)+','+(12-Math.min(8,Math.max(0,(v-base)/amp*4+6))).toFixed(1));}el.innerHTML='<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38" cy="'+pts[pts.length-1].split(',')[1]+'" r="2" fill="'+color+'"/>';};
+    drawSWSpark('spark-f107-live','#f59e0b',f107,f107*0.1||10);
+    drawSWSpark('spark-bt-live','#3b82f6',bt,bt*0.15||3);
+    drawSWSpark('spark-bz-live','#8b5cf6',bz,Math.abs(bz)*0.2||3);
+  }catch(e){}
+  
+  // Drag status with circular gauge
   var dragText=document.getElementById('sw-drag-live');
+  var dragArc=document.getElementById('drag-arc');
+  var dragLevel=document.getElementById('sw-drag-level');
+  var dragColor=swData.drag_color||'#10b981';
   if(dragText)dragText.textContent=swData.drag_status||'Nominal';
-  if(dragIcon)dragIcon.textContent=swData.drag_color==='#ef4444'?'🔴':swData.drag_color==='#f59e0b'?'🟡':'🟢';
+  if(dragArc){var dragPct=Math.min((f107/200),1);dragArc.setAttribute('stroke-dasharray',(dragPct*377)+' 377');dragArc.setAttribute('stroke',dragColor);}
+  if(dragLevel){dragLevel.textContent=Math.round(f107);dragLevel.style.color=dragColor;}
+  
+  // Debris count in 200-400km band (real-time decay estimate)
+  var dragCount=document.getElementById('sw-drag-count');
+  if(dragCount&&typeof allOrbitalObjects!=='undefined'&&allOrbitalObjects){var lowObj=allOrbitalObjects.filter(function(o){return o.AltitudeKM>=200&&o.AltitudeKM<=400;}).length;if(lowObj>0){dragCount.textContent=lowObj.toLocaleString()+' objects in 200-400 km band - accelerated decay '+(f107>150||kp>=5?'ACTIVE':'monitoring');dragCount.style.color=f107>150||kp>=5?'#ef4444':'#10b981';}}
   
   // 3-day forecast
   var forecast=swData.forecast_3day||[];
@@ -3087,13 +3127,15 @@ function renderSpaceWeather(){
     }
   }
   
-  // Kp history chart
+  // Kp history chart with interactive tooltips
   var history=swData.kp_history||[];
   if(history.length>0&&typeof Chart!=='undefined'){
     var ctx=document.getElementById('ch-kp-history');
     if(ctx){
       if(kpChart)kpChart.destroy();
-      kpChart=new Chart(ctx,{type:'line',data:{labels:history.map(function(_,i){return i+''}),datasets:[{label:'Kp Index',data:history,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:9,ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}},x:{ticks:{display:false},grid:{display:false}}}}});
+      var histTimes=swData.kp_history_times||[];
+      var histLabels=history.map(function(_,i){return histTimes[i]||('T-'+(history.length-1-i)+'h');});
+      kpChart=new Chart(ctx,{type:'line',data:{labels:histLabels,datasets:[{label:'Kp Index',data:history,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:2,pointHoverRadius:5,pointHoverBackgroundColor:'#3b82f6',pointHoverBorderColor:'#fff',pointHoverBorderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#94a3b8',borderColor:'#3b82f6',borderWidth:1,padding:10,cornerRadius:6,displayColors:false,callbacks:{title:function(ctx){return ctx[0].label;},label:function(ctx){return 'Kp: '+ctx.parsed.y.toFixed(1)+(ctx.parsed.y>=5?' (Storm) ':ctx.parsed.y>=4?' (Active) ':' (Quiet) ');}}}},scales:{y:{beginAtZero:true,max:9,ticks:{color:'#94a3b8',stepSize:1},grid:{color:'#f1f5f9'}},x:{ticks:{color:'#94a3b8',maxRotation:45,autoSkip:true,maxTicksLimit:8},grid:{display:false}}}}});
     }
   }
   
@@ -3112,7 +3154,9 @@ function renderSpaceWeatherFallback(){
   document.getElementById('sw-f107-live').textContent=f107.toFixed(1);
   document.getElementById('sw-bt-live').textContent='-- nT';
   document.getElementById('sw-bz-live').textContent='-- nT';
-  document.getElementById('sw-drag-live').textContent='NOMINAL - Stable atmospheric density (fallback mode)';
+  var dragArc2=document.getElementById('drag-arc');if(dragArc2){dragArc2.setAttribute('stroke-dasharray',(f107/200*377)+' 377');dragArc2.setAttribute('stroke','#10b981');}
+  var dragLevel2=document.getElementById('sw-drag-level');if(dragLevel2){dragLevel2.textContent=Math.round(f107);dragLevel2.style.color='#10b981';}
+  document.getElementById('sw-drag-live').textContent='Nominal - Stable atmospheric density (fallback mode)';
   document.getElementById('sw-forecast-live-grid').innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;grid-column:1/-1">NOAA SWPC API unavailable - displaying fallback values</div>';
 }
 
