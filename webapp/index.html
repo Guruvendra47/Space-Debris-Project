@@ -173,21 +173,24 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Burger menu (panel-toggle): move to BOTTOM-right, NO overlap with body-nav */
   .panel-toggle{top:auto!important;bottom:16px!important;right:16px!important;position:absolute!important}
   
-  /* Mobile header: hide Expert toggle to prevent overflow */
+  /* Mobile header: hide Expert toggle, hide status-pill entirely */
   #hr-actions .tw{display:none!important}
   #hr-actions{padding-left:4px!important;border-left:none!important}
-  /* Status pill: compact, show only SYNCED + time */
-  .status-pill{padding:3px 6px!important;font-size:9px!important;max-width:110px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-  .status-pill .sp-sep{display:none!important}
-  .status-pill .sp-tle{display:none!important}
-  .status-pill .sp-time{font-size:9px!important}
+  .status-pill{display:none!important}
+  /* Show small LIVE badge next to brand on mobile */
+  .brand::after{content:'● LIVE';font-size:9px;color:var(--green);font-weight:700;margin-left:6px;animation:p 2s infinite}
   
-  /* Visual layers: move to LEFT side, collapsible dropdown on mobile */
-  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:110px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:6px 10px!important}
-  #t-globe [style*="bottom:72px;right:20px"]:hover,#t-globe [style*="bottom:72px;right:20px"]:focus-within{max-height:280px;overflow:visible}
-  #t-globe [style*="bottom:72px;right:20px"] > div:first-child{cursor:pointer}
-  #t-globe [style*="bottom:72px;right:20px"]:not(:hover):not(:focus-within) > button{opacity:0;height:0;overflow:hidden}
-  #t-globe [style*="bottom:72px;right:20px"]:hover > button,#t-globe [style*="bottom:72px;right:20px"]:focus-within > button{opacity:1;height:auto}
+  /* Visual layers: LEFT side, tap-to-toggle dropdown (class-based, not hover) */
+  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:110px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:4px 8px!important;width:auto!important}
+  #t-globe [style*="bottom:72px;right:20px"] > button{opacity:0;max-height:0;overflow:hidden;transition:all .3s ease}
+  #t-globe [style*="bottom:72px;right:20px"].vl-open{max-height:280px;overflow:visible}
+  #t-globe [style*="bottom:72px;right:20px"].vl-open > button{opacity:1;max-height:40px;margin-top:4px}
+  
+  /* KP banner: truncate to single line, very compact */
+  .kp-banner{font-size:8px!important;padding:2px 8px!important;margin:0!important;line-height:1.4!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
+  
+  /* Conjunction banner: truncate, very compact */
+  #conjunction-banner{font-size:8px!important;padding:2px 8px!important;line-height:1.4!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
   
   /* Density control: compact on mobile */
   #density-control{bottom:60px!important;left:50px!important;padding:6px 8px!important}
@@ -488,7 +491,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Focus banner: mobile-friendly */
   #focus-banner{top:100px!important;font-size:11px!important;padding:4px 10px!important;max-width:80vw}
-  #conjunction-banner{flex-wrap:wrap!important;font-size:12px!important;padding:8px 12px!important}
+  #conjunction-banner{flex-wrap:wrap!important;font-size:8px!important;padding:2px 8px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:20px}
   
   /* Tooltip: larger text for touch */
   #globe-tooltip{font-size:13px!important;padding:8px 14px!important}
@@ -2353,9 +2356,8 @@ function checkKpBanner(){
 function renderAllOrbitalRadar(){try{renderCategoryBreakdown();renderOperatorLeaderboard();renderEventFeed();checkKpBanner();}catch(e){console.log('[OrbitalRadar]',e.message);}}
 
 function toggleRotate(){globeRotating=!globeRotating;}
-// Mobile: tap to toggle visual layers dropdown
-var vlOpen=false;
-function toggleVisualLayersMobile(){if(!isMobile)return;var vl=document.querySelector('#t-globe [style*="bottom:72px"]')||document.querySelector('#t-globe [style*="right:20px"]');if(!vl)return;vlOpen=!vlOpen;if(vlOpen){vl.style.maxHeight='280px';vl.style.overflow='visible';}else{vl.style.maxHeight='32px';vl.style.overflow='hidden';}}
+// Mobile: tap to toggle visual layers dropdown (class-based)
+function toggleVisualLayersMobile(){var vl=document.querySelector('#t-globe [style*="bottom:72px"]');if(!vl)vl=document.querySelector('#t-globe [style*="right:20px"]');if(!vl)return;vl.classList.toggle('vl-open');var hdr=document.getElementById('vl-header');if(hdr)hdr.textContent=vl.classList.contains('vl-open')?'Visual Layers ▴':'Visual Layers ▾';}
 function zoomIn(){camDist=Math.max(MIN_DIST,camDist*0.75);}
 function zoomOut(){camDist=Math.min(MAX_DIST,camDist*1.33);}
 function resetView(){camTheta=0.4;camPhi=0.5;camDist=400;camVelTheta=0;camVelPhi=0;clearFocus();}
