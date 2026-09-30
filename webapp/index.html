@@ -191,9 +191,8 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Conjunction banner: HIDDEN on mobile */
   #conjunction-banner{display:none!important}
   
-  /* Density control: compact on mobile */
-  #density-control{bottom:60px!important;left:50px!important;padding:6px 8px!important}
-  #density-control input[type=range]{width:80px!important}
+  /* Density control: HIDDEN on mobile */
+  #density-control{display:none!important}
   
   /* === RE-ENTRY TAB: Fix weather tiles overflow === */
   /* 4-column weather grid → 2 columns on mobile */
@@ -457,7 +456,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Density slider & visual layers: compact */
   #lod-slider{width:70px!important;height:32px!important}
-  #density-control{bottom:20px!important;left:12px!important;font-size:9px!important;padding:6px 8px!important}
+  #density-control{display:none!important}
   
   /* Debug overlay: smaller */
   #globe-debug{font-size:9px!important;padding:4px 6px!important;max-width:200px;word-wrap:break-word}
@@ -559,7 +558,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div id="conjunction-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:36;background:linear-gradient(90deg,#7f1d1d,#991b1b);color:#fecaca;padding:12px 60px 12px 24px;font-size:14px;font-weight:600;align-items:center;gap:12px">
 <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;animation:p 1s infinite;flex-shrink:0"></div>
 <span id="conj-banner-text">Loading conjunction warnings...</span>
-<a href="#" onclick="showConjunctionSummary();return false" style="color:#fca5a5;text-decoration:underline;margin-left:12px;font-size:13px;font-weight:500;white-space:nowrap">View details →</a>
+<a href="#" onclick="showConjunctionSummary();return false" style="color:#fca5a5;text-decoration:underline;margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;pointer-events:auto">View details →</a>
 </div>
 
 <!-- KP WARNING BANNER -->
