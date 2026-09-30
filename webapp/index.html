@@ -558,7 +558,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 </div>
 </div></div>
 <div class="nav" role="navigation" aria-label="Main navigation">
-<button class="nt active" onclick="showTab(this,'t-globe')" aria-label="3D Globe View">Globe <span class="ct" id="c-globe">5K</span></button>
+<button class="nt active" onclick="showTab(this,'t-globe')" aria-label="3D Globe View">Globe</button>
 <button class="nt" onclick="showTab(this,'t-dash')" aria-label="Dashboard statistics">Dashboard</button>
 <button class="nt" onclick="showTab(this,'t-debris')" aria-label="Debris Tracker table">Debris Tracker</button>
 <button class="nt" onclick="showTab(this,'t-pred')" aria-label="Re-entry Predictions">Re-entry Predictions</button>
@@ -590,7 +590,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" aria-label="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" aria-label="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" aria-label="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" aria-label="Reset view" style="font-size:16px">⌂</button></div>
 <div id="density-control" style="position:absolute;bottom:20px;left:72px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px)">
 <div style="font-size:10px;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Density</div>
-<input type="range" id="lod-slider" min="5000" max="10000" value="5000" step="500" style="accent-color:#3b82f6;width:120px" onchange="setLOD(this.value)">
+<input type="range" id="lod-slider" min="5000" max="35087" value="5000" step="1000" style="accent-color:#3b82f6;width:120px" onchange="setLOD(this.value)">
 <div id="lod-label" style="font-size:11px;color:#e2e8f0;font-weight:700;font-family:monospace;min-width:40px">5K</div>
 </div>
 <div style="position:absolute;bottom:72px;right:20px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:6px;backdrop-filter:blur(8px)">
@@ -2976,7 +2976,7 @@ async function fetchSpaceWeather(){
 }
 
 function renderSpaceWeather(){
-  if(!swData)return;
+  if(!swData||Object.keys(swData).length===0){renderSpaceWeatherFallback();return;}
   var kp=swData.kp_index||0;
   var f107=swData.f107_flux||0;
   var bt=swData.solar_wind_bt||0;
