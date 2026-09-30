@@ -2425,15 +2425,20 @@ function copyPythonSnippet(){
 
 var tourStep=0;
 var tourSteps=[
-  {title:'Welcome to Orbital Intelligence',text:'Track 5,000+ objects in real-time on an interactive 3D globe. Click Next to explore key features.',target:null},
-  {title:'3D Globe View',text:'Drag to orbit, scroll to zoom. Markers show payloads (blue), debris (red), rocket bodies (amber).',target:'#gc'},
-  {title:'Density Control',text:'Use the Density slider to render 1K to 10K objects. Higher density shows more orbital traffic.',target:'#lod-slider'},
+  {title:'Welcome to Orbital Intelligence',text:'Track 70,000+ cataloged objects from Celestrak SATCAT on an interactive 3D globe. This platform provides real-time situational awareness for orbital debris, satellites, and space weather. Click Next to explore all features.',target:null},
+  {title:'3D Globe View',text:'Drag to orbit, scroll to zoom. Markers show payloads (blue), debris (red), rocket bodies (amber). Click any marker for detailed object info.',target:'#gc'},
+  {title:'Density Control',text:'Use the Density slider to render 5K to 35K objects. Higher density shows more orbital traffic and congestion patterns.',target:'#lod-slider'},
   {title:'Object Inspector',text:'Click any marker to see NORAD ID, altitude, inclination, TCA, miss distance, and compliance status.',target:'#obj-info'},
   {title:'Quick-Jump Search',text:'Search by name or NORAD ID, or click preset buttons for ISS, Starlink, and more.',target:'#globe-search'},
   {title:'Understanding Altitude Shells',text:'Orbits are grouped by altitude: LEO (Low Earth Orbit, under 2000km) has most satellites and debris. MEO (2000-35786km) holds GPS/GNSS satellites. GEO (~35786km) is for communications — objects stay over one spot. HEO includes high-elliptical orbits.',target:'#sh-leo'},
   {title:'Altitude Shell Toggles',text:'Click LEO/MEO/GEO/HEO to isolate specific orbital regimes and traffic density.',target:'#sh-leo'},
-  {title:'Dashboard Tab',text:'View 7 analytics charts: growth trends, type distribution, orbital regimes, and Kessler Syndrome projections.',target:null},
-  {title:'Debris Tracker',text:'Full sortable table with risk badges, TCA, miss distance, and export to CSV/JSON/PDF.',target:null}
+  {title:'Dashboard Tab',text:'View 8 analytics charts: cumulative growth trends, object type distribution, orbital regimes, inclination vs altitude scatter, top owners, active vs decayed status, conjunction assessment bubble chart, and debris accumulation projections.',target:null},
+  {title:'Re-entry Predictions',text:'ML-powered decay forecasting with risk-level badges (High, Medium, Low), decay probability scores, and predicted re-entry windows for objects approaching end of life.',target:null},
+  {title:'Collision Risk',text:'Orbital density-based collision probability assessment with Top 15 risk objects bar chart, miss distance vs collision probability scatter plot, close-approach timeline, and conjunction zones table with CRITICAL, HIGH, and MONITOR badges.',target:null},
+  {title:'Debris Tracker',text:'Full sortable table with risk badges, TCA, miss distance, and export to CSV, JSON, and PDF report formats.',target:null},
+  {title:'Space Object Catalog',text:'Browse the full 70,000+ Celestrak SATCAT catalog with filters by type, status, and orbit regime. Click any row for detailed object info with Track on Globe and single-record JSON export. Server-side export delivers the full dataset in CSV, JSON, or TLE format.',target:null},
+  {title:'Operations Tab',text:'Predict satellite passes from your location with SGP4 propagation and polar sky chart visualization. Live space weather sidebar shows Kp geomagnetic index, solar flux, solar wind, and atmospheric drag status from NOAA SWPC. Expand for 3-day forecast, upcoming launches, and constellation intelligence.',target:null},
+  {title:'Academy',text:'Educational resources on the Kessler Syndrome, IADC debris mitigation guidelines, historical fragmentation events, and space sustainability best practices.',target:null}
 ];
 function startGuidedTour(){
   tourStep=0;
