@@ -120,8 +120,13 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .cr{padding:8px 10px}.cd{padding:14px}.cd canvas{max-height:200px}
   .pr{grid-template-columns:1fr;padding:0 10px 10px}
   .pi .pc{font-size:20px}.pi .mt{font-size:10px;gap:6px}
-  .header{padding:0 12px;height:54px}.brand h1{font-size:13px}.brand p{font-size:9px}.brand-icon{width:32px;height:32px;font-size:12px}
-  .hr{gap:4px}.sync{padding:4px 8px;font-size:10px}.sync span{display:none}.sync #sync-label{display:inline}
+  .header{padding:0 10px;height:56px}.brand h1{font-size:12px}.brand p{font-size:8px}.brand-icon{width:30px;height:30px;font-size:11px}
+  .hr{gap:4px}.sync{padding:3px 6px;font-size:9px}.sync span{display:none}.sync #sync-label{display:inline}
+  /* Compact status-pill on mobile - hide extra info to prevent overflow */
+  .status-pill{padding:4px 8px;font-size:10px;max-width:140px;overflow:hidden}
+  .status-pill .sp-sep{display:none}
+  .status-pill .sp-tle{display:none}
+  .status-pill .sp-time{font-size:10px}
   .ab{padding:5px 10px;font-size:11px}.eb,.exp-trig{padding:6px 12px;font-size:11px}
   .glass-bar{padding:8px 10px;gap:8px}.glass-bar button{width:32px;height:32px;font-size:12px}.glass-bar .yr{font-size:10px;min-width:40px}
   .tbd{overflow-x:auto;-webkit-overflow-scrolling:touch}.tbd table{min-width:600px}
@@ -144,6 +149,50 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .ft2{flex-direction:column;align-items:center;text-align:center;gap:4px;font-size:11px}
   .cr{grid-template-columns:1fr!important}.cd canvas{max-height:240px}.pi{min-width:0}.tbd table{font-size:11px}
   .sw-grid{grid-template-columns:1fr!important}.sw-hero{grid-template-columns:1fr!important}
+  
+  /* === GLOBE TAB: Clean up overlapping elements === */
+  /* Hide mobile-warn banner — it overlaps body-nav buttons */
+  #mobile-warn{display:none!important}
+  /* Hide api-fallback banner on mobile to prevent overlap */
+  .api-fallback{display:none!important}
+  /* Body-nav buttons: position below header, compact */
+  .body-nav{top:58px!important;left:50%!important;transform:translateX(-50%)!important;max-width:92vw!important;padding:4px!important;gap:4px!important;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .body-btn{padding:5px 10px!important;font-size:11px!important;white-space:nowrap!important;flex-shrink:0}
+  /* Conjunction banner: push below body-nav */
+  #conjunction-banner{top:0!important;padding:8px 40px 8px 16px!important;font-size:11px!important}
+  /* Globe controls: compact on mobile */
+  .gctl{bottom:60px!important;left:8px!important}
+  .gctl button{width:36px!important;height:36px!important;font-size:14px!important}
+  
+  /* === RE-ENTRY TAB: Fix weather tiles overflow === */
+  /* 4-column weather grid → 2 columns on mobile */
+  #t-pred [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important;gap:8px!important;padding:8px 12px!important}
+  /* 3-column avg/ephemeris grid → 1 column on mobile */
+  #t-pred [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important;gap:8px!important;padding:8px 12px!important}
+  /* NOAA forecast grid → 1 column */
+  #t-pred #sw-forecast-grid{grid-template-columns:1fr!important;gap:8px!important}
+  /* Quality grid → 1 column */
+  #t-pred #eph-quality-grid{grid-template-columns:1fr!important;gap:8px!important}
+  
+  /* === DEBRIS TRACKER: Fix charts overflow === */
+  #t-debris .cr{grid-template-columns:1fr!important;gap:10px!important}
+  #t-debris .cd{padding:10px!important;overflow:hidden}
+  #t-debris .cd canvas{max-height:220px!important;width:100%!important}
+  #t-debris .sh{flex-direction:column!important;align-items:flex-start!important}
+  #t-debris .sh > div[style*="display:flex"]{flex-wrap:wrap!important;gap:6px!important}
+  #t-debris .eb{font-size:10px!important;padding:5px 10px!important}
+  
+  /* === ACADEMY: Fix Orbital Mechanics 101 overflow === */
+  #t-academy .academy-jump{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px}
+  #t-academy .aj-btn{flex-shrink:0;white-space:nowrap}
+  #t-academy table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;font-size:12px}
+  #t-academy table th,#t-academy table td{padding:6px 8px;white-space:nowrap}
+  #t-academy .academy-code{overflow-x:auto;max-width:100%}
+  #t-academy .academy-code pre{font-size:11px;white-space:pre-wrap;word-wrap:break-word}
+  #t-academy img{max-width:100%;height:auto}
+  #t-academy svg{max-width:100%;height:auto}
+  #t-academy [style*="max-width:900px"]{max-width:100%!important;padding:0 10px!important}
+  #t-academy [style*="max-width:420px"]{max-width:100%!important}
 }
 @media(max-width:480px){
   .header{height:auto;padding:6px 8px;flex-wrap:wrap;gap:4px;justify-content:center}
@@ -175,6 +224,11 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .tbd{border-radius:8px;margin:0 -8px}
   .tbd th,.tbd td{padding:8px 6px;white-space:nowrap}
   .tbd thead{position:sticky;top:0;background:var(--surface);z-index:10;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+  /* Re-entry: 4-col weather grid → 1 column on very small screens */
+  #t-pred [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{grid-template-columns:1fr!important;gap:6px!important}
+  /* Academy table: smaller text */
+  #t-academy table{font-size:11px}
+  #t-academy .academy-code pre{font-size:10px}
 }
 /* Landscape mode optimization for mobile */
 @media(max-width:768px) and (orientation:landscape){
