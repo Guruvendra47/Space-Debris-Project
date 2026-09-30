@@ -147,7 +147,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .nt{padding:8px 8px;font-size:11px;white-space:nowrap}
   .ac{padding:10px}.ac img{max-width:100%;height:auto}
   .ft2{flex-direction:column;align-items:center;text-align:center;gap:4px;font-size:11px}
-  .cr{display:block!important;grid-template-columns:none!important}.cd canvas{max-height:240px}.pi{min-width:0}.tbd table{font-size:11px}
+  .cr{display:grid!important;grid-template-columns:1fr!important}.cd canvas{max-height:240px}.pi{min-width:0}.tbd table{font-size:11px}
   .sw-grid{grid-template-columns:1fr!important}.sw-hero{grid-template-columns:1fr!important}
   
   /* === GLOBE TAB: Clean up overlapping elements === */
@@ -205,13 +205,13 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Quality grid → 1 column */
   #t-pred #eph-quality-grid{grid-template-columns:1fr!important;gap:8px!important}
   
-  /* === DEBRIS TRACKER: Stack charts vertically, one below another === */
-  #t-debris .cr{display:block!important;grid-template-columns:none!important;gap:0!important;padding:8px!important;width:100%!important}
-  #t-debris .cr > .cd{display:block!important;width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important;float:none!important;clear:both!important}
+  /* === DEBRIS TRACKER: Stack charts vertically using grid 1-column === */
+  #t-debris .cr{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;padding:8px!important;width:100%!important}
+  #t-debris .cr > .cd{width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important}
   #t-debris .cd canvas{max-height:260px!important;width:100%!important}
-  /* Override ALL .cr grids on mobile to stack vertically */
-  .cr{display:block!important;grid-template-columns:none!important}
-  .cr > .cd{display:block!important;width:100%!important;float:none!important;margin-bottom:12px!important}
+  /* Override ALL .cr grids on mobile to 1 column */
+  .cr{display:grid!important;grid-template-columns:1fr!important}
+  .cr > .cd{width:100%!important;margin-bottom:12px!important}
   #t-debris .sh{flex-direction:column!important;align-items:flex-start!important}
   #t-debris .sh > div[style*="display:flex"]{flex-wrap:wrap!important;gap:6px!important}
   #t-debris .eb{font-size:10px!important;padding:5px 10px!important}
