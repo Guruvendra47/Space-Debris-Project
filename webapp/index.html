@@ -3939,6 +3939,7 @@ function renderCelestialMarkers(body){
   if(sats.length===0){globeDebug('No markers match filters for '+cfg.name);return;}
   
   var allPos=[],allCol=[];
+  var typePos=[[],[],[],[]],typeCol=[[],[],[],[]],typeIdx=[[],[],[],[]];
   globePointData=[];
   
   var cP=new THREE.Color(0x00ffff),cR=new THREE.Color(0xffaa00),cD=new THREE.Color(0xff2222),cU=new THREE.Color(0xaaaaaa);
@@ -3956,18 +3957,23 @@ function renderCelestialMarkers(body){
     var ot=o.ObjectType||'Payload';
     var c,ti;
     if(ot==='Payload'||ot==='Lander'){c=cP;ti=0;}
+    else if(ot==='Rocket Body'){c=cR;ti=1;}
     else if(ot==='Debris'){c=cD;ti=2;}
     else{c=cU;ti=3;}
     
     var v=latLngTo3D(lat,lng,altUnits);
+    var gpd=globePointData.length;
+    globePointData.push({name:o.Name,norad:o.NORAD_ID,type:ot,alt_km:o.AltitudeKM,owner:o.Owner,inc:o.Inclination,ap:o.Apogee,pe:o.Perigee,orbitClass:o.OrbitClass});
     allPos.push(v.x,v.y,v.z);
     allCol.push(c.r,c.g,c.b);
-    globePointData.push({name:o.Name,norad:o.NORAD_ID,type:ot,alt_km:o.AltitudeKM,owner:o.Owner,inc:o.Inclination,ap:o.Apogee,pe:o.Perigee,orbitClass:o.OrbitClass});
+    typePos[ti].push(v.x,v.y,v.z);
+    typeCol[ti].push(c.r,c.g,c.b);
+    typeIdx[ti].push(gpd);
   }
   
   if(allPos.length===0)return;
   
-  // Satellite-shape markers for celestial body
+  // 3D-looking shape markers — satellite, rocket body, debris sprites, color-coded by type
   var satCanvas2=document.createElement('canvas');satCanvas2.width=128;satCanvas2.height=128;
   var sx2=satCanvas2.getContext('2d');
   var pL2=sx2.createLinearGradient(2,56,50,56);pL2.addColorStop(0,'#1a1a1a');pL2.addColorStop(.4,'#666');pL2.addColorStop(.6,'#777');pL2.addColorStop(1,'#1a1a1a');
@@ -3987,13 +3993,55 @@ function renderCelestialMarkers(body){
   sx2.beginPath();sx2.arc(64,16,6,0,Math.PI*2);sx2.fillStyle='#ccc';sx2.fill();
   sx2.fillStyle='rgba(255,255,255,.6)';sx2.fillRect(59,34,1.5,46);
   var satTexture2=new THREE.CanvasTexture(satCanvas2);
-  var dotGeom=new THREE.BufferGeometry();
-  dotGeom.setAttribute('position',new THREE.Float32BufferAttribute(allPos,3));
-  dotGeom.setAttribute('color',new THREE.Float32BufferAttribute(allCol,3));
-  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:20,sizeAttenuation:false,transparent:true,opacity:1.0,vertexColors:true,map:satTexture2,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));
-  currentPointCloud.frustumCulled=false;
+  var rktCanvas2=document.createElement('canvas');rktCanvas2.width=128;rktCanvas2.height=128;
+  var rx3=rktCanvas2.getContext('2d');
+  var rG2=rx3.createLinearGradient(48,20,80,20);rG2.addColorStop(0,'#555');rG2.addColorStop(.25,'#ddd');rG2.addColorStop(.5,'#fff');rG2.addColorStop(.75,'#aaa');rG2.addColorStop(1,'#444');
+  rx3.fillStyle=rG2;rx3.fillRect(48,20,32,72);
+  var nG2=rx3.createLinearGradient(48,4,80,4);nG2.addColorStop(0,'#555');nG2.addColorStop(.5,'#eee');nG2.addColorStop(1,'#555');
+  rx3.fillStyle=nG2;rx3.beginPath();rx3.moveTo(48,20);rx3.lineTo(64,4);rx3.lineTo(80,20);rx3.closePath();rx3.fill();
+  rx3.strokeStyle='#888';rx3.lineWidth=.5;
+  rx3.beginPath();rx3.moveTo(48,36);rx3.lineTo(80,36);rx3.stroke();
+  rx3.beginPath();rx3.moveTo(48,52);rx3.lineTo(80,52);rx3.stroke();
+  rx3.beginPath();rx3.moveTo(48,68);rx3.lineTo(80,68);rx3.stroke();
+  rx3.beginPath();rx3.moveTo(48,84);rx3.lineTo(80,84);rx3.stroke();
+  rx3.fillStyle='#999';
+  rx3.beginPath();rx3.moveTo(48,80);rx3.lineTo(32,96);rx3.lineTo(48,96);rx3.closePath();rx3.fill();
+  rx3.beginPath();rx3.moveTo(80,80);rx3.lineTo(96,96);rx3.lineTo(80,96);rx3.closePath();rx3.fill();
+  rx3.fillStyle='#333';rx3.fillRect(58,92,12,12);rx3.fillStyle='#555';rx3.fillRect(60,94,8,8);
+  rx3.fillStyle='rgba(255,255,255,.4)';rx3.fillRect(50,22,2,68);
+  var rocketTexture2=new THREE.CanvasTexture(rktCanvas2);
+  var debCanvas2=document.createElement('canvas');debCanvas2.width=128;debCanvas2.height=128;
+  var dx3=debCanvas2.getContext('2d');
+  dx3.fillStyle='#eee';
+  dx3.beginPath();dx3.moveTo(20,50);dx3.lineTo(35,20);dx3.lineTo(55,15);dx3.lineTo(50,35);dx3.lineTo(75,25);dx3.lineTo(95,40);dx3.lineTo(85,55);dx3.lineTo(108,65);dx3.lineTo(90,90);dx3.lineTo(65,85);dx3.lineTo(70,105);dx3.lineTo(40,95);dx3.lineTo(45,70);dx3.lineTo(15,75);dx3.closePath();dx3.fill();
+  dx3.fillStyle='#999';
+  dx3.beginPath();dx3.moveTo(35,20);dx3.lineTo(55,15);dx3.lineTo(50,35);dx3.closePath();dx3.fill();
+  dx3.beginPath();dx3.moveTo(95,40);dx3.lineTo(85,55);dx3.lineTo(108,65);dx3.closePath();dx3.fill();
+  dx3.beginPath();dx3.moveTo(65,85);dx3.lineTo(70,105);dx3.lineTo(40,95);dx3.closePath();dx3.fill();
+  dx3.strokeStyle='#666';dx3.lineWidth=1;
+  dx3.beginPath();dx3.moveTo(30,45);dx3.lineTo(50,55);dx3.lineTo(45,75);dx3.lineTo(70,80);dx3.stroke();
+  dx3.beginPath();dx3.moveTo(80,50);dx3.lineTo(70,70);dx3.lineTo(85,85);dx3.stroke();
+  dx3.fillStyle='#777';
+  dx3.fillRect(40,40,5,5);dx3.fillRect(65,55,4,4);dx3.fillRect(55,75,3,3);
+  var debTexture2=new THREE.CanvasTexture(debCanvas2);
+  var unkCanvas2=document.createElement('canvas');unkCanvas2.width=128;unkCanvas2.height=128;
+  var ux2=unkCanvas2.getContext('2d');
+  ux2.fillStyle='#ccc';
+  ux2.beginPath();ux2.moveTo(64,12);ux2.lineTo(100,40);ux2.lineTo(100,88);ux2.lineTo(64,116);ux2.lineTo(28,88);ux2.lineTo(28,40);ux2.closePath();ux2.fill();
+  ux2.strokeStyle='#888';ux2.lineWidth=1;
+  ux2.beginPath();ux2.moveTo(64,12);ux2.lineTo(100,40);ux2.lineTo(100,88);ux2.lineTo(64,116);ux2.lineTo(28,88);ux2.lineTo(28,40);ux2.closePath();ux2.stroke();
+  ux2.beginPath();ux2.moveTo(64,12);ux2.lineTo(64,116);ux2.stroke();
+  ux2.beginPath();ux2.moveTo(28,40);ux2.lineTo(100,88);ux2.stroke();
+  ux2.beginPath();ux2.moveTo(100,40);ux2.lineTo(28,88);ux2.stroke();
+  ux2.fillStyle='#666';ux2.font='bold 40px sans-serif';ux2.textAlign='center';ux2.textBaseline='middle';ux2.fillText('?',64,64);
+  var unkTexture2=new THREE.CanvasTexture(unkCanvas2);
+  var typeTextures2=[satTexture2,rocketTexture2,debTexture2,unkTexture2];
+  var typeSizes2=[20,18,16,16];
+  currentPointCloud=new THREE.Group();
   currentPointCloud._posArray=new Float32Array(allPos);
   currentPointCloud._colArray=new Float32Array(allCol);
+  currentPointCloud._meshMaps=typeIdx;
+  for(var ti2=0;ti2<4;ti2++){if(typePos[ti2].length===0)continue;var tg2=new THREE.BufferGeometry();tg2.setAttribute('position',new THREE.Float32BufferAttribute(typePos[ti2],3));tg2.setAttribute('color',new THREE.Float32BufferAttribute(typeCol[ti2],3));var tp2=new THREE.Points(tg2,new THREE.PointsMaterial({size:typeSizes2[ti2],sizeAttenuation:false,transparent:true,opacity:1.0,vertexColors:true,map:typeTextures2[ti2],blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));tp2.frustumCulled=false;tp2._ti=ti2;tp2._idxMap=typeIdx[ti2];currentPointCloud.add(tp2);}
   scene.add(currentPointCloud);
   
   globeReady=true;
