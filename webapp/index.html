@@ -92,7 +92,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* Collapsible timeline */
 @media(max-width:1200px){.kr{grid-template-columns:repeat(3,1fr)}.cr,.pr{grid-template-columns:1fr}}
 @media(max-width:900px){.kr{grid-template-columns:repeat(2,1fr)}.cr,.pr{grid-template-columns:1fr}.pn{width:280px}.nav{padding:0 12px}.sc{padding:14px}.hr{gap:6px}.mi{display:none}.gl{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.metrics-banner{flex-wrap:wrap}.metrics-banner .mb-sep{display:none}}
-.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:1000;justify-content:space-around;align-items:center;box-shadow:0 -2px 12px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}.mtb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;font-size:11px;color:var(--text3);padding:8px 6px;flex:1;transition:.15s;font-family:inherit;font-weight:600}.mtb span{font-size:11px;font-weight:600}.mtb.active{color:var(--accent)}.mobile-more-menu{display:none;position:fixed;bottom:56px;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:999;padding:8px 16px;flex-direction:column;gap:4px;box-shadow:0 -4px 16px rgba(0,0,0,.1)}.mobile-more-menu.open{display:flex}.mobile-more-menu button{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;text-align:left;transition:.15s}.mobile-more-menu button:active{background:var(--accent);color:#fff}
+.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:1000;justify-content:space-around;align-items:center;box-shadow:0 -2px 12px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}.mtb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:8px 6px;flex:1;transition:.15s;font-family:inherit;font-weight:600}.mtb span{font-size:14px;font-weight:600}.mtb.active{color:var(--accent)}.mobile-more-menu{display:none;position:fixed;bottom:56px;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:999;padding:8px 16px;flex-direction:column;gap:4px;box-shadow:0 -4px 16px rgba(0,0,0,.1)}.mobile-more-menu.open{display:flex}.mobile-more-menu button{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;text-align:left;transition:.15s}.mobile-more-menu button:active{background:var(--accent);color:#fff}
 @media(max-width:768px){
   /* Safe area for iPhone notch/home indicator */
   body{padding-top:env(safe-area-inset-top);padding-bottom:calc(56px + env(safe-area-inset-bottom))}
@@ -136,7 +136,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #mobile-warn{display:flex}
   .kr{grid-template-columns:1fr!important}.kr[style*="repeat(2"]{grid-template-columns:1fr!important}.kr[style*="repeat(3"]{grid-template-columns:1fr!important}.kr[style*="repeat(4"]{grid-template-columns:repeat(2,1fr)!important}.kr[style*="repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
   .sw-hero{grid-template-columns:1fr;gap:10px;padding:10px}.sw-card{min-height:140px;padding:14px}
-  .pp-controls{grid-template-columns:1fr!important;gap:8px!important}.pp-controls .pp-btn-wrap{grid-column:1/-1}
+  .pp-controls{grid-template-columns:1fr!important;gap:8px!important;max-width:100%!important;overflow:hidden}.pp-controls .pp-btn-wrap{grid-column:1/-1}.pp-controls input,.pp-controls select{min-width:0;width:100%;max-width:100%}.pp-controls .pp-field > div{min-width:0;max-width:100%}
   .findings-box{flex-wrap:wrap;gap:10px;padding:10px 12px}.findings-box .fb-sep{display:none}.findings-box .fb-icon{font-size:16px}.findings-box .fb-value{font-size:14px}.findings-box .fb-label{font-size:8px}
   .cd canvas{max-height:260px}.cd{padding:10px}
   .gp-badge{width:28px;height:28px;font-size:10px}.gp-tooltip{display:none}
@@ -217,9 +217,9 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #t-debris .cr{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;padding:8px!important;width:100%!important}
   #t-debris .cr > .cd{width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important}
   #t-debris .cd canvas{max-height:260px!important;width:100%!important}
-  /* Override inline-styled grid divs in debris tab (not using .cr class) */
-  #t-debris [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
-  #t-debris [style*="grid-template-columns:1fr 1fr"] > .cd{width:100%!important;max-width:100%!important;margin-bottom:12px!important}
+  /* Debris chart grids: stack vertically on mobile */
+  .dg{grid-template-columns:1fr!important}
+  .dg > .cd{width:100%!important;max-width:100%!important;margin-bottom:12px!important}
   /* Override ALL .cr grids on mobile to 1 column */
   .cr{display:grid!important;grid-template-columns:1fr!important}
   .cr > .cd{width:100%!important;margin-bottom:12px!important}
@@ -245,7 +245,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .hr{gap:4px;justify-content:center;width:100%}
   .status-pill{padding:3px 8px;font-size:10px}.status-pill .sp-dot{width:6px;height:6px}
   .ab{padding:4px 8px;font-size:10px}.eb,.exp-trig{padding:5px 10px;font-size:10px}
-  .gp-badge{width:26px;height:26px;font-size:9px}.mtb{font-size:10px}.mtb span{font-size:10px}.mobile-tabbar{height:52px}.mobile-more-menu{bottom:52px}
+  .gp-badge{width:26px;height:26px;font-size:9px}.mtb{font-size:13px}.mtb span{font-size:13px}.mobile-tabbar{height:52px}.mobile-more-menu{bottom:52px}
   .nav{padding:0 4px;gap:0;-webkit-overflow-scrolling:touch}
   .nt{padding:7px 6px;font-size:10px}
   .sc{padding:8px}.sh{gap:4px}.sh h2{font-size:14px}
@@ -725,10 +725,10 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div id="t-debris" class="tab">
 <div class="sc"><div class="sh"><div><h2>Debris Tracking and Visualization</h2><p data-citizen="Track all space junk and rocket parts orbiting Earth" data-expert="Monitor all trackable debris fragments and rocket bodies in Earth orbit — sourced from Celestrak SATCAT with SGP4 propagation">Monitor all trackable debris fragments and rocket bodies in Earth orbit — sourced from Celestrak SATCAT with SGP4 propagation</p></div><div style="display:flex;gap:8px"><button class="eb" onclick="exportCSV('debris')" style="background:var(--accent)" aria-label="Export debris data as CSV file">Export CSV</button><button class="eb" onclick="exportJSON('debris')" style="background:var(--accent3)" aria-label="Export debris data as JSON file">Export JSON</button><button class="eb" onclick="generatePDFReport()" style="background:var(--red)" aria-label="Generate comprehensive PDF report of debris data">Generate PDF Report</button></div></div></div>
 <div class="sc" style="padding-top:0">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div class="dg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Debris Altitude Distribution (km)</h3><p class="ds">Click a bar to filter the table below by altitude range</p><canvas id="ch-d-alt"></canvas></div>
 <div class="cd"><h3>Debris by Country</h3><p class="ds">Top 10 countries contributing to orbital debris</p><canvas id="ch-d-country"></canvas></div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div class="dg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Re-entry Risk Distribution (Debris Only)</h3><p class="ds">ML-predicted decay probability classification</p><canvas id="ch-d-risk"></canvas></div>
 <div class="cd"><h3>Debris by Orbit Class</h3><p class="ds">Distribution across orbital regimes</p><canvas id="ch-d-orbit"></canvas></div></div>
 <div class="cr full" style="padding:0 20px 20px"><div class="cd"><h3>Kessler Syndrome Projection - Debris Growth 2025-2035 <span class="term-tip" data-tip="Kessler Syndrome: a cascade where debris collisions create more debris, eventually making orbits unusable.">?</span></h3><p class="ds">Projected fragment growth based on current collision rates and fragmentation models</p><canvas id="ch-kessler"></canvas></div></div></div>
