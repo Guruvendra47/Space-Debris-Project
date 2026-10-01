@@ -3990,7 +3990,7 @@ function renderCelestialMarkers(body){
   var dotGeom=new THREE.BufferGeometry();
   dotGeom.setAttribute('position',new THREE.Float32BufferAttribute(allPos,3));
   dotGeom.setAttribute('color',new THREE.Float32BufferAttribute(allCol,3));
-  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:20,sizeAttenuation:false,transparent:true,opacity:0.95,vertexColors:true,map:satTexture2,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));
+  currentPointCloud=new THREE.Points(dotGeom,new THREE.PointsMaterial({size:20,sizeAttenuation:false,transparent:true,opacity:1.0,vertexColors:true,map:satTexture2,blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));
   currentPointCloud.frustumCulled=false;
   currentPointCloud._posArray=new Float32Array(allPos);
   currentPointCloud._colArray=new Float32Array(allCol);
