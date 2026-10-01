@@ -74,7 +74,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* Auto-collapsing panels */
 .panel-toggle{position:absolute;top:10px;right:10px;z-index:30;width:32px;height:32px;border-radius:8px;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.2);color:#60a5fa;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:.2s}.panel-toggle:hover{background:rgba(59,130,246,.3);color:#fff}
 .pn.collapsed{width:0;overflow:hidden;border:none}.pn.collapsed .pb{display:none}
-.pn{transition:width .3s ease}
+.pn{transition:width .3s ease}.pn-header{display:none}
 
 
 
@@ -113,7 +113,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   .kr{grid-template-columns:repeat(2,1fr)!important}.k .vl{font-size:20px}.k .ic{width:32px;height:32px;font-size:11px}.k{padding:12px}
   #gw{flex-direction:column;height:auto}#gc{height:calc(100vh - 160px)}
-  .pn{width:100%;max-height:40vh;border-left:none;border-top:1px solid rgba(59,130,246,.15)}
+  .pn{width:100%;border-left:none;border-top:1px solid rgba(59,130,246,.15)}
   .nav{display:none!important}.mobile-tabbar{display:flex!important}#hr-actions .ab{display:none!important}#hr-actions .sb{display:none!important}#hr-actions .gp-badge{display:none!important}#mobile-warn{display:none!important}.sh>div[style*="display:flex"]{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;flex-wrap:nowrap}.sh select{flex-shrink:0}.sh button{flex-shrink:0}
   .sc{padding:10px}.sh{flex-direction:column;align-items:flex-start}.sh h2{font-size:17px}
   .tb{padding:10px 12px}.sr{min-width:120px;font-size:12px}.sl{font-size:11px;padding:6px 10px}
@@ -263,7 +263,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .pi .pc{font-size:16px}.pi .mt{font-size:9px}
   .tbd table{min-width:500px;font-size:10px}
   #gw{height:auto}#gc{height:calc(100vh - 170px)}
-  .pn{max-height:35vh}
+  .pn{max-height:30vh}
   .ft2{font-size:10px}
   /* Mobile table optimization */
   .tbd{border-radius:8px;margin:0 -8px}
@@ -474,8 +474,11 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* === MOBILE RESPONSIVE === */
 @media(max-width:768px){
   /* Fix sidebar: full-width toggle panel, not fixed 220px */
-  .pn{width:100%!important;max-height:45vh;border-left:none;border-top:1px solid rgba(59,130,246,.15);position:absolute;bottom:0;left:0;right:0;z-index:50;transform:translateY(100%);transition:transform .3s ease}
+  .pn{width:100%!important;max-height:30vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-left:none;border-top:1px solid rgba(59,130,246,.15);position:absolute;bottom:0;left:0;right:0;z-index:50;transform:translateY(100%);transition:transform .3s ease}
   .pn.open{transform:translateY(0)}
+  .pn-header{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--surface);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--border)}
+  .pn-drag-handle{width:40px;height:4px;background:var(--text3);border-radius:2px;opacity:.5}
+  .pn-close{width:28px;height:28px;border-radius:6px;border:none;background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}.pn-close:active{background:var(--red);color:#fff}
   #gw{height:calc(100vh - 210px)!important;flex-direction:column!important}
   #gc{height:calc(100vh - 160px)!important;flex:1}
   .panel-toggle{display:flex!important;position:absolute;top:auto;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
@@ -624,7 +627,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div id="globe-tooltip" style="position:absolute;z-index:25;display:none;pointer-events:none;background:rgba(15,23,42,.95);color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid rgba(59,130,246,.4);box-shadow:0 4px 12px rgba(0,0,0,.5);backdrop-filter:blur(8px);white-space:nowrap;font-family:inherit;transition:opacity .1s"></div>
 </div>
 <button class="panel-toggle" onclick="togglePanel()" title="Toggle side panel" id="panel-toggle" aria-label="Toggle side panel visibility">☰</button>
-<div class="pn">
+<div class="pn"><div class="pn-header"><div class="pn-drag-handle"></div><button class="pn-close" onclick="togglePanel()" aria-label="Close panel">✕</button></div>
 <div class="pb" style="padding:0">
 <div class="collap open" onclick="toggleCollap(this)">Filter Objects <span class="arrow">▼</span></div>
 <div class="collap-body">
