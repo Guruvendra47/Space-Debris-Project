@@ -181,7 +181,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .brand::after{content:'● LIVE';font-size:9px;color:var(--green);font-weight:700;margin-left:6px;animation:p 2s infinite}
   
   /* Visual layers: LEFT side, tap-to-toggle dropdown (class-based, not hover) */
-  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:110px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:4px 8px!important;width:auto!important}
+  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:140px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:4px 8px!important;width:auto!important}
   #t-globe [style*="bottom:72px;right:20px"] > button{opacity:0;max-height:0;overflow:hidden;transition:all .3s ease}
   #t-globe [style*="bottom:72px;right:20px"].vl-open{max-height:280px;overflow:visible}
   #t-globe [style*="bottom:72px;right:20px"].vl-open > button{opacity:1;max-height:40px;margin-top:4px}
@@ -193,7 +193,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #conjunction-banner{display:none!important}
   
   /* Density control: visible on mobile */
-  #density-control{bottom:60px!important;left:50px!important;padding:6px 8px!important}
+  #density-control{bottom:80px!important;left:50px!important;padding:6px 8px!important}
   #density-control input[type=range]{width:80px!important}
   
   /* === OPERATIONS TAB: Split-pane → stacked on mobile === */
@@ -536,7 +536,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* === MOBILE GLOBE: Inline filter bar replaces burger menu === */
   .panel-toggle{display:none!important}
   .pn{display:none!important}
-  .mobile-filter-bar{display:flex!important;flex-direction:column;position:fixed;bottom:56px;left:0;right:0;z-index:998;background:var(--surface);border-top:1px solid var(--border);padding:6px 10px;gap:4px;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+  .mobile-filter-bar{display:flex!important;flex-direction:column;position:absolute;bottom:0;left:0;right:0;z-index:30;background:rgba(11,15,25,.9);border:none;padding:6px 8px;gap:4px;backdrop-filter:blur(8px)}
   .mfb-row{display:flex;gap:4px;justify-content:center}
   .mfb-pill{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text3);cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
   .mfb-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -1230,7 +1230,7 @@ function mobileToggleType(btn,type){typeFilter[type]=!typeFilter[type];btn.class
 function mobileToggleAlt(btn,alt){document.querySelectorAll('.mfb-pill[data-alt]').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');var fa=document.getElementById('f-alt');if(fa)fa.value=alt;try{applyFilters()}catch(e){}}
 function syncMobileCountry(){var mc=document.getElementById('mobile-country');var fc=document.getElementById('f-country');if(mc&&fc){mc.innerHTML=fc.innerHTML;}}
 var mobObjObs=new MutationObserver(function(){var oi=document.getElementById('obj-info');var mp=document.getElementById('mobileObjPopup');if(!mp)return;if(oi&&oi.style.display!=='none'&&oi.innerHTML.trim()){var nm=document.getElementById('o-name');var mn=document.getElementById('mop-name');var mi=document.getElementById('mop-info');if(mn&&nm)mn.textContent=nm.textContent;if(mi)mi.innerHTML=oi.innerHTML;mp.classList.add('show');}else if(oi&&oi.style.display==='none'){mp.classList.remove('show');}});
-setTimeout(function(){var oi=document.getElementById('obj-info');if(oi)mobObjObs.observe(oi,{attributes:true,childList:true,characterData:true,subtree:true});var fc=document.getElementById('f-country');if(fc){var cObs=new MutationObserver(function(){syncMobileCountry()});cObs.observe(fc,{childList:true});syncMobileCountry();}},3000);
+setTimeout(function(){var oi=document.getElementById('obj-info');if(oi)mobObjObs.observe(oi,{attributes:true,childList:true,characterData:true,subtree:true});var fc=document.getElementById('f-country');if(fc){var cObs=new MutationObserver(function(){syncMobileCountry()});cObs.observe(fc,{childList:true});syncMobileCountry();var fb=document.getElementById('mobileFilterBar');var gc=document.getElementById('gc');if(fb&&gc&&window.innerWidth<=768){gc.appendChild(fb);}},3000);
 
 function toggleSection(id){
   var panel=document.getElementById(id);
