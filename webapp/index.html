@@ -473,7 +473,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   /* Fix sidebar: full-width toggle panel, not fixed 220px */
   .pn{width:100%!important;max-height:45vh;border-left:none;border-top:1px solid rgba(59,130,246,.15);position:absolute;bottom:0;left:0;right:0;z-index:50;transform:translateY(100%);transition:transform .3s ease}
   .pn.open{transform:translateY(0)}
-  #gw{height:calc(100vh - 160px)!important;flex-direction:column!important}
+  #gw{height:calc(100vh - 210px)!important;flex-direction:column!important}
   #gc{height:calc(100vh - 160px)!important;flex:1}
   .panel-toggle{display:flex!important;position:absolute;top:auto;bottom:16px;right:16px;z-index:60;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);align-items:center;justify-content:center}
   
@@ -1821,7 +1821,7 @@ function renderGlobe(){
   currentPointCloud._posArray=new Float32Array(allPos);
   currentPointCloud._colArray=new Float32Array(allCol);
   currentPointCloud._meshMaps=typeIdx;
-  for(var ti=0;ti<4;ti++){if(typePos[ti].length===0)continue;var tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.Float32BufferAttribute(typePos[ti],3));tg.setAttribute('color',new THREE.Float32BufferAttribute(typeCol[ti],3));var tp=new THREE.Points(tg,new THREE.PointsMaterial({size:typeSizes[ti],sizeAttenuation:false,transparent:true,opacity:0.9,vertexColors:true,map:typeTextures[ti],blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));tp.frustumCulled=false;tp._ti=ti;tp._idxMap=typeIdx[ti];currentPointCloud.add(tp);}
+  for(var ti=0;ti<4;ti++){if(typePos[ti].length===0)continue;var tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.Float32BufferAttribute(typePos[ti],3));tg.setAttribute('color',new THREE.Float32BufferAttribute(typeCol[ti],3));var tp=new THREE.Points(tg,new THREE.PointsMaterial({size:typeSizes[ti],sizeAttenuation:false,transparent:true,opacity:1.0,vertexColors:true,map:typeTextures[ti],blending:THREE.NormalBlending,depthWrite:false,alphaTest:0.3}));tp.frustumCulled=false;tp._ti=ti;tp._idxMap=typeIdx[ti];currentPointCloud.add(tp);}
   scene.add(currentPointCloud);
 
   // Heatmap cloud: separate Points for density visualization
