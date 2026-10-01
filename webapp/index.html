@@ -74,7 +74,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* Auto-collapsing panels */
 .panel-toggle{position:absolute;top:10px;right:10px;z-index:30;width:32px;height:32px;border-radius:8px;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.2);color:#60a5fa;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:.2s}.panel-toggle:hover{background:rgba(59,130,246,.3);color:#fff}
 .pn.collapsed{width:0;overflow:hidden;border:none}.pn.collapsed .pb{display:none}
-.pn{transition:width .3s ease}.pn-header{display:none}
+.pn{transition:width .3s ease}.pn-header{display:none}.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 
 
@@ -725,10 +725,10 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div id="t-debris" class="tab">
 <div class="sc"><div class="sh"><div><h2>Debris Tracking and Visualization</h2><p data-citizen="Track all space junk and rocket parts orbiting Earth" data-expert="Monitor all trackable debris fragments and rocket bodies in Earth orbit — sourced from Celestrak SATCAT with SGP4 propagation">Monitor all trackable debris fragments and rocket bodies in Earth orbit — sourced from Celestrak SATCAT with SGP4 propagation</p></div><div style="display:flex;gap:8px"><button class="eb" onclick="exportCSV('debris')" style="background:var(--accent)" aria-label="Export debris data as CSV file">Export CSV</button><button class="eb" onclick="exportJSON('debris')" style="background:var(--accent3)" aria-label="Export debris data as JSON file">Export JSON</button><button class="eb" onclick="generatePDFReport()" style="background:var(--red)" aria-label="Generate comprehensive PDF report of debris data">Generate PDF Report</button></div></div></div>
 <div class="sc" style="padding-top:0">
-<div class="dg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div class="dg" style="display:grid;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Debris Altitude Distribution (km)</h3><p class="ds">Click a bar to filter the table below by altitude range</p><canvas id="ch-d-alt"></canvas></div>
 <div class="cd"><h3>Debris by Country</h3><p class="ds">Top 10 countries contributing to orbital debris</p><canvas id="ch-d-country"></canvas></div></div>
-<div class="dg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div class="dg" style="display:grid;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Re-entry Risk Distribution (Debris Only)</h3><p class="ds">ML-predicted decay probability classification</p><canvas id="ch-d-risk"></canvas></div>
 <div class="cd"><h3>Debris by Orbit Class</h3><p class="ds">Distribution across orbital regimes</p><canvas id="ch-d-orbit"></canvas></div></div>
 <div class="cr full" style="padding:0 20px 20px"><div class="cd"><h3>Kessler Syndrome Projection - Debris Growth 2025-2035 <span class="term-tip" data-tip="Kessler Syndrome: a cascade where debris collisions create more debris, eventually making orbits unusable.">?</span></h3><p class="ds">Projected fragment growth based on current collision rates and fragmentation models</p><canvas id="ch-kessler"></canvas></div></div></div>
