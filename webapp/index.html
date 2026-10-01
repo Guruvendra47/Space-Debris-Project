@@ -2083,6 +2083,7 @@ function initThreeJS(){
 
   // Click to inspect
   var rc=new THREE.Raycaster(),ms=new THREE.Vector2();
+  rc.params.Points.threshold=10;
   container.onclick=function(e){if(moved)return;var r=renderer.domElement.getBoundingClientRect();ms.x=((e.clientX-r.left)/r.width)*2-1;ms.y=-((e.clientY-r.top)/r.height)*2+1;rc.setFromCamera(ms,camera);if(currentPointCloud&&currentPointCloud.visible){var h=rc.intersectObject(currentPointCloud,true);if(h.length>0){var gIdx=-1;for(var ci=0;ci<h.length;ci++){var hh=h[ci];var li=hh.index!=null?hh.index:0;if(hh.object.geometry.attributes.color){var ca2=hh.object.geometry.attributes.color.array;var cr2=ca2[li*3],cg2=ca2[li*3+1],cb2=ca2[li*3+2];if(cr2===0&&cg2===0&&cb2===0)continue;}gIdx=hh.object._idxMap?hh.object._idxMap[li]:li;break;}if(gIdx>=0){lastClickPos={x:e.clientX,y:e.clientY};handlePointClick(gIdx);setTimeout(function(){showMobileObjPopup();},50);if(globePointData[gIdx]&&currentPointCloud._posArray){var pos=currentPointCloud._posArray;var x=pos[gIdx*3],y=pos[gIdx*3+1],z=pos[gIdx*3+2];cameraLocked=true;lockedTarget={x:x,y:y,z:z};globeRotating=false;var d=Math.sqrt(x*x+y*y+z*z);camDist=Math.max(MIN_DIST+20,Math.min(MAX_DIST,d+80));camPhi=Math.acos(y/d);camTheta=Math.atan2(x,z);camVelTheta=0;camVelPhi=0;applyFocusDimming();var fb=document.getElementById('focus-banner');if(fb){document.getElementById('focus-banner-name').textContent=globePointData[gIdx].name;fb.style.display='flex';}}}}}if(solarSystem&&solarSystem.orbitBodies){var pMeshes=solarSystem.orbitBodies.map(function(o){return o.mesh;});var ph=rc.intersectObjects(pMeshes,true);if(ph.length>0){var pn=ph[0].object.userData.planetName;if(pn){switchBody(pn);document.querySelectorAll('.body-btn').forEach(function(b){var txt=b.textContent.toLowerCase();if(txt.indexOf(pn)>=0)b.classList.add('active');else b.classList.remove('active');});}}}};
 
   globeDebug('Three.js scene created, starting animation...');
@@ -3704,6 +3705,16 @@ function switchBody(body,btn){
   currentBody=body;
   document.querySelectorAll('.body-btn').forEach(function(b){b.classList.remove('active');});
   if(btn)btn.classList.add('active');
+  
+  // Reset filters when switching bodies to prevent Earth filters from affecting other celestial bodies
+  var ft=document.getElementById('f-type');if(ft)ft.value='all';
+  var fa=document.getElementById('f-alt');if(fa)fa.value='all';
+  var fc=document.getElementById('f-country');if(fc)fc.value='all';
+  if(typeof typeFilter!=='undefined'){for(var k in typeFilter){typeFilter[k]=true;}}
+  // Reset mobile filter pills
+  document.querySelectorAll('.mfb-pill').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.mfb-pill[data-type="all"]').forEach(function(p){p.classList.add('active');});
+  document.querySelectorAll('.mfb-pill[data-alt="all"]').forEach(function(p){p.classList.add('active');});
   
   // Clear existing scene objects
   if(currentPointCloud){scene.remove(currentPointCloud);currentPointCloud=null;}
