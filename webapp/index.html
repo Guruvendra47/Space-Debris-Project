@@ -136,7 +136,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #mobile-warn{display:flex}
   .kr{grid-template-columns:1fr!important}.kr[style*="repeat(2"]{grid-template-columns:1fr!important}.kr[style*="repeat(3"]{grid-template-columns:1fr!important}.kr[style*="repeat(4"]{grid-template-columns:repeat(2,1fr)!important}.kr[style*="repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
   .sw-hero{grid-template-columns:1fr;gap:10px;padding:10px}.sw-card{min-height:140px;padding:14px}
-  .pp-controls{grid-template-columns:1fr 1fr!important;gap:8px!important}.pp-controls .pp-btn-wrap{grid-column:1/-1}
+  .pp-controls{grid-template-columns:1fr!important;gap:8px!important}.pp-controls .pp-btn-wrap{grid-column:1/-1}
   .findings-box{flex-wrap:wrap;gap:10px;padding:10px 12px}.findings-box .fb-sep{display:none}.findings-box .fb-icon{font-size:16px}.findings-box .fb-value{font-size:14px}.findings-box .fb-label{font-size:8px}
   .cd canvas{max-height:260px}.cd{padding:10px}
   .gp-badge{width:28px;height:28px;font-size:10px}.gp-tooltip{display:none}
@@ -217,6 +217,9 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   #t-debris .cr{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;padding:8px!important;width:100%!important}
   #t-debris .cr > .cd{width:100%!important;max-width:100%!important;padding:12px!important;overflow:hidden;box-sizing:border-box;margin-bottom:12px!important}
   #t-debris .cd canvas{max-height:260px!important;width:100%!important}
+  /* Override inline-styled grid divs in debris tab (not using .cr class) */
+  #t-debris [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  #t-debris [style*="grid-template-columns:1fr 1fr"] > .cd{width:100%!important;max-width:100%!important;margin-bottom:12px!important}
   /* Override ALL .cr grids on mobile to 1 column */
   .cr{display:grid!important;grid-template-columns:1fr!important}
   .cr > .cd{width:100%!important;margin-bottom:12px!important}
