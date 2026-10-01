@@ -1,6 +1,0 @@
-app.yaml
-.git
-.github
-__pycache__
-*.pyc
-backup-v3
