@@ -74,7 +74,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 /* Auto-collapsing panels */
 .panel-toggle{position:absolute;top:10px;right:10px;z-index:30;width:32px;height:32px;border-radius:8px;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.2);color:#60a5fa;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:.2s}.panel-toggle:hover{background:rgba(59,130,246,.3);color:#fff}
 .pn.collapsed{width:0;overflow:hidden;border:none}.pn.collapsed .pb{display:none}
-.pn{transition:width .3s ease}.pn-header{display:none}.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pn{transition:width .3s ease}.pn-header{display:none}.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mobile-filter-bar{display:none}.mobile-country{display:none}.mobile-obj-popup{display:none}
 
 
 
@@ -181,7 +181,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   .brand::after{content:'● LIVE';font-size:9px;color:var(--green);font-weight:700;margin-left:6px;animation:p 2s infinite}
   
   /* Visual layers: LEFT side, tap-to-toggle dropdown (class-based, not hover) */
-  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:110px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:4px 8px!important;width:auto!important}
+  #t-globe [style*="bottom:72px;right:20px"]{right:auto!important;left:8px!important;bottom:140px!important;z-index:30!important;max-height:32px;overflow:hidden;transition:max-height .3s ease;padding:4px 8px!important;width:auto!important}
   #t-globe [style*="bottom:72px;right:20px"] > button{opacity:0;max-height:0;overflow:hidden;transition:all .3s ease}
   #t-globe [style*="bottom:72px;right:20px"].vl-open{max-height:280px;overflow:visible}
   #t-globe [style*="bottom:72px;right:20px"].vl-open > button{opacity:1;max-height:40px;margin-top:4px}
@@ -533,6 +533,21 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
   
   /* Tooltip: larger text for touch */
   #globe-tooltip{font-size:13px!important;padding:8px 14px!important}
+  /* === MOBILE GLOBE: Inline filters replace burger menu === */
+  .panel-toggle{display:none!important}
+  .pn{display:none!important}
+  .mobile-filter-bar{display:flex!important;flex-direction:column;position:absolute;bottom:0;left:0;right:0;z-index:30;background:rgba(11,15,25,.9);border:none;padding:6px 8px;gap:4px;backdrop-filter:blur(8px)}
+  .mfb-row{display:flex;gap:4px;justify-content:center}
+  .mfb-pill{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text3);cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+  .mfb-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .mobile-country{display:block;position:absolute;top:10px;right:10px;z-index:30;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:8px;padding:4px 8px;color:#e2e8f0;font-size:11px;backdrop-filter:blur(8px);max-width:120px}
+  .mobile-obj-popup{display:none;position:fixed;bottom:140px;left:10px;right:10px;z-index:997;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:14px;max-height:40vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .mobile-obj-popup.show{display:block!important}
+  .mop-close{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:6px;border:none;background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .mop-close:active{background:var(--red);color:#fff}
+  .mop-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;padding-right:30px}
+  .mop-info{font-size:12px;color:var(--text2);line-height:1.6}
+  #density-control{bottom:80px!important;left:12px!important;font-size:9px!important;padding:6px 8px!important}
 }
 
 /* Celestial Body Navigation */
@@ -609,6 +624,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div class="kp-banner" id="kp-banner">&#9888; Geomagnetic Storm Active \u2014 Atmospheric drag is elevated, which may accelerate orbital decay for low-altitude satellites</div>
 
 <div id="gw"><div id="gc" style="flex:1;position:relative;overflow:hidden;">
+<select class="mobile-country" id="mobile-country" onchange="var f=document.getElementById('f-country');if(f)f.value=this.value;try{applyFilters()}catch(e){}" aria-label="Filter by country"><option value="all">All Countries</option></select>
 <div class="gctl"><button onclick="toggleRotate()" title="Toggle auto-rotation" aria-label="Toggle auto-rotation" style="font-size:18px">⟳</button><button onclick="zoomIn()" title="Zoom in" aria-label="Zoom in" style="font-size:20px">+</button><button onclick="zoomOut()" title="Zoom out" aria-label="Zoom out" style="font-size:20px">−</button><button onclick="resetView()" title="Reset view" aria-label="Reset view" style="font-size:16px">⌂</button></div>
 <div id="density-control" style="position:absolute;bottom:20px;left:72px;z-index:10;background:rgba(15,23,42,.85);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px)">
 <div style="font-size:10px;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Density</div>
@@ -625,6 +641,7 @@ body.citizen .expert-only{display:none}body:not(.citizen) .citizen-only{display:
 <div id="globe-debug" style="position:absolute;top:10px;left:10px;z-index:20;color:#00ff00;font-family:monospace;font-size:11px;background:rgba(0,0,0,.7);padding:6px 10px;border-radius:6px;pointer-events:none">Loading...</div>
 <div id="focus-banner"><span class="fb-icon"></span><span class="fb-name" id="focus-banner-name"></span><button class="fb-clear" onclick="clearFocus()" title="Show all markers and resume rotation" aria-label="Clear focus and show all objects">✕ Show All</button></div>
 <div id="globe-tooltip" style="position:absolute;z-index:25;display:none;pointer-events:none;background:rgba(15,23,42,.95);color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid rgba(59,130,246,.4);box-shadow:0 4px 12px rgba(0,0,0,.5);backdrop-filter:blur(8px);white-space:nowrap;font-family:inherit;transition:opacity .1s"></div>
+<div class="mobile-filter-bar" id="mobileFilterBar"><div class="mfb-row"><button class="mfb-pill active" data-type="Payload" onclick="mobileToggleType(this,'Payload')" aria-label="Toggle Payload filter">Payload</button><button class="mfb-pill active" data-type="Rocket Body" onclick="mobileToggleType(this,'Rocket Body')" aria-label="Toggle Rocket Body filter">Rocket</button><button class="mfb-pill active" data-type="Debris" onclick="mobileToggleType(this,'Debris')" aria-label="Toggle Debris filter">Debris</button><button class="mfb-pill" data-type="UNK" onclick="mobileToggleType(this,'UNK')" aria-label="Toggle Other filter">Other</button></div><div class="mfb-row"><button class="mfb-pill active" data-alt="all" onclick="mobileToggleAlt(this,'all')" aria-label="Show all altitudes">All</button><button class="mfb-pill" data-alt="leo" onclick="mobileToggleAlt(this,'leo')" aria-label="Filter LEO altitude">LEO</button><button class="mfb-pill" data-alt="meo" onclick="mobileToggleAlt(this,'meo')" aria-label="Filter MEO altitude">MEO</button><button class="mfb-pill" data-alt="geo" onclick="mobileToggleAlt(this,'geo')" aria-label="Filter GEO altitude">GEO</button><button class="mfb-pill" data-alt="heo" onclick="mobileToggleAlt(this,'heo')" aria-label="Filter HEO altitude">HEO</button></div></div>
 </div>
 <button class="panel-toggle" onclick="togglePanel()" title="Toggle side panel" id="panel-toggle" aria-label="Toggle side panel visibility">☰</button>
 <div class="pn"><div class="pn-header"><div class="pn-drag-handle"></div><button class="pn-close" onclick="togglePanel()" aria-label="Close panel">✕</button></div>
@@ -1210,6 +1227,10 @@ function toggleMoreTabs(){var m=document.getElementById('mobileMoreMenu');if(m)m
 document.addEventListener('click',function(e){var mm=document.getElementById('mobileMoreMenu');var mt=document.querySelector('.mtb[onclick*="toggleMoreTabs"]');if(mm&&mm.classList.contains('open')&&!mm.contains(e.target)&&e.target!==mt&&!mt.contains(e.target)){mm.classList.remove('open');}});
 
 function togglePanel(){var pn=document.querySelector('.pn');var pt=document.getElementById('panel-toggle');if(pn){pn.classList.toggle('collapsed');pn.classList.toggle('open');if(pt)pt.textContent=pn.classList.contains('collapsed')?'☰':'✕';}}
+function mobileToggleType(btn,type){if(typeof typeFilter==='undefined')return;typeFilter[type]=!typeFilter[type];btn.classList.toggle('active',typeFilter[type]);var dp=document.querySelector('.type-pill[data-type="'+type+'"]');if(dp)dp.classList.toggle('inactive',!typeFilter[type]);var key=type==='Rocket Body'?'rocket':type.toLowerCase();var el=document.getElementById('lg-'+key);if(el)el.parentElement.classList.toggle('off',!typeFilter[type]);var ft=document.getElementById('f-type');if(ft)ft.value='all';try{applyFilters()}catch(e){}}
+function mobileToggleAlt(btn,alt){document.querySelectorAll('.mfb-pill[data-alt]').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');var fa=document.getElementById('f-alt');if(fa)fa.value=alt;try{applyFilters()}catch(e){}}
+function syncMobileCountry(){var mc=document.getElementById('mobile-country');var fc=document.getElementById('f-country');if(mc&&fc){mc.innerHTML=fc.innerHTML;}}
+try{var mobObjObs=new MutationObserver(function(){var oi=document.getElementById('obj-info');var mp=document.getElementById('mobileObjPopup');if(!mp)return;if(oi&&oi.style.display!=='none'&&oi.innerHTML.trim()){var nm=document.getElementById('o-name');var mn=document.getElementById('mop-name');var mi=document.getElementById('mop-info');if(mn&&nm)mn.textContent=nm.textContent;if(mi)mi.innerHTML=oi.innerHTML;mp.classList.add('show');}else if(oi&&oi.style.display==='none'){mp.classList.remove('show');}});setTimeout(function(){try{var oi=document.getElementById('obj-info');if(oi)mobObjObs.observe(oi,{attributes:true,childList:true,characterData:true,subtree:true});var fc=document.getElementById('f-country');if(fc){var cObs=new MutationObserver(function(){syncMobileCountry()});cObs.observe(fc,{childList:true});syncMobileCountry();}}catch(e){}},3000);}catch(e){}
 
 function toggleSection(id){
   var panel=document.getElementById(id);
@@ -4151,6 +4172,7 @@ function createPlanetTexture(type){
 console.log('[Celestial] Navigation system loaded');
 
 </script>
+<div class="mobile-obj-popup" id="mobileObjPopup"><button class="mop-close" onclick="document.getElementById('mobileObjPopup').classList.remove('show')" aria-label="Close object info">✕</button><div class="mop-name" id="mop-name"></div><div class="mop-info" id="mop-info"></div></div>
 <div class="mobile-tabbar" id="mobileTabBar"><button class="mtb active" onclick="mobileShowTab(this,'t-globe')" aria-label="Globe"><span>Globe</span></button><button class="mtb" onclick="mobileShowTab(this,'t-dash')" aria-label="Dashboard"><span>Dash</span></button><button class="mtb" onclick="mobileShowTab(this,'t-pred')" aria-label="Re-entry Predictions"><span>Re-entry</span></button><button class="mtb" onclick="mobileShowTab(this,'t-collide')" aria-label="Collision Risk"><span>Collide</span></button><button class="mtb" onclick="toggleMoreTabs()" aria-label="More tabs"><span>More</span></button></div><div class="mobile-more-menu" id="mobileMoreMenu"><button onclick="mobileShowTab(null,'t-debris')">Debris Tracker</button><button onclick="mobileShowTab(null,'t-cat')">Catalog</button><button onclick="mobileShowTab(null,'t-passpred')">Operations</button><button onclick="mobileShowTab(null,'t-academy')">Academy</button></div>
 </body>
 </html>
