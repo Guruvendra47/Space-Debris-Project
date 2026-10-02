@@ -1,0 +1,24 @@
+# Space Debris Tracker - Root Requirements
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+flask==3.0.0
+flask-compress==1.14
+gunicorn==21.2.0
+
+# Orbital mechanics
+skyfield==1.46
+numpy==1.26.0
+
+# Data processing
+pandas==2.1.0
+requests==2.31.0
+
+# Optional: Jupyter notebooks
+jupyter==1.0.0
+matplotlib==3.8.0
+seaborn==0.13.0
+
+# Optional: Testing
+pytest==7.4.0
+pytest-cov==4.1.0
