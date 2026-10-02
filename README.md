@@ -44,7 +44,7 @@ Space debris has become one of the most critical challenges facing modern space 
 
 **1. The Kessler Syndrome**
 
-Proposed by NASA scientist Donald Kessler in 1978, this scenario describes a cascading collision effect where each impact creates more debris fragments, leading to an exponential increase in orbital debris density. At critical thresholds, certain orbital shells — particularly Low Earth Orbit (LEO) between 400-1,000 km — could become unusable for decades or even centuries. This is not theoretical: we are approaching these thresholds today.
+Proposed by NASA scientist Donald Kessler in 1978, this scenario describes a cascading collision effect where each impact creates more debris fragments, leading to an exponential increase in orbital debris density. At critical thresholds, certain orbital shells particularly Low Earth Orbit (LEO) between 400-1,000 km could become unusable for decades or even centuries. This is not theoretical: we are approaching these thresholds today.
 
 **2. Economic Impact**
 
