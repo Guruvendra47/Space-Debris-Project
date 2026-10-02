@@ -3791,11 +3791,10 @@ function switchBody(body,btn){
       }
       
       // Orbit path line — color-coded inner (amber) vs outer (blue), dashed style
-      var orbitColor=(p.distance<200)?0xd4a050:0x5a9bd4;
+      var orbitColor=(p.distance<200)?0x00ffff:0xff8800;
       var oPts=[];for(var a=0;a<=128;a++){var ang=a/128*Math.PI*2;oPts.push(Math.cos(ang)*p.distance,0,Math.sin(ang)*p.distance);}
       var oGeom=new THREE.BufferGeometry();oGeom.setAttribute('position',new THREE.Float32BufferAttribute(oPts,3));
-      var oMesh=new THREE.Line(oGeom,new THREE.LineDashedMaterial({color:orbitColor,transparent:true,opacity:0.70,dashSize:8,gapSize:4,depthWrite:false}));
-      oMesh.computeLineDistances();
+      var oMesh=new THREE.Line(oGeom,new THREE.LineBasicMaterial({color:orbitColor,transparent:true,opacity:1.0,blending:THREE.AdditiveBlending,depthWrite:false}));
       scene.add(oMesh);
       
       // Saturn ring system with Cassini Division gap
