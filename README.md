@@ -567,6 +567,7 @@ Space-Debris-Project/
 | Environment | URL |
 | --- | --- |
 | **Databricks App (production)** | [space-debris-tracker-7474652642146548.aws.databricksapps.com](https://space-debris-tracker-7474652642146548.aws.databricksapps.com) |
+| **Vercel Deployment** | [orbital-intelligence-platform-ctpvrirrb-guruvendra27-2443.vercel.app](https://orbital-intelligence-platform-ctpvrirrb-guruvendra27-2443.vercel.app) |
 | **GitHub Pages** | [space-debris.com](https://space-debris.com) |
 
 ---
