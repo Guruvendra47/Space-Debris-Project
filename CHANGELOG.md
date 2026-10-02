@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Initial Release** of Space Debris Tracker
-- **3D Visualization** of 8,000+ tracked space objects on interactive Earth globe
+- **3D Visualization** of 35,000+ tracked space objects on interactive Earth globe
 - **Machine Learning Collision Risk Model** with 96.75% validation accuracy
 - **Orbital Shell Filters** for LEO, MEO, GEO, and HEO altitude regimes
 - **Multi-Celestial Body Support** (Earth, Moon, Mars, Sun orbital views)
@@ -67,7 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simple collision risk scoring
 
 ### Known Issues
-- Performance drops below 30 FPS with 8,000 objects
+- Performance drops below 30 FPS with 35,000 objects
 - Mobile devices not fully supported
 - TLE data refresh requires manual reload
 

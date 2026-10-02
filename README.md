@@ -5,7 +5,7 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-A real-time 3D visualization platform for tracking over 8,000 orbital debris objects and operational satellites. The application provides interactive collision risk assessment and orbital analysis, built on Databricks Apps with Three.js, Flask, and Skyfield for accurate satellite position computation.
+A real-time 3D visualization platform for tracking over 35,000 orbital debris objects and operational satellites. The application provides interactive collision risk assessment and orbital analysis, built on Databricks Apps with Three.js, Flask, and Skyfield for accurate satellite position computation.
 
 ---
 
@@ -95,7 +95,7 @@ This project was developed with clear, measurable goals to address the space deb
 
 **1. Real-time 3D Visualization**
 
-Develop an interactive 3D globe capable of rendering over 8,000 tracked objects with smooth 60 FPS performance across desktop and mobile devices. The visualization must support:
+Develop an interactive 3D globe capable of rendering over 35,000 tracked objects with smooth 60 FPS performance across desktop and mobile devices. The visualization must support:
 - Real-time orbital position computation using SGP4/SDP4 algorithms
 - Filtering by altitude regime (LEO, MEO, GEO, HEO)
 - Object type classification (Payloads, Rocket Bodies, Debris)
@@ -131,7 +131,7 @@ Extend the visualization beyond Earth to include:
 Build a backend system that:
 - Fetches latest TLE data from Celestrak automatically
 - Processes and validates orbital parameters
-- Computes collision risk scores for 8,000+ objects
+- Computes collision risk scores for 35,000+ objects
 - Serves data via JSON API with <500ms latency
 
 **6. Mobile-First Design**
@@ -160,7 +160,7 @@ Deploy on a publicly accessible platform with:
 ### Success Metrics
 
 The project's success is measured by:
-- ✅ **Visualization:** 8,127 objects rendered at 60 FPS (achieved)
+- ✅ **Visualization:** 35,037 objects rendered at 60 FPS (achieved)
 - ✅ **ML Model:** 96.75% validation accuracy (target: >95%)
 - ✅ **Load Time:** 3.5 seconds time-to-interactive (target: <5s)
 - ✅ **Accessibility:** Deployed on public Databricks Apps platform
@@ -184,7 +184,7 @@ The project's success is measured by:
 ## Features
 
 ### Interactive 3D Globe
-* **Real-time satellite tracking** — Over 8,000 objects rendered as 3D markers on an Earth globe
+* **Real-time satellite tracking** — Over 35,000 objects rendered as 3D markers on an Earth globe
 * **Orbital shell filters** — Isolate Low Earth Orbit (LEO), Medium Earth Orbit (MEO), Geostationary Earth Orbit (GEO), or High Earth Orbit (HEO) altitude regimes
 * **Object type filters** — Payloads, Rocket Bodies, Debris, Unknown objects
 * **Country filters** — Filter by operator nation (USA, Russia, China, etc.)
@@ -287,7 +287,7 @@ Raw TLE data undergoes quality checks:
 - Validate orbital parameters (eccentricity < 1.0 for elliptical orbits)
 - Cross-reference with SATCAT for metadata completeness
 
-Cleaned dataset: 8,127 valid objects (October 2024)
+Cleaned dataset: 35,037 valid objects (October 2024)
 
 **3. Orbital Position Computation**
 
@@ -359,7 +359,7 @@ See [ML_MODEL_EVALUATION.md](reports/ML_MODEL_EVALUATION.md) for detailed model 
 
 2. **Web Worker Background Computation**
    - Offloads SGP4 orbit propagation to prevent UI blocking
-   - Computes positions for 8,000+ objects without frame drops
+   - Computes positions for 35,000+ objects without frame drops
    - Message passing between main thread and worker
 
 3. **Performance Optimizations**
@@ -402,7 +402,7 @@ databricks apps deploy space-debris-tracker \
 
 ## Key Findings
 
-Analysis of 8,127 tracked objects reveals critical insights about space debris distribution and collision risks.
+Analysis of 35,037 tracked objects reveals critical insights about space debris distribution and collision risks.
 
 ### 1. Orbital Shell Distribution
 
@@ -472,7 +472,7 @@ Using the ML risk model, objects were classified:
 
 **Growth Rate Analysis:**
 - 2020: 7,234 objects
-- 2024: 8,127 objects
+- 2024: 35,037 objects
 - **Total growth:** +893 objects (+12.3%)
 - **Average annual growth:** +4.3%
 
@@ -633,16 +633,16 @@ This section documents the major technical challenges encountered during develop
 ### Challenge 1: Real-time Rendering Performance
 
 **Problem:**  
-Rendering 8,000+ 3D markers at 60 FPS while supporting smooth camera rotation, zoom, and real-time filtering proved extremely challenging. Initial prototypes achieved only 15-20 FPS with 5,000 objects.
+Rendering 35,000+ 3D markers at 60 FPS while supporting smooth camera rotation, zoom, and real-time filtering proved extremely challenging. Initial prototypes achieved only 15-20 FPS with 5,000 objects.
 
 **Root Cause:**
-- Individual THREE.Mesh instances for each satellite (8,000 draw calls per frame)
+- Individual THREE.Mesh instances for each satellite (35,000 draw calls per frame)
 - CPU-bound marker position updates blocking the main thread
-- Inefficient frustum culling (checking all 8,000 objects every frame)
+- Inefficient frustum culling (checking all 35,000 objects every frame)
 
 **Solution:**
 1. **InstancedMesh Rendering**  
-   Replaced individual meshes with THREE.InstancedMesh, reducing 8,000 draw calls to 1. This uses GPU instancing to render identical geometry at different positions/colors.
+   Replaced individual meshes with THREE.InstancedMesh, reducing 35,000 draw calls to 1. This uses GPU instancing to render identical geometry at different positions/colors.
 
 2. **Web Worker Offloading**  
    Moved SGP4 orbit computation to a dedicated Web Worker thread. Position updates no longer block UI rendering.

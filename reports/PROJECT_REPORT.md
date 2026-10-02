@@ -9,10 +9,10 @@
 
 ## Executive Summary
 
-This project presents a real-time 3D visualization platform for tracking over 8,000 orbital debris objects and operational satellites. The application addresses the growing problem of space debris by providing interactive collision risk assessment, orbital analysis, and educational content. Built on Databricks Apps with Three.js and Flask, the platform processes Two-Line Element (TLE) data from NORAD and uses machine learning to predict collision probabilities.
+This project presents a real-time 3D visualization platform for tracking over 35,000 orbital debris objects and operational satellites. The application addresses the growing problem of space debris by providing interactive collision risk assessment, orbital analysis, and educational content. Built on Databricks Apps with Three.js and Flask, the platform processes Two-Line Element (TLE) data from NORAD and uses machine learning to predict collision probabilities.
 
 **Key Achievements:**
-- Real-time tracking of 8,000+ space objects with sub-second rendering
+- Real-time tracking of 35,000+ space objects with sub-second rendering
 - Machine learning collision risk model with 96.75% validation accuracy
 - Interactive 3D visualization supporting Earth, Moon, Mars, and Sun orbital views
 - Comprehensive analytics dashboard with orbital density profiles and risk distributions
@@ -72,7 +72,7 @@ This project aims to address the information gap by creating an accessible, inte
 ### Primary Objectives
 
 1. **Real-time Visualization**  
-   Develop a 3D globe visualization capable of rendering 8,000+ tracked objects with smooth performance across devices
+   Develop a 3D globe visualization capable of rendering 35,000+ tracked objects with smooth performance across devices
 
 2. **Collision Risk Assessment**  
    Implement a machine learning model to assess collision probability based on orbital density, relative velocity, and historical conjunction data
@@ -208,7 +208,7 @@ ISS (ZARYA)
 
 ### 4.2 Data Volume and Update Frequency
 
-- **Total Objects Tracked:** 8,127 (as of October 2024)
+- **Total Objects Tracked:** 35,037 (as of October 2024)
 - **Active Satellites:** 3,456
 - **Rocket Bodies:** 1,234
 - **Debris Fragments:** 3,437
@@ -368,7 +368,7 @@ Analysis of TLE data from 2020-2024 reveals:
 ### 7.1 Challenge: Real-time Rendering Performance
 
 **Problem:**  
-Rendering 8,000+ 3D markers at 60 FPS while supporting rotation, zoom, and filtering proved challenging, especially on mobile devices.
+Rendering 35,000+ 3D markers at 60 FPS while supporting rotation, zoom, and filtering proved challenging, especially on mobile devices.
 
 **Solution:**
 - **Instanced Rendering:** Used Three.js InstancedMesh to render all markers in a single draw call

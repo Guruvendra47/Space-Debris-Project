@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-This report presents a comprehensive statistical analysis of orbital debris distribution, growth trends, and collision risks based on four years of TLE (Two-Line Element) data from NORAD. The analysis covers 8,127 tracked objects across Low Earth Orbit (LEO), Medium Earth Orbit (MEO), Geostationary Earth Orbit (GEO), and High Earth Orbit (HEO).
+This report presents a comprehensive statistical analysis of orbital debris distribution, growth trends, and collision risks based on four years of TLE (Two-Line Element) data from NORAD. The analysis covers 35,037 tracked objects across Low Earth Orbit (LEO), Medium Earth Orbit (MEO), Geostationary Earth Orbit (GEO), and High Earth Orbit (HEO).
 
 **Key Findings:**
 - LEO contains 76.7% of all tracked objects, with critical density hotspots at 400-600 km and 800-1,000 km
@@ -33,7 +33,7 @@ This report presents a comprehensive statistical analysis of orbital debris dist
 ### 2.2 Dataset Statistics
 
 **As of October 2024:**
-- **Total tracked objects:** 8,127
+- **Total tracked objects:** 35,037
 - **Active satellites:** 3,456 (42.5%)
 - **Rocket bodies:** 1,234 (15.2%)
 - **Debris fragments:** 3,437 (42.3%)
@@ -53,7 +53,7 @@ This report presents a comprehensive statistical analysis of orbital debris dist
 | **MEO** | 2,000 - 35,000 km | 1,145 | 14.1% |
 | **GEO** | 35,000 - 37,000 km | 523 | 6.4% |
 | **HEO** | > 37,000 km | 225 | 2.8% |
-| **Total** | All | 8,127 | 100% |
+| **Total** | All | 35,037 | 100% |
 
 ### 3.2 LEO Density Hotspots
 
@@ -111,7 +111,7 @@ Detailed breakdown of Low Earth Orbit (most congested region):
 | 2021 | 7,456 | +222 | +3.1% |
 | 2022 | 7,789 | +333 | +4.5% |
 | 2023 | 8,012 | +223 | +2.9% |
-| 2024 | 8,127 | +115 | +1.4% |
+| 2024 | 35,037 | +115 | +1.4% |
 
 **Average Annual Growth:** +4.3% (2020-2024)
 

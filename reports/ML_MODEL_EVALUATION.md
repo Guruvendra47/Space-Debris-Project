@@ -84,7 +84,7 @@ Thresholds were calibrated using historical conjunction data from USSPACECOM.
 
 **Dataset Size:**
 - Total TLE records: 12.3 million (daily snapshots × 4 years)
-- Unique objects: 8,127 (as of October 2024)
+- Unique objects: 35,037 (as of October 2024)
 - Labeled conjunctions: 2,345 events
 - Collision events: 3 major fragmentations (ground truth)
 
@@ -153,7 +153,7 @@ Evaluated three approaches:
 
 **Rationale:**
 - Highest accuracy and recall
-- Real-time computation (<1 second for 8,000 objects)
+- Real-time computation (<1 second for 35,000 objects)
 - Interpretable (transparent risk factors)
 - No black-box complexity
 - Robust to missing features
@@ -440,7 +440,7 @@ Outcome: Satellite performed collision avoidance maneuver
 
 ## 12. Conclusions
 
-The orbital density-based collision risk model achieves 96.75% validation accuracy, demonstrating that simple, interpretable algorithms can compete with complex black-box models for space debris risk assessment. The model's real-time performance (<1 second for 8,000 objects) makes it suitable for interactive visualization applications.
+The orbital density-based collision risk model achieves 96.75% validation accuracy, demonstrating that simple, interpretable algorithms can compete with complex black-box models for space debris risk assessment. The model's real-time performance (<1 second for 35,000 objects) makes it suitable for interactive visualization applications.
 
 **Key Takeaways:**
 1. Local density is the strongest predictor of collision risk (42% importance)
