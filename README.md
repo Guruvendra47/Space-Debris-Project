@@ -78,7 +78,7 @@ Existing solutions are either:
 
 ### Why This Project Matters
 
-This platform addresses the accessibility gap by providing an open, interactive, and educational tool for understanding and analyzing space debris. By making orbital debris data comprehensible to a broader audience — from high school students to satellite operators — we aim to:
+This platform addresses the accessibility gap by providing an open, interactive, and educational tool for understanding and analyzing space debris. By making orbital debris data comprehensible to a broader audience from high school students to satellite operators we aim to:
 
 1. Raise awareness of the space debris problem
 2. Enable researchers to identify collision hotspots and high-risk objects
