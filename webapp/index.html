@@ -1496,7 +1496,14 @@ function clearFocus(){
   // Hide focused indicator banner
   var fb=document.getElementById('focus-banner');if(fb)fb.style.display='none';
   // Re-render to restore full color brightness
-  if(globeReady)renderGlobe();
+  if(globeReady){
+    if(typeof currentBody!=='undefined'&&currentBody!=='earth'&&currentBody!=='universe'){
+      if(currentPointCloud){scene.remove(currentPointCloud);currentPointCloud=null;}
+      renderCelestialMarkers(currentBody);
+    }else{
+      renderGlobe();
+    }
+  }
   globeDebug('Focus cleared — colors restored');
 }
 
