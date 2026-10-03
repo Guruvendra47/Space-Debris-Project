@@ -738,10 +738,10 @@ F10.7 > 150: increased drag at LEO altitudes.<br>Kp > 5: geomagnetic storm, expa
 <div class="sc" style="padding-top:0">
 <div class="dg" style="display:grid;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Debris Altitude Distribution (km)</h3><p class="ds">Click a bar to filter the table below by altitude range</p><canvas id="ch-d-alt"></canvas></div>
-<div class="cd"><h3>Debris by Country</h3><p class="ds">Top 10 countries contributing to orbital debris</p><canvas id="ch-d-country"></canvas></div></div>
+</div>
 <div class="dg" style="display:grid;gap:12px;margin-bottom:12px">
 <div class="cd"><h3>Re-entry Risk Distribution (Debris Only)</h3><p class="ds">ML-predicted decay probability classification</p><canvas id="ch-d-risk"></canvas></div>
-<div class="cd"><h3>Debris by Orbit Class</h3><p class="ds">Distribution across orbital regimes</p><canvas id="ch-d-orbit"></canvas></div></div>
+</div>
 <div class="cr full" style="padding:0 20px 20px"><div class="cd"><h3>Kessler Syndrome Projection - Debris Growth 2025-2035 <span class="term-tip" data-tip="Kessler Syndrome: a cascade where debris collisions create more debris, eventually making orbits unusable.">?</span></h3><p class="ds">Projected fragment growth based on current collision rates and fragmentation models</p><canvas id="ch-kessler"></canvas></div></div></div>
 <div class="sc" style="padding-top:0">
 <div class="tw2"><div class="tb">
@@ -2673,7 +2673,7 @@ var fragEvents=[
   {year:'2022',label:'Cosmos 2499 Breakup (RU)',count:250,color:'#f59e0b'},
   {year:'2023',label:'SL-6 Fragmentation (RU)',count:300,color:'#f59e0b'}
 ];
-charts.frag=new Chart(document.getElementById('ch-frag'),{type:'bar',data:{labels:fragEvents.map(function(e){return e.year}),datasets:[{label:'Debris Fragments Created',data:fragEvents.map(function(e){return e.count}),backgroundColor:fragEvents.map(function(e){return e.color}),borderRadius:6,borderWidth:0,barThickness:28}]},options:co({scales:ax,plugins:{legend:{display:false},tooltip:{callbacks:{title:function(){return '';},label:function(ctx){var e=fragEvents[ctx.dataIndex];return e.label+': '+e.count.toLocaleString()+' fragments created';}}}}})});
+charts.frag=new Chart(document.getElementById('ch-frag'),{type:'bar',data:{labels:fragEvents.map(function(e){return e.label.split(' (')[0]}),datasets:[{label:'Debris Fragments Created',data:fragEvents.map(function(e){return e.count}),backgroundColor:fragEvents.map(function(e){return e.color}),borderRadius:6,borderWidth:0,barThickness:24}]},options:co({indexAxis:'y',scales:{x:{title:{display:true,text:'Fragments Created',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}},y:{ticks:{color:'#475569',font:{size:10}},grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{title:function(){return '';},label:function(ctx){var e=fragEvents[ctx.dataIndex];return e.label+': '+e.count.toLocaleString()+' fragments created';}}}}})});
 // === Altitude Shell Risk Heatmap ===
 var shLabels=['200-400','400-600','600-800','800-1K','1K-1.5K','1.5K-2K','2K-5K','5K-10K','10K-20K','20K-36K','36K-40K'];
 var shB=[[200,400],[400,600],[600,800],[800,1000],[1000,1500],[1500,2000],[2000,5000],[5000,10000],[10000,20000],[20000,36000],[36000,40000]];
@@ -2707,9 +2707,9 @@ function crossFilterDashboard(country){
   if(el)el.textContent=dashFilterCountry?('Filtered by: '+dashFilterCountry+' ('+filtered.length.toLocaleString()+' objects)'):'All countries';
 }
 function initDebrisCharts(){if(charts.dAlt)return;var deb=objs.filter(function(o){return o.ObjectType==='Debris'});var ab=[0,500,1000,2000,5000,10000,20000,35786,40000,100000,500000];var al=['0-500','500-1K','1K-2K','2K-5K','5K-10K','10K-20K','20K-36K','36K-40K','40K-100K','100K+'];var ac=ab.slice(0,-1).map(function(lo,i){return deb.filter(function(o){return(o.AltitudeKM||0)>=lo&&(o.AltitudeKM||0)<ab[i+1]}).length});charts.dAlt=new Chart(document.getElementById('ch-d-alt'),{type:'bar',data:{labels:al,datasets:[{label:'Debris Count',data:ac,backgroundColor:'#3b82f6',borderRadius:6,borderWidth:0}]},options:co({scales:ax,plugins:{legend:{display:false}},onClick:function(e,el){if(el.length){var i=el[0].index;document.getElementById('deb-alt').selectedIndex=i+1;renderDebris();}}})});
-var dc={};deb.forEach(function(o){var c=o.Owner||'Unknown';dc[c]=(dc[c]||0)+1});var dck=Object.keys(dc).sort(function(a,b){return dc[b]-dc[a]}).slice(0,10);charts.dCountry=new Chart(document.getElementById('ch-d-country'),{type:'bar',data:{labels:dck,datasets:[{label:'Debris',data:dck.map(function(k){return dc[k]}),backgroundColor:'#ef4444',borderRadius:6,borderWidth:0,barThickness:18}]},options:co({indexAxis:'y',scales:ax,plugins:{legend:{display:false}}})});
+var dc={};deb.forEach(function(o){var c=o.Owner||'Unknown';dc[c]=(dc[c]||0)+1});var dck=Object.keys(dc).sort(function(a,b){return dc[b]-dc[a]}).slice(0,10);if(document.getElementById('ch-d-country'))charts.dCountry=new Chart(document.getElementById('ch-d-country'),{type:'bar',data:{labels:dck,datasets:[{label:'Debris',data:dck.map(function(k){return dc[k]}),backgroundColor:'#ef4444',borderRadius:6,borderWidth:0,barThickness:18}]},options:co({indexAxis:'y',scales:ax,plugins:{legend:{display:false}}})});
 var loR=deb.filter(function(o){return o.RiskLevel==='Low'}).length,mdR=deb.filter(function(o){return o.RiskLevel==='Medium'}).length,hiR=deb.filter(function(o){return o.RiskLevel==='High'}).length;charts.dRisk=new Chart(document.getElementById('ch-d-risk'),{type:'doughnut',data:{labels:['Low Risk','Medium Risk','High Risk'],datasets:[{data:[loR,mdR,hiR],backgroundColor:['#10b981','#f59e0b','#ef4444'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
-var dOrb={};deb.forEach(function(o){var c=o.OrbitClass||'Unknown';if(c)dOrb[c]=(dOrb[c]||0)+1});charts.dOrbit=new Chart(document.getElementById('ch-d-orbit'),{type:'doughnut',data:{labels:Object.keys(dOrb),datasets:[{data:Object.values(dOrb),backgroundColor:['#3b82f6','#f59e0b','#ef4444','#8b5cf6','#10b981','#06b6d4','#ec4899'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
+var dOrb={};deb.forEach(function(o){var c=o.OrbitClass||'Unknown';if(c)dOrb[c]=(dOrb[c]||0)+1});if(document.getElementById('ch-d-orbit'))charts.dOrbit=new Chart(document.getElementById('ch-d-orbit'),{type:'doughnut',data:{labels:Object.keys(dOrb),datasets:[{data:Object.values(dOrb),backgroundColor:['#3b82f6','#f59e0b','#ef4444','#8b5cf6','#10b981','#06b6d4','#ec4899'],borderColor:'#fff',borderWidth:3}]},options:co({cutout:'65%'})});
 // Kessler Syndrome projection chart
 var years=['2025','2026','2027','2028','2029','2030','2031','2032','2033','2034','2035'];
 var baseDebris=35881;var growthRate=0.03;var collisionBoost=1;
