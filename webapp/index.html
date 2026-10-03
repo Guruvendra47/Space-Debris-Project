@@ -2696,13 +2696,13 @@ var yrData=[{y:1957,v:2},{y:1960,v:50},{y:1965,v:570},{y:1970,v:1700},{y:1975,v:
 var fragEvents=[
   {year:'2007',label:'Fengyun-1C ASAT (CN)',count:3402,color:'#ef4444'},
   {year:'2008',label:'Cosmos 2421 Breakup (RU)',count:400,color:'#f59e0b'},
-  {year:'2009',label:'Iridium-Cosmos Collision (US/RU)',count:2200,color:'#ef4444'},
-  {year:'2012',label:'Breeze-M Breakup (RU)',count:500,color:'#f59e0b'},
-  {year:'2015',label:'DMSP-F13 Breakup (US)',count:100,color:'#f59e0b'},
-  {year:'2019',label:'Mission Shakti ASAT (IN)',count:400,color:'#f59e0b'},
-  {year:'2021',label:'Cosmos-1408 ASAT (RU)',count:1500,color:'#ef4444'},
-  {year:'2022',label:'Cosmos 2499 Breakup (RU)',count:250,color:'#f59e0b'},
-  {year:'2023',label:'SL-6 Fragmentation (RU)',count:300,color:'#f59e0b'}
+  {year:'2009',label:'Iridium-Cosmos Collision (US/RU)',count:2200,color:'#f97316'},
+  {year:'2012',label:'Breeze-M Breakup (RU)',count:500,color:'#3b82f6'},
+  {year:'2015',label:'DMSP-F13 Breakup (US)',count:100,color:'#8b5cf6'},
+  {year:'2019',label:'Mission Shakti ASAT (IN)',count:400,color:'#10b981'},
+  {year:'2021',label:'Cosmos-1408 ASAT (RU)',count:1500,color:'#ec4899'},
+  {year:'2022',label:'Cosmos 2499 Breakup (RU)',count:250,color:'#06b6d4'},
+  {year:'2023',label:'SL-6 Fragmentation (RU)',count:300,color:'#6366f1'}
 ];
 charts.frag=new Chart(document.getElementById('ch-frag'),{type:'bar',data:{labels:fragEvents.map(function(e){return e.label.split(' (')[0]}),datasets:[{label:'Debris Fragments Created',data:fragEvents.map(function(e){return e.count}),backgroundColor:fragEvents.map(function(e){return e.color}),borderRadius:6,borderWidth:0,barThickness:24}]},options:co({indexAxis:'y',scales:{x:{title:{display:true,text:'Fragments Created',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'#f1f5f9'}},y:{ticks:{color:'#475569',font:{size:10}},grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{title:function(){return '';},label:function(ctx){var e=fragEvents[ctx.dataIndex];return e.label+': '+e.count.toLocaleString()+' fragments created';}}}}})});
 
