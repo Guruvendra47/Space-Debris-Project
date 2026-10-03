@@ -4005,7 +4005,9 @@ function renderCelestialMarkers(body){
     
     var ot=o.ObjectType||'Payload';
     var c,ti;
-    if(ot==='Payload'||ot==='Lander'){c=cP;ti=0;}
+    if(ot==='Payload'){c=cP;ti=0;}
+    else if(ot==='Lander'){c=new THREE.Color(0x10b981);ti=0;}
+    else if(ot==='Flyby'){c=new THREE.Color(0x8b5cf6);ti=0;}
     else if(ot==='Rocket Body'){c=cR;ti=1;}
     else if(ot==='Debris'){c=cD;ti=2;}
     else{c=cU;ti=3;}
