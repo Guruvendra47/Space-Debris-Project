@@ -93,7 +93,7 @@ def serve_file(filename):
     resp = send_from_directory('.', filename)
     ext = os.path.splitext(filename)[1].lower()
     if ext in _STATIC_CACHE_TYPES:
-        resp.headers['Cache-Control'] = 'public, max-age=86400'
+        resp.headers['Cache-Control'] = 'public, max-age=300'
     return resp
 
 # --- API Endpoints with Cache-Control Headers ---
