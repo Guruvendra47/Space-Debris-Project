@@ -5,6 +5,7 @@
 # Backup files (HTML snapshots)
 backup-*.html
 backup-*/
+backup_v*/
 backups/
 *.backup_*
 index_v*_backup.html

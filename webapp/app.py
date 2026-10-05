@@ -5,6 +5,7 @@ import math
 import logging
 import threading
 import urllib.request
+import urllib.parse
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from flask import Flask, send_from_directory, request, Response, jsonify, stream_with_context
@@ -85,7 +86,7 @@ _STATIC_CACHE_TYPES = {'.js', '.jpg', '.jpeg', '.png', '.gif', '.svg', '.woff', 
 @app.route('/')
 def index():
     resp = send_from_directory('.', 'index.html')
-    resp.headers['Cache-Control'] = 'public, max-age=3600'
+    resp.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     return resp
 
 @app.route('/<path:filename>')
@@ -364,11 +365,19 @@ def _get_space_weather():
         forecast_3day = None
     
     # Fallback: serve stale cache if all external fetches failed (item 6)
-    if not kp_data and not solar_wind and not f107_data and _space_weather_cache['data']:
+    _stale = _space_weather_cache.get('data') or {}
+    if not kp_data and not solar_wind and not f107_data and _stale:
         logger.warning('All NOAA fetches failed, serving stale space weather cache')
-        return _space_weather_cache['data']
+        return _stale
     
-    kp = kp_data['current_kp'] if kp_data else 0.0
+    # Use stale cache value for any individual field that failed, else sensible default
+    if kp_data:
+        kp = kp_data['current_kp']
+    elif 'kp_index' in _stale:
+        kp = _stale['kp_index']
+        logger.info('Kp fetch failed, using stale cache value: %s', kp)
+    else:
+        kp = 2.7
     if kp >= 9: g_scale = 'G5 (Extreme)'
     elif kp >= 8: g_scale = 'G4 (Severe)'
     elif kp >= 7: g_scale = 'G3 (Strong)'
@@ -380,13 +389,13 @@ def _get_space_weather():
     
     f107 = f107_data['f107'] if f107_data else 142.3
     if f107 > 150 or kp > 5:
-        drag_status = 'ELEVATED - Increased atmospheric drag at LEO altitudes'
+        drag_status = 'High - Sun is very active, extra drag on satellites'
         drag_color = '#ef4444'
     elif f107 > 120 or kp > 4:
-        drag_status = 'MODERATE - Slightly elevated drag conditions'
+        drag_status = 'Moderate - Sun slightly active, minor drag effects'
         drag_color = '#f59e0b'
     else:
-        drag_status = 'NOMINAL - Stable atmospheric density for re-entry forecasting'
+        drag_status = 'Normal - Stable conditions, minimal drag on satellites'
         drag_color = '#10b981'
     
     data = {
@@ -404,7 +413,7 @@ def _get_space_weather():
         'forecast_3day': forecast_3day or [],
         'source': 'NOAA SWPC (Live)' if kp_data else 'Simulated (NOAA unavailable)',
         'timestamp': now,
-        'fetched_at': now
+        'fetched_at': now * 1000
     }
     _space_weather_cache['data'] = data
     _space_weather_cache['ts'] = now
@@ -447,6 +456,7 @@ def _get_launches():
                 'window_end': item.get('window_end', ''),
                 'status': item.get('status', {}).get('name', '') if item.get('status') else '',
                 'image': item.get('image', '') if item.get('image') else '',
+                'url': item.get('info_url', '') or item.get('wiki_url', '') or '',
             })
         _launch_cache['data'] = {'launches': launches, 'count': len(launches)}
         _launch_cache['ts'] = now
@@ -483,49 +493,49 @@ def api_threat_level():
         high = rd.get('High', 0)
         if critical > 20000:
             threat_score += 60
-            threat_factors.append(f'{critical:,} critical-risk objects in orbit')
+            threat_factors.append(f'{critical:,} high-risk objects in orbit')
         elif critical > 5000:
             threat_score += 40
-            threat_factors.append(f'{critical:,} critical-risk objects')
+            threat_factors.append(f'{critical:,} high-risk objects')
         else:
             threat_score += 20
-            threat_factors.append(f'{critical:,} critical-risk objects')
+            threat_factors.append(f'{critical:,} high-risk objects')
         if high > 10:
             threat_score += 15
-            threat_factors.append(f'{high} high-risk conjunctions')
+            threat_factors.append(f'{high} close approaches predicted')
     
     kp = sw.get('kp_index', 0)
     if kp >= 7:
         threat_score += 25
-        threat_factors.append(f'Geomagnetic storm G3+ (Kp={kp})')
+        threat_factors.append(f'Strong magnetic storm (level {kp}/9)')
     elif kp >= 5:
         threat_score += 15
-        threat_factors.append(f'Geomagnetic storm (Kp={kp})')
+        threat_factors.append(f'Magnetic storm active (level {kp}/9)')
     elif kp >= 4:
         threat_score += 5
-        threat_factors.append(f'Elevated geomagnetic activity (Kp={kp})')
+        threat_factors.append(f'Increased magnetic activity (level {kp}/9)')
     
     f107 = sw.get('f107_flux', 0)
     if f107 > 180:
         threat_score += 10
-        threat_factors.append(f'High solar flux F10.7={f107:.1f}')
+        threat_factors.append(f'High sun activity (energy level {f107:.0f})')
     
     if threat_score >= 70:
-        level = 'CRITICAL'
+        level = 'SEVERE'
         color = '#ef4444'
-        description = 'Severe orbital environment \u2014 multiple critical threats active'
+        description = 'High debris density in orbit \u2014 many objects need tracking'
     elif threat_score >= 50:
-        level = 'GUARDED'
-        color = '#f59e0b'
-        description = 'Elevated threat conditions \u2014 enhanced monitoring recommended'
-    elif threat_score >= 25:
         level = 'ELEVATED'
+        color = '#f59e0b'
+        description = 'Above-average debris levels \u2014 extra monitoring in place'
+    elif threat_score >= 25:
+        level = 'ACTIVE'
         color = '#3b82f6'
-        description = 'Moderate threat level \u2014 routine monitoring active'
+        description = 'Normal space traffic \u2014 routine tracking continues'
     else:
-        level = 'NOMINAL'
+        level = 'CALM'
         color = '#10b981'
-        description = 'Nominal orbital environment \u2014 no significant threats detected'
+        description = 'Stable orbital environment \u2014 all clear'
     
     return jsonify({
         'level': level,
@@ -724,6 +734,62 @@ def api_pass_predictions():
         'computed_at': datetime.now(timezone.utc).isoformat()
     })
 
+@app.route('/api/geocode')
+@rate_limit(max_per_minute=60)
+def api_geocode():
+    """Search for a place by name and return coordinates (uses OpenStreetMap Nominatim)."""
+    query = request.args.get('q', '').strip()
+    if not query or len(query) < 2:
+        return jsonify({'places': []})
+    try:
+        url = 'https://nominatim.openstreetmap.org/search?q=' + urllib.parse.quote(query) + '&format=json&limit=5&addressdetails=1'
+        req = urllib.request.Request(url, headers={'User-Agent': 'OrbitalIntelligence/1.0'})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            results = json.loads(resp.read().decode('utf-8'))
+        places = []
+        for r in results:
+            display = r.get('display_name', '')
+            # Shorten to city, country for readability
+            addr = r.get('address', {})
+            short_name = ', '.join(filter(None, [
+                addr.get('city') or addr.get('town') or addr.get('village') or addr.get('hamlet') or addr.get('suburb'),
+                addr.get('state') or addr.get('region'),
+                addr.get('country')
+            ])) or display.split(',')[0]
+            places.append({
+                'name': short_name,
+                'full_name': display,
+                'lat': float(r.get('lat', 0)),
+                'lon': float(r.get('lon', 0))
+            })
+        return jsonify({'places': places})
+    except Exception as e:
+        logger.error(f'Geocode error: {e}')
+        return jsonify({'places': [], 'error': str(e)})
+
+@app.route('/api/reverse-geocode')
+@rate_limit(max_per_minute=60)
+def api_reverse_geocode():
+    """Convert lat/lon to a place name (uses OpenStreetMap Nominatim)."""
+    lat = request.args.get('lat', '')
+    lon = request.args.get('lon', '')
+    if not lat or not lon:
+        return jsonify({'name': ''})
+    try:
+        url = f'https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json&zoom=10&addressdetails=1'
+        req = urllib.request.Request(url, headers={'User-Agent': 'OrbitalIntelligence/1.0'})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+        addr = result.get('address', {})
+        short_name = ', '.join(filter(None, [
+            addr.get('city') or addr.get('town') or addr.get('village') or addr.get('hamlet') or addr.get('county'),
+            addr.get('country')
+        ])) or result.get('display_name', 'Unknown location').split(',')[0]
+        return jsonify({'name': short_name, 'full_name': result.get('display_name', '')})
+    except Exception as e:
+        logger.error(f'Reverse geocode error: {e}')
+        return jsonify({'name': ''})
+
 @app.route('/api/search-satellites')
 @rate_limit(max_per_minute=120)
 def api_search_satellites():
@@ -835,6 +901,43 @@ def _start_background_refresh():
         _bg_thread.start()
         logger.info('Background refresh thread started')
 
+# --- Data Status (real-time freshness, no hardcoded timestamps) ---
+@app.route('/api/data-status')
+@rate_limit(max_per_minute=120)
+def api_data_status():
+    """Return real data freshness info based on file modification times and server uptime."""
+    data_files = {
+        'collision': 'collision_risk.json',
+        'orbital': 'orbital_data.json',
+        'catalog': 'satcat_catalog.json',
+        'predictions': 'ml_predictions.json'
+    }
+    sources = {}
+    for name, filename in data_files.items():
+        try:
+            mtime = os.path.getmtime(filename)
+            sources[name] = datetime.fromtimestamp(mtime, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+        except Exception:
+            sources[name] = None
+
+    # Most recent data file modification = when data was last synced
+    valid_times = [t for t in sources.values() if t]
+    last_data_sync = valid_times[0] if valid_times else None
+
+    status = {
+        'server_time': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'),
+        'last_data_sync': last_data_sync,
+        'data_sources': sources,
+        'server_uptime_seconds': round(time.time() - _app_start_time, 0),
+        'space_weather_live': _space_weather_cache['ts'] > 0,
+        'space_weather_last_fetch': datetime.fromtimestamp(_space_weather_cache['ts'], timezone.utc).strftime('%Y-%m-%d %H:%M UTC') if _space_weather_cache['ts'] > 0 else None,
+        'launches_live': _launch_cache['ts'] > 0,
+        'launches_last_fetch': datetime.fromtimestamp(_launch_cache['ts'], timezone.utc).strftime('%Y-%m-%d %H:%M UTC') if _launch_cache['ts'] > 0 else None,
+    }
+    resp = jsonify(status)
+    resp.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return resp
+
 # --- Preload data caches when imported as a module (gunicorn workers or Vercel) ---
 _IS_VERCEL = os.environ.get('VERCEL') is not None
 if __name__ != '__main__':
@@ -845,8 +948,8 @@ if __name__ != '__main__':
     _load_data('collision', 'collision_risk.json')
     if _IS_VERCEL:
         # On Vercel serverless: skip external API on cold start (10s timeout)
-        # APIs fetch on-demand when called — background thread not supported
-        logger.info('Vercel detected — skipping background refresh and external API preloading.')
+        # APIs fetch on-demand when called: background thread not supported
+        logger.info('Vercel detected: skipping background refresh and external API preloading.')
     else:
         logger.info('Pre-loading space weather from NOAA SWPC...')
         _get_space_weather()
