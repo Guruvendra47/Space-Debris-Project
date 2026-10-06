@@ -523,19 +523,19 @@ def api_threat_level():
     if threat_score >= 70:
         level = 'SEVERE'
         color = '#ef4444'
-        description = 'High debris density in orbit \u2014 many objects need tracking'
+        description = 'High debris density in orbit. Many objects need tracking.'
     elif threat_score >= 50:
         level = 'ELEVATED'
         color = '#f59e0b'
-        description = 'Above-average debris levels \u2014 extra monitoring in place'
+        description = 'Above-average debris levels. Extra monitoring in place.'
     elif threat_score >= 25:
         level = 'ACTIVE'
         color = '#3b82f6'
-        description = 'Normal space traffic \u2014 routine tracking continues'
+        description = 'Normal space traffic. Routine tracking continues.'
     else:
         level = 'CALM'
         color = '#10b981'
-        description = 'Stable orbital environment \u2014 all clear'
+        description = 'Stable orbital environment. All clear.'
     
     return jsonify({
         'level': level,
