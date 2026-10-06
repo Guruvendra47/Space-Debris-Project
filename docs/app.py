@@ -921,15 +921,12 @@ def api_data_status():
             sources[name] = None
 
     # Use Celestrak cache timestamp if available (most accurate freshness indicator)
-    # Otherwise use the most recent file modification time, or app start time as fallback
+    # Otherwise use app start time (data was loaded into memory at startup)
+    # File modification times are unreliable on some platforms (e.g. Vercel preserves git timestamps)
     if _satcat_full_cache['ts'] > 0:
         last_data_sync = datetime.fromtimestamp(_satcat_full_cache['ts'], timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     else:
-        valid_times = [t for t in sources.values() if t]
-        if valid_times:
-            last_data_sync = max(valid_times)
-        else:
-            last_data_sync = datetime.fromtimestamp(_app_start_time, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+        last_data_sync = datetime.fromtimestamp(_app_start_time, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
 
     status = {
         'server_time': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'),
