@@ -1765,7 +1765,7 @@ function renderGlobe(){
 
   globeDebug('Markers: '+globePointData.length+' (P:'+counts.Payload+' D:'+counts.Debris+' R:'+counts['Rocket Body']+')');
 
-  if(allPos.length===0){globeDebug('No valid positions!');return;}
+  if(allPos.length===0){globeDebug('No valid positions');return;}
 
   // 3D-looking shape markers: satellite, rocket body, debris sprites, color-coded by type
   var satCanvas=document.createElement('canvas');satCanvas.width=128;satCanvas.height=128;
@@ -3596,7 +3596,7 @@ function ppStartCountdown(nextPass){
     var now=new Date();
     var diff=riseTime-now;
     if(diff<=0){
-      container.innerHTML='<div class="pp-countdown"><div class="pp-cd-icon" style="background:#ecfdf5;color:#10b981;font-size:11px;font-weight:700">LIVE</div><div><div class="pp-cd-lbl">Pass in progress</div><div style="font-size:14px;font-weight:700;color:#10b981">Satellite is currently passing overhead!</div></div></div>';
+      container.innerHTML='<div class="pp-countdown"><div class="pp-cd-icon" style="background:#ecfdf5;color:#10b981;font-size:11px;font-weight:700">LIVE</div><div><div class="pp-cd-lbl">Pass in progress</div><div style="font-size:14px;font-weight:700;color:#10b981">Satellite is currently passing overhead.</div></div></div>';
       clearInterval(ppCountdownTimer);
       return;
     }
@@ -3681,7 +3681,7 @@ function shareObject(){
   var nameEl=document.getElementById('o-name');if(!nameEl||!nameEl.textContent)return;
   var name=nameEl.textContent;var noradEl=document.getElementById('o-norad');var norad=noradEl?noradEl.textContent:'';var altEl=document.getElementById('o-alt');var alt=altEl?altEl.textContent:'';
   var text='\ud83d\ude02 '+name+' (NORAD '+norad+') | Alt: '+alt+' | Orbital Intelligence Platform';
-  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){var btns=document.querySelectorAll('.conj-action-btn');var btn=btns[btns.length-1];if(btn){var o=btn.textContent;btn.textContent='\u2713 Copied!';setTimeout(function(){btn.textContent=o;},2000);}});}
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){var btns=document.querySelectorAll('.conj-action-btn');var btn=btns[btns.length-1];if(btn){var o=btn.textContent;btn.textContent='\u2713 Copied';setTimeout(function(){btn.textContent=o;},2000);}});}
   else{alert(text);}
 }
 
