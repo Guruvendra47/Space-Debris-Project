@@ -920,9 +920,16 @@ def api_data_status():
         except Exception:
             sources[name] = None
 
-    # Most recent data file modification = when data was last synced
-    valid_times = [t for t in sources.values() if t]
-    last_data_sync = valid_times[0] if valid_times else None
+    # Use Celestrak cache timestamp if available (most accurate freshness indicator)
+    # Otherwise use the most recent file modification time, or app start time as fallback
+    if _satcat_full_cache['ts'] > 0:
+        last_data_sync = datetime.fromtimestamp(_satcat_full_cache['ts'], timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    else:
+        valid_times = [t for t in sources.values() if t]
+        if valid_times:
+            last_data_sync = max(valid_times)
+        else:
+            last_data_sync = datetime.fromtimestamp(_app_start_time, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
 
     status = {
         'server_time': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'),
