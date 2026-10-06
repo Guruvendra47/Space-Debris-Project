@@ -21,7 +21,7 @@ KEY FINDINGS:
 - 700-900 km band is the most crowded region, driven by the 2009 Iridium-Cosmos collision and 2007 Chinese ASAT test
 - Of 35,037 objects: 4,554 Low risk, 1,567 Medium, 20 High, 28,896 Critical
 
-LIVE DEMO: https://orbital-intelligence-platform-ctpvrirrb-guruvendra27-2443.vercel.app
+LIVE DEMO: https://orbital-intelligence-platform-b8ko60zk9-guruvendra27-2443.vercel.app/
 
 OPEN SOURCE: https://github.com/Guruvendra47/Space-Debris-Project
 
