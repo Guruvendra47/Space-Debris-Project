@@ -906,6 +906,9 @@ def _start_background_refresh():
 @rate_limit(max_per_minute=120)
 def api_data_status():
     """Return real data freshness info based on file modification times and server uptime."""
+    # Use app start time for all data source timestamps (file modification times are
+    # unreliable on some platforms like Vercel which preserve original git timestamps)
+    app_start_str = datetime.fromtimestamp(_app_start_time, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     data_files = {
         'collision': 'collision_risk.json',
         'orbital': 'orbital_data.json',
@@ -915,8 +918,10 @@ def api_data_status():
     sources = {}
     for name, filename in data_files.items():
         try:
-            mtime = os.path.getmtime(filename)
-            sources[name] = datetime.fromtimestamp(mtime, timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+            if os.path.exists(filename):
+                sources[name] = app_start_str
+            else:
+                sources[name] = None
         except Exception:
             sources[name] = None
 
